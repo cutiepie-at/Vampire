@@ -27,7 +27,8 @@
     "type-check:client": "vue-tsc --noEmit -p tsconfig.vitest.client.json --composite false",
     "type-check:server": "tsc --noEmit -p tsconfig.vitest.server.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "migrate:make": "knex migrate:make -x ts newmig"
+    "migrate:make": "knex migrate:make -x ts newmig",
+    "run": "node dist/server/main.mjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
