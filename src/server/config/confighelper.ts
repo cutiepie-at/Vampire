@@ -4,6 +4,7 @@ import type {SessionOptions, Store} from 'express-session';
 import DbStore from '$/session/store';
 import {mergeDeep} from '$/util/merge';
 import {isDevEnv} from '$/util/env';
+import * as fs from 'node:fs';
 
 export type ConfigType = {
   server: {
@@ -25,14 +26,12 @@ export type ConfigType = {
 };
 
 export async function loadConfig(): Promise<ConfigType> {
-  const mod = './config.js';
-  const config = (await import(mod)).default.default;
+  const config = JSON.parse(fs.readFileSync('./config/config.json', 'utf8'));
   let mergedConfig = mergeDeep({}, config);
   if (isDevEnv()) {
     console.log('Loading config.dev.js');
     try {
-      const mod = './config.dev.js';
-      let devConfig = (await import(mod)).default.default;
+      let devConfig = JSON.parse(fs.readFileSync('./config/config.dev.json', 'utf8'));
       mergedConfig = mergeDeep(mergedConfig, devConfig);
     } catch (_) {
     }
