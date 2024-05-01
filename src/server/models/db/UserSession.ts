@@ -2,9 +2,10 @@ import type {SessionData} from 'express-session';
 import type {JSONSchema, ModelOptions, Pojo, StaticHookArguments} from 'objection';
 import BaseModelId from '$/models/db/BaseModelId';
 import {mergeDeep} from '$/util/merge';
+import type {UUID} from '$/models/db/util';
 
 export default class UserSession extends BaseModelId {
-  userId?: string;//uuid
+  userId?: UUID;
   expires!: Date;
   data?: SessionData;//json
 
