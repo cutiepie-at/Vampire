@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "setup": "run-s setup:1 setup:2 setup:3 setup:4",
+    "setup": "run-s setup:1 setup:2 setup:3",
     "setup:1": "npm run build:oas",
     "setup:2": "npm i ./src/oas",
     "setup:3": "cd src/oas && npm i",
-    "setup:4": "cd src/express-session-openid-connect && npm i",
     "dev-win": "set DEBUG=express-session && set NODE_ENV=development && run-p dev:1 dev:2 dev:3",
     "dev": "DEBUG=express-session NODE_ENV=development run-p dev:1 dev:2 dev:3",
     "dev:1": "vite build --watch --outDir dev/server --ssr src/server/main.ts",
