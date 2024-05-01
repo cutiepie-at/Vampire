@@ -7,3 +7,4 @@ vampire.db-journal
 package-lock.json
 src/oas/
 src/server/config.dev.ts
+config/config.prod.json

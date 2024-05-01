@@ -29,9 +29,16 @@ export async function loadConfig(): Promise<ConfigType> {
   const config = JSON.parse(fs.readFileSync('./config/config.json', 'utf8'));
   let mergedConfig = mergeDeep({}, config);
   if (isDevEnv()) {
-    console.log('Loading config.dev.js');
+    console.log('Loading config.dev.json');
     try {
       let devConfig = JSON.parse(fs.readFileSync('./config/config.dev.json', 'utf8'));
+      mergedConfig = mergeDeep(mergedConfig, devConfig);
+    } catch (_) {
+    }
+  } else {
+    console.log('Loading config.prod.json');
+    try {
+      let devConfig = JSON.parse(fs.readFileSync('./config/config.prod.json', 'utf8'));
       mergedConfig = mergeDeep(mergedConfig, devConfig);
     } catch (_) {
     }
