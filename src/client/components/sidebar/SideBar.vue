@@ -5,12 +5,12 @@ import SideBarNavItem from '@/components/sidebar/SideBarNavItem.vue';
 @Options({
   name: 'SideBar',
   components: {
-    SideBarNavItem
+    SideBarNavItem,
   },
 })
 export default class SideBar extends Vue {
-  private collapsed: boolean = false;
-  private toggled: boolean = false;
+  collapsed: boolean = false;
+  toggled: boolean = false;
 
   public toggle(toggle: boolean): void {
     this.toggled = toggle;
@@ -29,10 +29,12 @@ export default class SideBar extends Vue {
       <span class="visually-hidden">Icon-only</span>
     </a> -->
     <ul class="nav flex-column mb-auto">
-      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-home" text="Home" router-target="/"
-                         :collapsed="collapsed"/>
-      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-question" text="About" router-target="/about"
-                         :collapsed="collapsed"/>
+      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-home" text="Home"
+                         router-target="/" :collapsed="collapsed"/>
+      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-ribbon" text="Labels"
+                         router-target="/labels" :collapsed="collapsed"/>
+      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-question" text="About"
+                         router-target="/about" :collapsed="collapsed"/>
       <!-- TODO menu localization -->
     </ul>
     <div class="border-top float-right">

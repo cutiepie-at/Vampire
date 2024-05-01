@@ -31,6 +31,32 @@ export const messagesEn = {
     saved: 'Saved',
     saving: 'Saving ...',
   },
+  label: {
+    create: {
+      button: 'Create',
+      modalTitle: 'Create label',
+    },
+    edit: {
+      button: 'Save',
+      modalTitle: 'Edit label',
+    },
+    delete: {
+      reallyDelete: 'Really delete this label?',
+    },
+    list: {
+      actions: 'Actions',
+      createdAt: 'Created at',
+      updatedAt: 'Last update',
+    },
+    model: {
+      color: 'Color',
+      description: 'description',
+      maxReference: 'Maximum reference',
+      minReference: 'Minimum reference',
+      name: 'Name',
+      unit: 'Unit',
+    },
+  },
 };
 
 export const datetimeFormatsEn = {

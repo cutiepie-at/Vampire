@@ -31,6 +31,32 @@ export const messagesDe = {
     saved: 'Gespeichert',
     saving: 'Wird gespeichert ...',
   },
+  label: {
+    create: {
+      button: 'Erstellen',
+      modalTitle: 'Label erstellen',
+    },
+    edit: {
+      button: 'Speichern',
+      modalTitle: 'Label bearbeiten',
+    },
+    delete: {
+      reallyDelete: 'Dieses Label wirklich löschen?',
+    },
+    list: {
+      actions: 'Aktionen',
+      createdAt: 'Erstellt am',
+      updatedAt: 'Letztes Update',
+    },
+    model: {
+      color: 'Farbe',
+      description: 'Beschreibung',
+      maxReference: 'Maximum Referenz',
+      minReference: 'Minimum Referenz',
+      name: 'Name',
+      unit: 'Einheit',
+    },
+  },
 };
 
 export const datetimeFormatsDe = {

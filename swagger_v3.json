@@ -156,6 +156,135 @@
         ]
       }
     },
+    "/api/v1/label": {
+      "get": {
+        "summary": "/api/v1/label",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Label"
+                  }
+                }
+              }
+            }
+          },
+          "304": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "/api/v1/label"
+        ]
+      },
+      "post": {
+        "summary": "/api/v1/label",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Label"
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Label"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "/api/v1/label"
+        ]
+      },
+      "put": {
+        "summary": "/api/v1/label",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Label"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Label"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "/api/v1/label"
+        ]
+      }
+    },
+    "/api/v1/label/{id}": {
+      "get": {
+        "summary": "/api/v1/label/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Label"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/label"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/label/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "example": "e6af0709-1ca3-4150-b2ae-2b56257d38bd",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "/api/v1/label"
+        ]
+      }
+    },
     "/api/v1/user": {
       "get": {
         "summary": "/api/v1/user",
@@ -335,6 +464,18 @@
     }
   ],
   "components": {
+    "requestBodies": {
+      "Label": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Label"
+            }
+          }
+        },
+        "required": true
+      }
+    },
     "schemas": {
       "UserInfo": {
         "type": "object",
@@ -518,6 +659,113 @@
                 "example": ""
               }
             }
+          }
+        }
+      },
+      "Label": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
+          "name",
+          "description",
+          "unit",
+          "color",
+          "minReference",
+          "maxReference"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 32767
+          },
+          "unit": {
+            "type": "string",
+            "maxLength": 32
+          },
+          "color": {
+            "type": "string",
+            "maxLength": 32
+          },
+          "minReference": {
+            "type": "number"
+          },
+          "maxReference": {
+            "type": "number"
+          }
+        }
+      },
+      "Value": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
+          "labelId",
+          "date",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "labelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "number"
           }
         }
       }

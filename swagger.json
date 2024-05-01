@@ -184,6 +184,113 @@
           }
         }
       }
+    },
+    "Label": {
+      "type": "object",
+      "required": [
+        "id",
+        "createdAt",
+        "createdBy",
+        "updatedAt",
+        "updatedBy",
+        "name",
+        "description",
+        "unit",
+        "color",
+        "minReference",
+        "maxReference"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedBy": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 32767
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "color": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "minReference": {
+          "type": "number"
+        },
+        "maxReference": {
+          "type": "number"
+        }
+      }
+    },
+    "Value": {
+      "type": "object",
+      "required": [
+        "id",
+        "createdAt",
+        "createdBy",
+        "updatedAt",
+        "updatedBy",
+        "labelId",
+        "date",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedBy": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "labelId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number"
+        }
+      }
     }
   },
   "host": "localhost:3000",
@@ -334,6 +441,143 @@
         ],
         "produces": [
           "application/json"
+        ]
+      }
+    },
+    "/api/v1/label": {
+      "get": {
+        "summary": "/api/v1/label",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Label"
+              }
+            }
+          },
+          "304": {}
+        },
+        "tags": [
+          "/api/v1/label"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "/api/v1/label",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Label"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Label"
+            }
+          },
+          "409": {}
+        },
+        "tags": [
+          "/api/v1/label"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "summary": "/api/v1/label",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Label"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Label"
+            }
+          },
+          "404": {}
+        },
+        "tags": [
+          "/api/v1/label"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/label/{id}": {
+      "get": {
+        "summary": "/api/v1/label/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Label"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/label"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/label/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "e6af0709-1ca3-4150-b2ae-2b56257d38bd"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "404": {}
+        },
+        "tags": [
+          "/api/v1/label"
         ]
       }
     },
