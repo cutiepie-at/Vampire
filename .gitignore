@@ -1,0 +1,9 @@
+.idea/
+dev/
+dist/
+node_modules
+vampire.db
+vampire.db-journal
+package-lock.json
+src/oas/
+src/server/config.dev.ts
