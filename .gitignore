@@ -4,7 +4,7 @@ dist/
 node_modules
 vampire.db
 vampire.db-journal
-package-lock.json
-src/oas/
-src/server/config.dev.ts
-config/config.prod.json
+oas/
+src/backend/config.dev.ts
+backend/config/config.dev.json
+backend/config/config.prod.json

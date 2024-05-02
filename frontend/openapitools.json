@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.6.0",
+    "generators": {
+      "typescript": {
+        "generatorName": "typescript",
+        "output": "../oas/",
+        "glob": "../swagger_v3.json",
+        "removeOperationIdPrefix": true,
+        "templateDir": "../templates/",
+        "additionalProperties": {
+          "npmName": "vampire-oas",
+          "npmVersion": "1.0.0",
+          "withInterfaces": true,
+          "platform": "browser",
+          "framework": "fetch-api",
+          "supportsES6": true
+        }
+      }
+    }
+  }
+}

@@ -293,7 +293,7 @@
       }
     }
   },
-  "host": "localhost:3000",
+  "host": "localhost:5173",
   "info": {
     "title": "vampire",
     "version": "0.0.0",

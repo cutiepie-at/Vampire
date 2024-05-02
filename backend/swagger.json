@@ -1,0 +1,323 @@
+{
+  "definitions": {},
+  "info": {
+    "title": "vampire-backend",
+    "version": "1.0.0",
+    "description": "Specification JSONs: [v2](/api-spec/v2), [v3](/api-spec/v3)."
+  },
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "/api/v1/auth/register",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": [
+          "/api/v1/auth"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "/api/v1/auth/login",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": [
+          "/api/v1/auth"
+        ]
+      }
+    },
+    "/api/v1/auth/verify": {
+      "post": {
+        "summary": "/api/v1/auth/verify",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Not authenticated!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "27258317-066b-4648-b06e-12390e8e354e"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-01T08:41:31.347Z"
+                    },
+                    "createdBy": {
+                      "type": "string",
+                      "example": "27258317-066b-4648-b06e-12390e8e354e"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-01T08:41:31.347Z"
+                    },
+                    "updatedBy": {
+                      "type": "string",
+                      "example": "27258317-066b-4648-b06e-12390e8e354e"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "wea_ondara"
+                    },
+                    "email": {
+                      "type": "null",
+                      "example": null
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "example": "wea_ondara"
+                    }
+                  }
+                },
+                "session": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "9866d0da-1e65-4c5b-ada6-8479c9a0fd4f"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/auth"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "summary": "/api/v1/auth/logout",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": [
+          "/api/v1/auth"
+        ]
+      }
+    },
+    "/api/v1/label": {
+      "get": {
+        "summary": "/api/v1/label",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      },
+      "post": {
+        "summary": "/api/v1/label",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      },
+      "put": {
+        "summary": "/api/v1/label",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/v1/label/{id}": {
+      "get": {
+        "summary": "/api/v1/label/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "tags": []
+      },
+      "delete": {
+        "summary": "/api/v1/label/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/v1/user": {
+      "get": {
+        "summary": "/api/v1/user",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      },
+      "post": {
+        "summary": "/api/v1/user",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      },
+      "put": {
+        "summary": "/api/v1/user",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/api/v1/user/{id}": {
+      "get": {
+        "summary": "/api/v1/user/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "tags": [
+          "/api/v1/user/"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/user/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "tags": [
+          "/api/v1/user/"
+        ]
+      }
+    },
+    "/api/v1/usersession/{userId}": {
+      "get": {
+        "summary": "/api/v1/usersession/{userId}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "tags": [
+          "/api/v1/usersession/"
+        ]
+      }
+    },
+    "/api/v1/usersession/{id}": {
+      "delete": {
+        "summary": "/api/v1/usersession/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {},
+        "tags": [
+          "/api/v1/usersession/"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5173/",
+      "description": "default",
+      "variables": {}
+    }
+  ],
+  "swagger": "2.0",
+  "tags": [
+    {
+      "name": "/api/v1/auth"
+    },
+    {
+      "name": "/api/v1/usersession/"
+    },
+    {
+      "name": "/api/v1/user/"
+    }
+  ]
+}
