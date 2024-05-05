@@ -56,6 +56,26 @@ export const messagesEn = {
       name: 'Name',
       unit: 'Unit',
     },
+    reference: 'Reference',
+  },
+  value: {
+    delete: {
+      reallyDelete: 'Really delete this value?',
+    },
+    edit: {
+      button: 'Save',
+      modalTitle: 'Edit value',
+    },
+    list: {
+      actions: 'Actions',
+      createdAt: 'Created at',
+      updatedAt: 'Last update',
+    },
+    model: {
+      labelId: 'Label',
+      date: 'Date',
+      value: 'Value',
+    },
   },
 };
 

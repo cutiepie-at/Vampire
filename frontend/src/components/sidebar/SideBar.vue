@@ -33,6 +33,8 @@ export default class SideBar extends Vue {
                          router-target="/" :collapsed="collapsed"/>
       <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-ribbon" text="Labels"
                          router-target="/labels" :collapsed="collapsed"/>
+      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-database" text="Values"
+                         router-target="/values" :collapsed="collapsed"/>
       <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-question" text="About"
                          router-target="/about" :collapsed="collapsed"/>
       <!-- TODO menu localization -->

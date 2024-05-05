@@ -56,6 +56,26 @@ export const messagesDe = {
       name: 'Name',
       unit: 'Einheit',
     },
+    reference: 'Referenz',
+  },
+  value: {
+    delete: {
+      reallyDelete: 'Diesen Wert wirklich löschen?',
+    },
+    edit: {
+      button: 'Speichern',
+      modalTitle: 'Wert bearbeiten',
+    },
+    list: {
+      actions: 'Aktionen',
+      createdAt: 'Erstellt am',
+      updatedAt: 'Letztes Update',
+    },
+    model: {
+      labelId: 'Label',
+      date: 'Datum',
+      value: 'Wert',
+    },
   },
 };
 

@@ -1,5 +1,5 @@
 import {Pinia, Store} from 'pinia-class-component';
-import {ApiV1AuthApi, ApiV1LabelApi, createConfiguration, HttpMethod, RequestContext} from 'vampire-oas';
+import {ApiV1AuthApi, ApiV1LabelApi, ApiV1ValueApi, createConfiguration, HttpMethod, RequestContext} from 'vampire-oas';
 
 @Store({
   id: 'ApiStore',
@@ -17,6 +17,7 @@ export class ApiStore extends Pinia {
   //api
   private readonly _authApi = new ApiV1AuthApi(this._config);
   private readonly _labelApi = new ApiV1LabelApi(this._config);
+  private readonly _valueApi = new ApiV1ValueApi(this._config);
 
   get authApi(): ApiV1AuthApi {
     return this._authApi;
@@ -24,5 +25,9 @@ export class ApiStore extends Pinia {
 
   get labelApi(): ApiV1LabelApi {
     return this._labelApi;
+  }
+
+  get valueApi(): ApiV1ValueApi {
+    return this._valueApi;
   }
 }

@@ -749,6 +749,172 @@
           "/api/v1/usersession/"
         ]
       }
+    },
+    "/api/v1/value": {
+      "get": {
+        "summary": "/api/v1/value",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Value"
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "/api/v1/value",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Value"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Value"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      },
+      "put": {
+        "summary": "/api/v1/value",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Value"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Value"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/value/{id}": {
+      "get": {
+        "summary": "/api/v1/value/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Value"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/value/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {}
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      }
+    },
+    "/api/v1/value/batch": {
+      "post": {
+        "summary": "/api/v1/value/batch",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Value"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Value"
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
     }
   },
   "schemes": [

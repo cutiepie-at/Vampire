@@ -442,6 +442,158 @@
           "/api/v1/usersession/"
         ]
       }
+    },
+    "/api/v1/value": {
+      "get": {
+        "summary": "/api/v1/value",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Value"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      },
+      "post": {
+        "summary": "/api/v1/value",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Value"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Value"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      },
+      "put": {
+        "summary": "/api/v1/value",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Value"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Value"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      }
+    },
+    "/api/v1/value/{id}": {
+      "get": {
+        "summary": "/api/v1/value/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Value"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/value/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      }
+    },
+    "/api/v1/value/batch": {
+      "post": {
+        "summary": "/api/v1/value/batch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Value"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Value"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/value"
+        ]
+      }
     }
   },
   "tags": [
@@ -465,6 +617,16 @@
   ],
   "components": {
     "requestBodies": {
+      "Value": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Value"
+            }
+          }
+        },
+        "required": true
+      },
       "Label": {
         "content": {
           "application/json": {

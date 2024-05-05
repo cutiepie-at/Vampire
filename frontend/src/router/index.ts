@@ -25,6 +25,16 @@ const router = createRouter({
       component: () => import('../views/LabelsView.vue'),
     },
     {
+      path: '/values',
+      name: 'values',
+      component: () => import('../views/ValuesView.vue'),
+    },
+    {
+      path: '/values/new',
+      name: 'values-new',
+      component: () => import('../views/ValuesNewView.vue'),
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue'),
