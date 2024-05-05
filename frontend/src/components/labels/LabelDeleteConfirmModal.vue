@@ -12,8 +12,8 @@ import {handleError} from '@/util/util';
   components: {DeleteConfirmModal},
 })
 export default class LabelDeleteConfirmModal extends Vue {
-  private api = new ApiStore();
-  private store = new LabelStore();
+  private readonly api = new ApiStore();
+  private readonly store = new LabelStore();
 
   //runtime
   label: Label | null = null;

@@ -13,8 +13,8 @@ import {savedToast} from '@/util/toast';
   components: {BootstrapModal},
 })
 export default class EditLabelModal extends Vue {
-  api = new ApiStore();
-  store = new LabelStore();
+  readonly api = new ApiStore();
+  readonly store = new LabelStore();
   label = new Label();
   isNew = false;
 
@@ -47,7 +47,6 @@ export default class EditLabelModal extends Vue {
   async save(): Promise<void> {
     try {
       if (this.isNew) {
-
         const res = await this.api.labelApi.apiV1LabelPost(this.label);
         this.store.addLabel(res);
         savedToast(this.$i18n);
@@ -57,8 +56,8 @@ export default class EditLabelModal extends Vue {
         savedToast(this.$i18n);
       }
       await this.dismiss();
-    } catch (e2) {
-      return handleError(this.$i18n, e2);
+    } catch (err) {
+      return handleError(this.$i18n, err);
     }
   }
 

@@ -16,7 +16,7 @@ import LabelDeleteConfirmModal from '@/components/labels/LabelDeleteConfirmModal
   },
 })
 export default class Labels extends Vue {
-  store = new LabelStore();
+  readonly store = new LabelStore();
 
   get columns(): any[] {
     return [{
@@ -25,11 +25,13 @@ export default class Labels extends Vue {
     }, {
       label: this.$t('label.list.updatedAt'),
       field: (label: Label) => new Date(label.updatedAt),
+      type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
     }, {
       label: this.$t('label.list.createdAt'),
       field: (label: Label) => new Date(label.createdAt),
+      type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
     }, {
