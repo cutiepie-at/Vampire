@@ -8,7 +8,7 @@ export async function registerOpenApiFirst(express: Express, config: ConfigType)
   if (!isDevEnv()) {
     return;
   }
-  const specPath = './swagger.json';
+  const specPath = '../swagger.json';
   await main(specPath);
   handleResponses(express, {
     specOutputFileBehavior: SPEC_OUTPUT_FILE_BEHAVIOR.PRESERVE,
