@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=development run-p dev:1 dev:2",
     "dev:1": "tsc --watch --preserveWatchOutput -p tsconfig.dev.json",
     "dev:2": "wait-on dev/main.js && nodemon -q --watch dev/ dev/main.js",
-    "build": "run-s type-check build-only",
+    "build": "run-s type-check build-only test",
     "build-only": "tsc",
     "type-check": "tsc --noEmit --composite false",
     "migrate:make": "knex migrate:make -x ts newmig",
