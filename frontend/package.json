@@ -5,7 +5,7 @@
   "scripts": {
     "setup": "run-s setup:1 setup:2",
     "setup:1": "npm run build:oas",
-    "setup:2": "npm i ../oas",
+    "setup:2": "npm i --save-optional ../oas",
     "dev": "vite",
     "clean": "rm -r ../oas dev/ dist/ 2>/dev/null",
     "build": "run-s build:oas build:client",
