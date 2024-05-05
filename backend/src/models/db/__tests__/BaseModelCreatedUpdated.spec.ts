@@ -12,12 +12,12 @@ describe('BaseModelCreatedUpdated model', () => {
   //   baseModel.updatedAt = new Date();
   //   baseModel.updatedBy = randomUUID();
   //   const res = BaseModelCreatedUpdated.fromJson(baseModel.toJSON());
-  //   expect(res).toBe(baseModel);
+  //   expect(res).toStrictEqual(baseModel);
   // });
 
   test('jsonSchema', () => {
     const res = BaseModelCreatedUpdated.jsonSchema;
-    expect(res).toBe({
+    expect(res).toStrictEqual({
       $id: 'BaseModelCreatedUpdated',
       type: 'object',
       required: ['id', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy'],

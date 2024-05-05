@@ -8,12 +8,12 @@ describe('BaseModel model', () => {
   //   const baseModel = new BaseModel();
   //   baseModel.id = randomUUID();
   //   const res = BaseModel.fromJson(baseModel.toJSON());
-  //   expect(res).toBe(baseModel);
+  //   expect(res).toStrictEqual(baseModel);
   // });
 
   test('jsonSchema', () => {
     const res = BaseModel.jsonSchema;
-    expect(res).toBe({
+    expect(res).toStrictEqual({
       $id: 'BaseModel',
       type: 'object',
 

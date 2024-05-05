@@ -20,12 +20,12 @@ describe('UserSession model', () => {
       user: new UserInfo(),
     } as any;
     const res = UserSession.fromJson(session.toJSON());
-    expect(res).toBe(session);
+    expect(res).toStrictEqual(session);
   });
 
   test('jsonSchema', () => {
     const res = UserSession.jsonSchema;
-    expect(res).toBe({
+    expect(res).toStrictEqual({
       $id: 'UserSession',
       type: 'object',
       required: ['id', 'userId', 'expires', 'data'],

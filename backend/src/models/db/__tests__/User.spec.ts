@@ -19,12 +19,12 @@ describe('User model', () => {
     user.updatedAt = new Date();
     user.updatedBy = randomUUID();
     const res = User.fromJson(user.toJSON());
-    expect(res).toBe(user);
+    expect(res).toStrictEqual(user);
   });
 
   test('jsonSchema', () => {
     const res = User.jsonSchema;
-    expect(res).toBe({
+    expect(res).toStrictEqual({
       $id: 'User',
       type: 'object',
       required: ['id', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'name', 'displayName'],
