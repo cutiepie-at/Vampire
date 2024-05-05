@@ -4,11 +4,13 @@ import {Options, Vue} from 'vue-class-component';
 import SiteNavBar from '@/components/navbar/SiteNavBar.vue';
 import SideBar from '@/components/sidebar/SideBar.vue';
 import DocumentLocaleSetter from '@/components/locale/DocumentLocaleSetter.vue';
+import LocaleSaver from '@/components/locale/LocaleSaver.vue';
 
 @Options({
   name: 'App',
   components: {
-    LocateSetter: DocumentLocaleSetter,
+    DocumentLocaleSetter,
+    LocaleSaver,
     RouterView,
     SiteNavBar,
     SideBar,
@@ -22,8 +24,9 @@ export default class App extends Vue {
 </script>
 
 <template>
-  <LocateSetter/>
   <div class="d-flex flex-column w-100 h-100">
+    <LocaleSaver/>
+    <DocumentLocaleSetter/>
     <SiteNavBar class="flex-grow-0" @toggle="toggle"></SiteNavBar>
     <div class="flex-grow-1 overflow-hidden">
       <div class="d-flex flex-row w-100 h-100">

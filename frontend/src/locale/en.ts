@@ -58,6 +58,11 @@ export const messagesEn = {
     },
     reference: 'Reference',
   },
+  locale: 'Language',
+  locales: {
+    'de': 'Deutsch',
+    'en': 'English',
+  },
   value: {
     delete: {
       reallyDelete: 'Really delete this value?',

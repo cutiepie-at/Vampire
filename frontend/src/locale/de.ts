@@ -1,3 +1,5 @@
+import {messagesEn} from '@/locale/en';
+
 export const messagesDe = {
   auth: {
     login: 'Einloggen',
@@ -58,6 +60,8 @@ export const messagesDe = {
     },
     reference: 'Referenz',
   },
+  locale: 'Sprache',
+  locales: messagesEn.locales,
   value: {
     delete: {
       reallyDelete: 'Diesen Wert wirklich löschen?',

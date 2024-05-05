@@ -4,10 +4,11 @@ import LoginComponent from '@/components/auth/LoginComponent.vue';
 import UserAccountDropdown from '@/components/navbar/UserAccountDropdown.vue';
 import NavBar from '@/components/navbar/NavBar.vue';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
+import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 
 @Options({
   name: 'SiteNavBar',
-  components: {BootstrapThemeSwitch, NavBar, LoginComponent, UserAccountDropdown},
+  components: {LocaleSelector, BootstrapThemeSwitch, NavBar, LoginComponent, UserAccountDropdown},
   emits: {
     'toggle': (show: boolean) => show,
   },
@@ -37,6 +38,7 @@ export default class SiteNavBar extends Vue {
     </template>
     <template #right="">
       <div class="d-flex align-items-center">
+        <LocaleSelector class="me-2"/>
         <BootstrapThemeSwitch/>
         <UserAccountDropdown class="me-2"/>
       </div>
