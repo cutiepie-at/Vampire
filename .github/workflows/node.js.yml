@@ -11,22 +11,30 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x, 20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        project: [ frontend, backend ]
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node-version }} to build ${{ matrix.project }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: cd frontend && npm ci
-    - run: cd backend && npm ci
-    - run: cd frontend && npm setup
-    - run: ./build.sh
+        cache-dependency-path: '**/package-lock.json'
+    - run: npm ci
+      working-directory: ${{ matrix.project }}
+    - run: npm run setup --if-present
+      working-directory: ${{ matrix.project }}
+    - run: npm run build
+      working-directory: ${{ matrix.project }}
+    - run: npm test --if-present
+      working-directory: ${{ matrix.project }}
+    - run: npm test:unit --if-present
+      working-directory: ${{ matrix.project }}
+
