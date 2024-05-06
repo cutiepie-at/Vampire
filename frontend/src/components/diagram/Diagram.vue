@@ -84,7 +84,7 @@ export default class Diagram extends Vue {
 
   private initLocale(): void {
     this.root.locale = am5_locales[this.$i18n.locale]! ?? am5locales_en_US;
-    this.root.dateFormatter.set('dateFormat', this.$i18n.getDateTimeFormat(this.$i18n.locale).date);
+    this.root.dateFormatter.set('dateFormat', (this.$i18n as any).getDateTimeFormat(this.$i18n.locale).date);
     this.root.dateFormatter.set('intlLocales', iso_locales[this.$i18n.locale]);
   }
 
