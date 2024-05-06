@@ -75,7 +75,11 @@ export default class Labels extends Vue {
 
     <VueGoodTable :columns="columns" :rows="store.labels">
       <template #table-row="props">
-        <div v-if="props.column.field === 'actions'">
+        <div v-if="props.column.field === 'name'">
+          <i class="fa fa-circle" :style="{color: props.row.color || '#000' }"/>
+          {{ props.formattedRow[props.column.field] }}
+        </div>
+        <div v-else-if="props.column.field === 'actions'">
           <div class="btn-group">
             <button class="btn btn-sm btn-secondary" @click="onEdit(props.row)">
               <i class="fa fa-edit"></i>

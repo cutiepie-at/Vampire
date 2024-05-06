@@ -26,6 +26,7 @@ export default class Values extends Vue {
     return [{
       label: this.$t('label.model.name'),
       field: (row: Row) => row.label.name,
+      templateKey: 'name',
     }, {
       label: this.$t('value.model.value'),
       field: (row: Row) => row.value.value + ' ' + row.label.unit,
@@ -103,7 +104,11 @@ export default class Values extends Vue {
 
     <VueGoodTable :columns="columns" :rows="rows">
       <template #table-row="props">
-        <div v-if="props.column.field === 'actions'">
+        <div v-if="props.column.templateKey === 'name'">
+          <i class="fa fa-circle" :style="{color: props.row.label.color || '#000' }"/>
+          {{ props.formattedRow[props.column.field] }}
+        </div>
+        <div v-else-if="props.column.field === 'actions'">
           <div class="btn-group">
             <button class="btn btn-sm btn-secondary" @click="onEdit(props.row)">
               <i class="fa fa-edit"></i>
