@@ -1,5 +1,6 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
+import {isDarkTheme, setDarkTheme} from '@/components/bootstrapThemeSwitch/theme';
 
 @Options({
   name: 'BootstrapThemeSwitch',
@@ -23,11 +24,11 @@ export default class BootstrapThemeSwitch extends Vue {
   }
 
   private readSetting(): void {
-    this.darkInternal = localStorage.getItem('darkmode') === ('' + true);
+    this.darkInternal = isDarkTheme();
   }
 
   private updateSetting(): void {
-    localStorage.setItem('darkmode', '' + this.darkInternal);
+    setDarkTheme(this.darkInternal);
   }
 
   private updateTheme(): void {
