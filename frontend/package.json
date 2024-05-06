@@ -12,7 +12,7 @@
     "build:oas": "run-s generate:oas build-only:oas",
     "build:client": "run-p type-check:client build-only:client",
     "preview": "vite preview",
-    "test:unit": "vitest --environment jsdom --root src/",
+    "test:unit": "vitest --environment jsdom --root src/ --passWithNoTests",
     "test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
     "build-only:oas": "cd ../oas && npm i && npm run build",
