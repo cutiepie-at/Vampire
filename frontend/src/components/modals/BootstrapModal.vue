@@ -66,11 +66,9 @@ export default class BootstrapModal extends Vue {
   dismiss(): Promise<void> {
     if (!this.hiddenPromiseChain) {
       this.hiddenPromiseChain = new Promise(_ => {
-        console.log('hidden root');
       });
     }
     const ret = new Promise<void>(resolve => {
-      console.log('hidden tail');
     });
     this.hiddenPromiseChain.then(_ => ret);
 
