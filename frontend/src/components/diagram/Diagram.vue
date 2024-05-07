@@ -9,8 +9,8 @@ import am5locales_en_US from '@amcharts/amcharts5/locales/en_US';
 import am5locales_de_DE from '@amcharts/amcharts5/locales/de_DE';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5themes_Dark from '@amcharts/amcharts5/themes/Dark';
-import {isDarkTheme} from '@/components/bootstrapThemeSwitch/theme';
 import type {Theme} from '@amcharts/amcharts5/.internal/core/Theme';
+import { sharedDarkMode } from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 
 const am5_locales = {
   en: am5locales_en_US,
@@ -30,7 +30,6 @@ export default class Diagram extends Vue {
   private chart: any;
   private labelStore = new LabelStore();
   private valueStore = new ValueStore();
-  private darkModeListener: any;
 
   private get dat(): ({ date: number } | any)[] {
     const ret = this.valueStore.values.map(e => {
@@ -43,17 +42,14 @@ export default class Diagram extends Vue {
     return ret;
   }
 
-  async mounted(): Promise<void> {
-    this.darkModeListener = this.onDataChanged.bind(this);
-    document.addEventListener('darkmode', this.darkModeListener);
+  private get sharedDarkMode() {
+    return sharedDarkMode;
+  }
 
+  async mounted(): Promise<void> {
     await this.labelStore.reload();
     await this.valueStore.reload();
     this.redrawChart();
-  }
-
-  async unmounted(): Promise<void> {
-    document.removeEventListener('darkmode', this.darkModeListener);
   }
 
   private redrawChart(): void {
@@ -76,7 +72,7 @@ export default class Diagram extends Vue {
     const themes: Theme[] = [
       am5themes_Animated.new(this.root.root),
     ];
-    if (isDarkTheme()) {
+    if (sharedDarkMode.darkMode) {
       themes.push(am5themes_Dark.new(this.root.root));
     }
     this.root.setThemes(themes);
@@ -170,6 +166,7 @@ export default class Diagram extends Vue {
 
   @Watch('dat')
   @Watch('$i18n.locale')
+  @Watch('sharedDarkMode.darkMode')
   private onDataChanged(): void {
     this.redrawChart();
   }
