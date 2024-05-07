@@ -3,6 +3,7 @@ import {Options, Vue} from 'vue-class-component';
 import {ValueStore} from '@/stores/ValueStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
+import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import type {Label, Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import EditValueModal from '@/components/values/EditValueModal.vue';
@@ -102,7 +103,7 @@ export default class Values extends Vue {
       </div>
     </div>
 
-    <VueGoodTable :columns="columns" :rows="rows">
+    <VueGoodTable :columns="columns" :rows="rows" theme="bootstrap">
       <template #table-row="props">
         <div v-if="props.column.templateKey === 'name'">
           <i class="fa fa-circle" :style="{color: props.row.label.color || '#000' }"/>
