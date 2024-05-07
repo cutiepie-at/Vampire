@@ -1,38 +1,49 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import {isDarkTheme, setDarkTheme} from '@/components/bootstrapThemeSwitch/theme';
+import {reactive} from 'vue';
+import {Watch} from 'vue-property-decorator';
+
+export const sharedDarkMode = reactive({
+  internalDarkMode: false,
+  internalLoaded: false,
+
+  get darkMode() {
+    if (!this.internalLoaded) {
+      this.internalDarkMode = localStorage.getItem('darkmode') === ('' + true);
+      this.internalLoaded = true;
+    }
+    return this.internalDarkMode;
+  },
+
+  set darkMode(value: boolean) {
+    this.internalDarkMode = value;
+    localStorage.setItem('darkmode', '' + this.internalDarkMode);
+  },
+});
 
 @Options({
   name: 'BootstrapThemeSwitch',
 })
 export default class BootstrapThemeSwitch extends Vue {
-  private darkInternal: boolean = false;
+  get sharedDarkMode() {
+    return sharedDarkMode;
+  }
 
   mounted(): void {
-    this.readSetting();
-    this.updateTheme();
+    this.onThemeChanged(this.dark);
   }
 
   get dark(): boolean {
-    return this.darkInternal;
+    return this.sharedDarkMode.darkMode;
   }
 
-  private set dark(value: boolean) {
-    this.darkInternal = value;
-    this.updateSetting();
-    this.updateTheme();
+  set dark(value: boolean) {
+    this.sharedDarkMode.darkMode = value;
   }
 
-  private readSetting(): void {
-    this.darkInternal = isDarkTheme();
-  }
-
-  private updateSetting(): void {
-    setDarkTheme(this.darkInternal);
-  }
-
-  private updateTheme(): void {
-    if (this.darkInternal) {
+  @Watch('dark', {immediate: true})
+  private onThemeChanged(isDarkMode: boolean): void {
+    if (isDarkMode) {
       document.documentElement.setAttribute('data-bs-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-bs-theme');
