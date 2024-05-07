@@ -7,6 +7,7 @@ export const messagesDe = {
     register: 'Registrieren',
     logout: 'Ausloggen',
   },
+  design: 'Design',
   error: {
     badRequest: 'Ungültige Anforderung',
     conflict: 'Konflikt',
@@ -62,6 +63,12 @@ export const messagesDe = {
   },
   locale: 'Sprache',
   locales: messagesEn.locales,
+  menu: {
+    about: 'Über',
+    labels: 'Labels',
+    main: 'Diagramm',
+    values: 'Werte',
+  },
   value: {
     delete: {
       reallyDelete: 'Diesen Wert wirklich löschen?',

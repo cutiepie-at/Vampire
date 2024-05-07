@@ -5,6 +5,7 @@ export const messagesEn = {
     register: 'Register',
     logout: 'Log out',
   },
+  design: 'Design',
   error: {
     badRequest: 'Bad request',
     conflict: 'Conflict',
@@ -62,6 +63,12 @@ export const messagesEn = {
   locales: {
     'de': 'Deutsch',
     'en': 'English',
+  },
+  menu: {
+    about: 'About',
+    labels: 'Labels',
+    main: 'Diagram',
+    values: 'Values',
   },
   value: {
     delete: {

@@ -1,96 +1,89 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import SideBarNavItem from '@/components/sidebar/SideBarNavItem.vue';
+import SideBarNavLink from '@/components/sidebar/SideBarNavLink.vue';
+import SideBarHead from '@/components/sidebar/SideBarHead.vue';
+import LocaleSelector from '@/components/locale/LocaleSelector.vue';
+import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
+import {Prop} from 'vue-property-decorator';
 
 @Options({
   name: 'SideBar',
   components: {
+    BootstrapThemeSwitch,
+    LocaleSelector,
+    SideBarHead,
+    SideBarNavLink,
     SideBarNavItem,
   },
 })
 export default class SideBar extends Vue {
-  collapsed: boolean = false;
-  toggled: boolean = false;
-
-  public toggle(toggle: boolean): void {
-    this.toggled = toggle;
-  }
+  @Prop({default: false})
+  toggled!: boolean;
 }
 </script>
 
 <template>
-  <div class="ql-sidebar d-flex flex-column border-right shadow bg-body"
-       :class="{ collapsed: collapsed, toggled: toggled }">
-    <!-- <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
-      data-bs-placement="right" data-bs-original-title="Icon-only">
-      <svg class="bi" width="40" height="32">
-        <use xlink:href="#bootstrap"></use>
-      </svg>
-      <span class="visually-hidden">Icon-only</span>
-    </a> -->
-    <ul class="nav flex-column mb-auto">
-      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-home" text="Home"
-                         router-target="/" :collapsed="collapsed"/>
-      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-ribbon" text="Labels"
-                         router-target="/labels" :collapsed="collapsed"/>
-      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-database" text="Values"
-                         router-target="/values" :collapsed="collapsed"/>
-      <side-bar-nav-item class="ql-sidebar-nav-item p-3 border-bottom" fa-icon="fa-question" text="About"
-                         router-target="/about" :collapsed="collapsed"/>
-      <!-- TODO menu localization -->
-    </ul>
-    <div class="border-top float-right">
-      <button class="btn btn-secondary ql-collapse-btn" @click="collapsed = !collapsed">
-        <i :class="{ fa: true, 'fa-angles-left': !collapsed, 'fa-angles-right': collapsed }"></i>
-      </button>
+  <div :class="{ toggled: toggled }" class="sidebar border-right shadow bg-body d-flex flex-column">
+    <SideBarHead @close="$emit('close')"/>
+    <div class="flex-grow-1 overflow-y-auto">
+      <ul class="nav flex-column">
+        <SideBarNavLink :text="$t('menu.main')" to="/" faIcon="fa-chart-line"
+                        @click="$emit('close')"/>
+        <SideBarNavLink :text="$t('menu.labels')" to="/labels" faIcon="fa-ribbon"
+                        @click="$emit('close')"/>
+        <SideBarNavLink :text="$t('menu.values')" to="/values" faIcon="fa-database"
+                        @click="$emit('close')"/>
+        <SideBarNavLink :text="$t('menu.about')" to="/about" faIcon="fa-question"
+                        @click="$emit('close')"/>
+        <li>
+          <hr class="m-0"/>
+        </li>
+        <SideBarNavItem :text="$t('locale')" faIcon="fa-language">
+          <template #end>
+            <LocaleSelector class="navbar-locale-select me-1"/>
+          </template>
+        </SideBarNavItem>
+        <SideBarNavItem :text="$t('design')" faIcon="fa-moon">
+          <template #end>
+            <BootstrapThemeSwitch class="navbar-theme-switch"/>
+          </template>
+        </SideBarNavItem>
+      </ul>
     </div>
   </div>
 </template>
+<style lang="scss">
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins/breakpoints';
 
-<style lang="scss" scoped>
-@import '@/assets/menu.scss';
+$width: 15em;
 
-@media (max-width: $mobile-max-width) {
-  .ql-sidebar {
-    position: fixed;
-    height: 100%;
-    z-index: 10000;
-    margin-bottom: auto;
-
-    &:not(.toggled) {
-      width: 0;
-    }
-  }
-
-  /* we don't need the collapse button on phones*/
-  .ql-collapse-btn {
-    display: none;
-  }
-}
-
-@media (min-width: $desktop-min-width) {
-  .ql-sidebar {
-    &.collapsed {
-      width: $collapsedWidth;
-
-      .ql-nav-item-text {
-        max-width: 0;
-        overflow: hidden;
-        /* opacity: 0; */
-      }
-    }
-  }
-}
-
-.ql-sidebar {
+.sidebar {
   width: $width;
-  max-width: $width;
+  max-width: #{'clamp(0em, '}$width#{', 100%)'};
   transition: width ease-in-out 0.25s;
   overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
 
-  .ql-sidebar-nav-item {
-    border-top: 0;
-    border-bottom: 0;
+@include media-breakpoint-down(sm) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+
+    &:not(.toggled) {
+      width: 0 !important;
+    }
+
+    .sidebar-nav-item {
+      border-top: 0;
+      border-bottom: 0;
+    }
   }
 }
 </style>
