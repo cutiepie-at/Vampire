@@ -66,16 +66,18 @@ export default class LoginComponent extends Vue {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/menu.scss';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins/breakpoints';
 
-@media (max-width: $mobile-max-width) {
+@include media-breakpoint-down(sm) {
   .width {
     width: calc(100vw - 3em);
     transition: width .125s ease-in-out;
   }
 }
 
-@media (min-width: $desktop-min-width) {
+@include media-breakpoint-up(sm) {
   .width {
     width: 18em;
     transition: width .125s ease-in-out;

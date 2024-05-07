@@ -70,19 +70,21 @@ export default class LoggedInComponent extends Vue {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/menu.scss';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins/breakpoints';
 
 .logged-in-header {
   padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
 }
 
-@media (max-width: $mobile-max-width) {
+@include media-breakpoint-down(sm) {
   .width {
     width: 100%;
   }
 }
 
-@media (min-width: $desktop-min-width) {
+@include media-breakpoint-up(sm) {
   .width {
     width: 18em;
   }
