@@ -3,6 +3,7 @@ import {Options, Vue} from 'vue-class-component';
 import {LabelStore} from '@/stores/LabelStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
+import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import type {Label} from 'vampire-oas';
 import EditLabelModal from '@/components/labels/EditLabelModal.vue';
 import LabelDeleteConfirmModal from '@/components/labels/LabelDeleteConfirmModal.vue';
@@ -73,7 +74,7 @@ export default class Labels extends Vue {
       </div>
     </div>
 
-    <VueGoodTable :columns="columns" :rows="store.labels">
+    <VueGoodTable :columns="columns" :rows="store.labels" theme="bootstrap">
       <template #table-row="props">
         <div v-if="props.column.field === 'name'">
           <i class="fa fa-circle" :style="{color: props.row.color || '#000' }"/>
