@@ -22,10 +22,14 @@ export default class SideBarNavLink extends Vue {
   color: inherit;
   text-decoration: inherit;
 }
+
+.selected {
+  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+}
 </style>
 
 <template>
-  <SideBarNavItem :fa-icon="faIcon" :text="text">
+  <SideBarNavItem :fa-icon="faIcon" :text="text" :class="{'selected': $router.currentRoute.value.fullPath == to}">
     <template #text="props">
       <RouterLink :to="to" class="no-link">
         {{ props.text }}
