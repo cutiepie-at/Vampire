@@ -97,6 +97,7 @@ export default class ValuesView extends Vue {
             <td style="width: 0.5em"></td>
             <td>{{ $t('value.model.labelId') }}</td>
             <td>{{ $t('value.model.value') }}</td>
+            <td>{{ $t('label.model.unit') }}</td>
           </tr>
         </thead>
         <tbody>
@@ -109,6 +110,8 @@ export default class ValuesView extends Vue {
             <td>{{ labelsById.get(value.labelId)?.name }}</td>
             <td>
               <input type="number" class="form-control" v-model="value.value" @input="valuesToSave[i] = true">
+            </td>
+            <td>
               {{ labelsById.get(value.labelId)?.unit }}
             </td>
           </tr>
