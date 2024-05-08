@@ -49,6 +49,7 @@ export const messagesEn = {
       createdAt: 'Created at',
       updatedAt: 'Last update',
     },
+    missingInformation: 'Missing information',
     model: {
       color: 'Color',
       description: 'description',

@@ -51,6 +51,7 @@ export const messagesDe = {
       createdAt: 'Erstellt am',
       updatedAt: 'Letztes Update',
     },
+    missingInformation: 'Fehlende Informationen',
     model: {
       color: 'Farbe',
       description: 'Beschreibung',

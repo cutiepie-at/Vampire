@@ -62,6 +62,11 @@ export default class Labels extends Vue {
   onDelete(label: Label): void {
     (this.$refs.deleteModal as LabelDeleteConfirmModal).open(label);
   }
+
+  isLabelMissingInfo(label: Label): boolean {
+    return label.unit.trim().length === 0
+        || (label.minReference === 0 && label.maxReference === 0);
+  }
 }
 </script>
 
@@ -86,6 +91,9 @@ export default class Labels extends Vue {
         <div v-if="props.column.field === 'name'">
           <i class="fa fa-circle" :style="{color: props.row.color || '#000' }"/>
           {{ props.formattedRow[props.column.field] }}
+          <span v-if="isLabelMissingInfo(props.row)"
+                class="badge bg-warning user-select-none"
+                :title="$t('label.missingInformation')">!</span>
         </div>
         <div v-else-if="props.column.field === 'actions'">
           <div class="btn-group">
