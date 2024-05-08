@@ -8,17 +8,15 @@ import type {Label, Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import EditValueModal from '@/components/values/EditValueModal.vue';
 import ValueDeleteConfirmModal from '@/components/values/ValueDeleteConfirmModal.vue';
-import CenterOnParent from '@/components/CenterOnParent.vue';
-import Spinner from '@/components/Spinner.vue';
+import Loading from '@/components/Loading.vue';
 
 type Row = { value: Value, label: Label };
 
 @Options({
   name: 'Values',
   components: {
-    CenterOnParent,
     EditValueModal,
-    Spinner,
+    Loading,
     ValueDeleteConfirmModal,
     VueGoodTable,
   },
@@ -110,9 +108,7 @@ export default class Values extends Vue {
       </div>
     </div>
 
-    <CenterOnParent v-if="labelStore.loading || valueStore.loading">
-      <Spinner/>
-    </CenterOnParent>
+    <Loading v-if="labelStore.loading || valueStore.loading"/>
     <VueGoodTable v-else :columns="columns" :rows="rows" theme="bootstrap">
       <template #table-row="props">
         <div v-if="props.column.templateKey === 'name'">

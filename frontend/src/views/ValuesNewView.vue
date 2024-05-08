@@ -10,15 +10,13 @@ import {emptyUUID, handleError} from '@/util/util';
 import {formatInputDateTime, parseInputDateTime} from '@/util/date';
 import {savedToast} from '@/util/toast';
 import {ApiStore} from '@/stores/ApiStore';
-import CenterOnParent from '@/components/CenterOnParent.vue';
-import Spinner from '@/components/Spinner.vue';
+import Loading from '@/components/Loading.vue';
 
 @Options({
   name: 'ValuesView',
   components: {
-    CenterOnParent,
     LabelDropdown,
-    Spinner,
+    Loading,
     Values,
   },
 })
@@ -83,9 +81,7 @@ export default class ValuesView extends Vue {
 
 <template>
   <div class="p-2">
-    <CenterOnParent v-if="labelStore.loading || valueStore.loading">
-      <Spinner/>
-    </CenterOnParent>
+    <Loading v-if="labelStore.loading || valueStore.loading"/>
     <template v-else>
       <div class="mb-3">
         <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>

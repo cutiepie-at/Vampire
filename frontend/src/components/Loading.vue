@@ -5,7 +5,10 @@ import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'Loading',
-  components: {Spinner, CenterOnParent},
+  components: {
+    CenterOnParent,
+    Spinner,
+  },
 })
 export default class Loading extends Vue {
 }

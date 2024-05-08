@@ -11,8 +11,7 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5themes_Dark from '@amcharts/amcharts5/themes/Dark';
 import type {Theme} from '@amcharts/amcharts5/.internal/core/Theme';
 import {sharedDarkMode} from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
-import CenterOnParent from '@/components/CenterOnParent.vue';
-import Spinner from '@/components/Spinner.vue';
+import Loading from '@/components/Loading.vue';
 
 const am5_locales = {
   en: am5locales_en_US,
@@ -26,8 +25,7 @@ const iso_locales = {
 @Options({
   name: 'Diagram',
   components: {
-    CenterOnParent,
-    Spinner,
+    Loading,
   },
 })
 export default class Diagram extends Vue {
@@ -181,9 +179,7 @@ export default class Diagram extends Vue {
 
 <template>
   <div>
-    <CenterOnParent v-if="labelStore.loading || valueStore.loading">
-      <Spinner/>
-    </CenterOnParent>
+    <Loading v-if="labelStore.loading || valueStore.loading"/>
     <div v-show="!labelStore.loading && !valueStore.loading" ref="chart" class="h-100 w-100"></div>
   </div>
 </template>

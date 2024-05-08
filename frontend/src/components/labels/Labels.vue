@@ -7,16 +7,14 @@ import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import type {Label} from 'vampire-oas';
 import EditLabelModal from '@/components/labels/EditLabelModal.vue';
 import LabelDeleteConfirmModal from '@/components/labels/LabelDeleteConfirmModal.vue';
-import CenterOnParent from '@/components/CenterOnParent.vue';
-import Spinner from '@/components/Spinner.vue';
+import Loading from '@/components/Loading.vue';
 
 @Options({
   name: 'Labels',
   components: {
-    CenterOnParent,
     EditLabelModal,
     LabelDeleteConfirmModal,
-    Spinner,
+    Loading,
     VueGoodTable,
   },
 })
@@ -95,9 +93,7 @@ export default class Labels extends Vue {
       </div>
     </div>
 
-    <CenterOnParent v-if="store.loading">
-      <Spinner/>
-    </CenterOnParent>
+    <Loading v-if="store.loading"/>
     <VueGoodTable v-else :columns="columns" :rows="store.labels" theme="bootstrap">
       <template #table-row="props">
         <div v-if="props.column.field === 'name'">
