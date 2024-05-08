@@ -13,6 +13,23 @@ import {savedToast} from '@/util/toast';
   components: {BootstrapModal},
 })
 export default class EditLabelModal extends Vue {
+  static readonly predefinedColors = [
+    '#ff3300',
+    '#ff9900',
+    '#ffff00',
+    '#99ff33',
+    '#33ff33',
+    '#00ff99',
+    '#00ffff',
+    '#0099ff',
+    '#0033ff',
+    '#3300ff',
+    '#6600ff',
+    '#9900ff',
+    '#ff0099',
+    '#ff0033',
+  ];
+
   readonly api = new ApiStore();
   readonly store = new LabelStore();
   label = new Label();
@@ -33,7 +50,7 @@ export default class EditLabelModal extends Vue {
       name: '',
       description: '',
       unit: '',
-      color: '',
+      color: this.findNewColor(),
       minReference: 0,
       maxReference: 0,
     });
@@ -61,6 +78,14 @@ export default class EditLabelModal extends Vue {
     }
   }
 
+  private findNewColor(): string {
+    for (let color of EditLabelModal.predefinedColors) {
+      if (!this.store.labels.some(e => e.color === color)) {
+        return color;
+      }
+    }
+    return '#' + Math.floor(Math.random() * 256 * 256 * 256).toString(16);
+  }
 }
 </script>
 
