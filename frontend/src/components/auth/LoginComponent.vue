@@ -3,12 +3,10 @@ import {ApiException, LoginRequest, LoginResponse} from 'vampire-oas';
 import {Options, Vue} from 'vue-class-component';
 import {SessionStore} from '@/stores/SessionStore';
 import {ApiStore} from '@/stores/ApiStore';
-import CenterOnParent from '@/components/CenterOnParent.vue';
-import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'LoginComponent',
-  components: {CenterOnParent, Spinner},
+  components: {},
   emits: {
     'loggedIn': () => undefined,
   },
