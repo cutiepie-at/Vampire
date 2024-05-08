@@ -51,7 +51,6 @@ export class ValueStore extends Pinia {
     }
   }
 
-
   forgetValue(value: Value): void {
     const index = this._values.findIndex(e => e.id == value.id);
     if (index >= 0) {
@@ -70,6 +69,4 @@ export class ValueStore extends Pinia {
       this._loading = false;
     }
   }
-
-
 }
