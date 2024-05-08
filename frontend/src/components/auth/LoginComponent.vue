@@ -46,20 +46,18 @@ export default class LoginComponent extends Vue {
     <div v-if="error" class="alert alert-danger" role="alert">
       {{ error }}
     </div>
-    <template v-else>
-      <div class="mb-3">
-        Username
-        <input type="text" class="form-control" v-model="username"/>
-      </div>
-      <div class="mb-3">
-        Password
-        <input type="password" class="form-control" v-model="password" @keydown.enter="login"/>
-      </div>
-      <div class="float-end mb-3">
-        <button class="btn btn-primary" @click="login">{{ $t('auth.login') }}</button>
-      </div>
-      <div class="clearfix"></div>
-    </template>
+    <div class="mb-3">
+      Username
+      <input type="text" class="form-control" v-model="username"/>
+    </div>
+    <div class="mb-3">
+      Password
+      <input type="password" class="form-control" v-model="password" @keydown.enter="login"/>
+    </div>
+    <div class="float-end mb-3">
+      <button class="btn btn-primary" @click="login">{{ $t('auth.login') }}</button>
+    </div>
+    <div class="clearfix"></div>
   </div>
 </template>
 
