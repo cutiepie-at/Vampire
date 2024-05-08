@@ -103,7 +103,7 @@ export default class ValuesView extends Vue {
         <tbody>
           <tr v-for="(value, i) in values">
             <td style="width: 0.5em">
-              <div class="form-check px-0">
+              <div class="form-check px-0 mt-1">
                 <input class="form-check-input mx-0" type="checkbox" v-model="valuesToSave[i]">
               </div>
             </td>
@@ -123,3 +123,9 @@ export default class ValuesView extends Vue {
     </template>
   </div>
 </template>
+
+<style scoped>
+table td {
+  vertical-align: middle;
+}
+</style>
