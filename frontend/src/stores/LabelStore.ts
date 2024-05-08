@@ -12,9 +12,14 @@ export class LabelStore extends Pinia {
   }
 
   //data
+  private _loading: boolean = false;
   private _labels: Label[] = [];
 
   //getter
+  get loading(): boolean {
+    return this._loading;
+  }
+
   get labels(): Label[] {
     return this._labels;
   }
@@ -50,11 +55,14 @@ export class LabelStore extends Pinia {
   }
 
   async reload(): Promise<void> {
+    this._loading = true;
     try {
       const labels = await this.apiStore.labelApi.apiV1LabelGet();
       this.setLabels(labels);
     } catch (err) {
       this.clear();
+    } finally {
+      this._loading = false;
     }
   }
 }

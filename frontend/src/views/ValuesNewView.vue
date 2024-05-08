@@ -10,10 +10,17 @@ import {emptyUUID, handleError} from '@/util/util';
 import {formatInputDateTime, parseInputDateTime} from '@/util/date';
 import {savedToast} from '@/util/toast';
 import {ApiStore} from '@/stores/ApiStore';
+import CenterOnParent from '@/components/CenterOnParent.vue';
+import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'ValuesView',
-  components: {LabelDropdown, Values},
+  components: {
+    CenterOnParent,
+    LabelDropdown,
+    Spinner,
+    Values,
+  },
 })
 export default class ValuesView extends Vue {
   readonly api = new ApiStore();
@@ -76,35 +83,40 @@ export default class ValuesView extends Vue {
 
 <template>
   <div class="p-2">
-    <div class="mb-3">
-      <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>
-      <input type="datetime-local" class="form-control" :id="uid + '_date'" v-model="inputDate" :lang="$i18n.locale">
-    </div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <td style="width: 0.5em"></td>
-          <td>{{ $t('value.model.labelId') }}</td>
-          <td>{{ $t('value.model.value') }}</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(value, i) in values">
-          <td style="width: 0.5em">
-            <div class="form-check px-0">
-              <input class="form-check-input mx-0" type="checkbox" v-model="valuesToSave[i]">
-            </div>
-          </td>
-          <td>{{ labelsById.get(value.labelId)?.name }}</td>
-          <td>
-            <input type="number" class="form-control" v-model="value.value" @input="valuesToSave[i] = true">
-            {{ labelsById.get(value.labelId)?.unit }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="d-flex">
-      <button class="btn btn-primary ms-auto" @click="save">{{ $t('general.save') }}</button>
-    </div>
+    <CenterOnParent v-if="labelStore.loading || valueStore.loading">
+      <Spinner/>
+    </CenterOnParent>
+    <template v-else>
+      <div class="mb-3">
+        <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>
+        <input type="datetime-local" class="form-control" :id="uid + '_date'" v-model="inputDate" :lang="$i18n.locale">
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <td style="width: 0.5em"></td>
+            <td>{{ $t('value.model.labelId') }}</td>
+            <td>{{ $t('value.model.value') }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(value, i) in values">
+            <td style="width: 0.5em">
+              <div class="form-check px-0">
+                <input class="form-check-input mx-0" type="checkbox" v-model="valuesToSave[i]">
+              </div>
+            </td>
+            <td>{{ labelsById.get(value.labelId)?.name }}</td>
+            <td>
+              <input type="number" class="form-control" v-model="value.value" @input="valuesToSave[i] = true">
+              {{ labelsById.get(value.labelId)?.unit }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex">
+        <button class="btn btn-primary ms-auto" @click="save">{{ $t('general.save') }}</button>
+      </div>
+    </template>
   </div>
 </template>

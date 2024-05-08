@@ -12,10 +12,15 @@ export class SessionStore extends Pinia {
   }
 
   //data
+  private _loading: boolean = false;
   private _user: UserInfo | null = null;
   private _session: UserSessionInfo | null = null;
 
   //getter
+  get loading(): boolean {
+    return this._loading;
+  }
+
   get isLoggedIn(): boolean {
     return !!this.user;
   }
@@ -40,12 +45,15 @@ export class SessionStore extends Pinia {
   }
 
   async reload() {
+    this._loading = true;
     try {
       const res = await this.apiStore.authApi.apiV1AuthVerifyPost();
       this._user = res.user ?? null;
       this._session = res.session ?? null;
     } catch (err) {
       this.clear();
+    } finally {
+      this._loading = false;
     }
   }
 }

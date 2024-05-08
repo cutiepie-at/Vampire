@@ -12,9 +12,14 @@ export class ValueStore extends Pinia {
   }
 
   //data
+  private _loading: boolean = false;
   private _values: Value[] = [];
 
   //getter
+  get loading(): boolean {
+    return this._loading;
+  }
+
   get values(): Value[] {
     return this._values;
   }
@@ -55,11 +60,14 @@ export class ValueStore extends Pinia {
   }
 
   async reload(): Promise<void> {
+    this._loading = true;
     try {
       const values = await this.apiStore.valueApi.apiV1ValueGet();
       this.setValues(values);
     } catch (err) {
       this.clear();
+    } finally {
+      this._loading = false;
     }
   }
 
