@@ -39,7 +39,10 @@ export default class Values extends Vue {
       sortFn: (x: string, y: string, col: any, rowX: Row, rowY: Row) => rowY.value.value - rowX.value.value,
     }, {
       label: this.$t('label.reference'),
-      field: (row: Row) => row.label.minReference + ' - ' + row.label.maxReference + ' ' + row.label.unit,
+      field: (row: Row) => (row.label.minReference === 0 && row.label.maxReference === 0)
+      || row.label.unit.trim().length === 0
+          ? ''
+          : row.label.minReference + ' - ' + row.label.maxReference + ' ' + row.label.unit,
       type: 'number',
       sortFn: (x: string, y: string, col: any, rowX: Row, rowY: Row) => {
         const ret = rowY.label.minReference - rowX.label.minReference;

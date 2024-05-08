@@ -124,6 +124,7 @@ export default class Diagram extends Vue {
           am5xy.LineSeries.new(this.root, {
             name: label.name,
             unit: label.unit,
+            legendUnit: label.unit.trim().length > 0 ? ' (' + label.unit + ')' : '',
             xAxis: this.chart.xAxes._values[0],
             yAxis: this.chart.yAxes._values[0],
             valueYField: label.id,
@@ -133,7 +134,7 @@ export default class Diagram extends Vue {
             tooltip: am5.Tooltip.new(this.root, {
               labelText: '{name}: {valueX.formatDate()}: {valueY} {unit}',
             }),
-            legendLabelText: '{name} ({unit})',
+            legendLabelText: '{name}{legendUnit}',
           }),
       );
       series.data.setAll(data);
