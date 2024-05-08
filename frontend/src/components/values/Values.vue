@@ -73,7 +73,8 @@ export default class Values extends Vue {
   }
 
   async mounted(): Promise<void> {
-    await this.reload();
+    await this.labelStore.loadIfAbsent();
+    await this.valueStore.loadIfAbsent();
   }
 
   async reload(): Promise<void> {

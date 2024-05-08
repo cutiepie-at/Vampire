@@ -50,8 +50,8 @@ export default class Diagram extends Vue {
   }
 
   async mounted(): Promise<void> {
-    await this.labelStore.reload();
-    await this.valueStore.reload();
+    await this.labelStore.loadIfAbsent();
+    await this.valueStore.loadIfAbsent();
     this.redrawChart();
   }
 

@@ -46,8 +46,8 @@ export default class ValuesView extends Vue {
   }
 
   async mounted(): Promise<void> {
-    await this.labelStore.reload();
-    await this.valueStore.reload();
+    await this.labelStore.loadIfAbsent();
+    await this.valueStore.loadIfAbsent();
 
     this.date = new Date();
     this.values.splice(0);

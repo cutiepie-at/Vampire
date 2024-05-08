@@ -65,4 +65,11 @@ export class LabelStore extends Pinia {
       this._loading = false;
     }
   }
+
+  async loadIfAbsent(): Promise<void> {
+    if (this._labels.length > 0) {
+      return;
+    }
+    return await this.reload();
+  }
 }

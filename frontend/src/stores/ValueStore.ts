@@ -69,4 +69,11 @@ export class ValueStore extends Pinia {
       this._loading = false;
     }
   }
+
+  async loadIfAbsent(): Promise<void> {
+    if (this._values.length > 0) {
+      return;
+    }
+    return await this.reload();
+  }
 }

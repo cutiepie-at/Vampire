@@ -58,7 +58,7 @@ export default class Labels extends Vue {
   }
 
   async mounted(): Promise<void> {
-    await this.store.reload();
+    await this.store.loadIfAbsent();
   }
 
   onNew(): void {
