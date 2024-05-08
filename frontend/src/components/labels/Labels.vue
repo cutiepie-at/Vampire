@@ -28,6 +28,18 @@ export default class Labels extends Vue {
       label: this.$t('label.model.name'),
       field: 'name',
     }, {
+      label: this.$t('label.model.description'),
+      field: 'description',
+    }, {
+      label: this.$t('label.reference'),
+      field: (label: Label) => (label.minReference !== 0 || label.maxReference !== 0)
+          ? label.minReference + ' - ' + label.maxReference
+          : '',
+      type: 'number',
+    }, {
+      label: this.$t('label.model.unit'),
+      field: 'unit',
+    }, {
       label: this.$t('label.list.updatedAt'),
       field: (label: Label) => new Date(label.updatedAt),
       type: 'date',
