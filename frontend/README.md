@@ -7,7 +7,7 @@ Run `npm i`
 Run `npm run setup`
 
 ### Running
-Run `npm run dev`. On windows run `npm run dev-win`.
+Run `npm run dev`.
 This will start the frontend with hot reload enabled 
 
 ### Configuration
