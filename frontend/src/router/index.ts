@@ -1,5 +1,11 @@
 import {createRouter, createWebHistory} from 'vue-router';
+import AboutView from '@/views/AboutView.vue';
 import HomeView from '@/views/HomeView.vue';
+import LabelsView from '@/views/LabelsView.vue';
+import LoginView from '@/views/auth/LoginView.vue';
+import RegisterView from '@/views/auth/RegisterView.vue';
+import ValuesNewView from '@/views/ValuesNewView.vue';
+import ValuesView from '@/views/ValuesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,32 +18,32 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      component: () => import('../views/auth/RegisterView.vue'),
+      component: RegisterView,
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/auth/LoginView.vue'),
+      component: LoginView,
     },
     {
       path: '/labels',
       name: 'labels',
-      component: () => import('../views/LabelsView.vue'),
+      component: LabelsView,
     },
     {
       path: '/values',
       name: 'values',
-      component: () => import('../views/ValuesView.vue'),
+      component: ValuesView,
     },
     {
       path: '/values/new',
       name: 'values-new',
-      component: () => import('../views/ValuesNewView.vue'),
+      component: ValuesNewView,
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue'),
+      component: AboutView,
     },
   ],
 });

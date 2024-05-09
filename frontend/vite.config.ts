@@ -15,8 +15,16 @@ export default defineConfig({
   build: {
     manifest: true,
     emptyOutDir: false,
+    chunkSizeWarningLimit: 10_000_000,
     rollupOptions: {
       input: ['./src/main.ts', './index.html'],
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
     },
   },
   clearScreen: false,
