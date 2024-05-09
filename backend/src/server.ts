@@ -67,8 +67,8 @@ export default class Server {
 //endregion
 
 //region init
-  async init(): Promise<void> {
-    this.config = await loadConfig();
+  async init(configOverrides?: any): Promise<void> {
+    this.config = await loadConfig(configOverrides);
     await this.initExpress();
     await this.initDatabase();
   }

@@ -25,7 +25,7 @@ export type ConfigType = {
   },
 };
 
-export async function loadConfig(): Promise<ConfigType> {
+export async function loadConfig(configOverrides?: any): Promise<ConfigType> {
   const config = JSON.parse(fs.readFileSync('./config/config.json', 'utf8'));
   let mergedConfig = mergeDeep({}, config);
   if (isDevEnv()) {
@@ -42,6 +42,9 @@ export async function loadConfig(): Promise<ConfigType> {
       mergedConfig = mergeDeep(mergedConfig, devConfig);
     } catch (_) {
     }
+  }
+  if (![undefined, null].includes(configOverrides)) {
+    mergedConfig = mergeDeep(mergedConfig, configOverrides);
   }
   return mergedConfig;
 }
