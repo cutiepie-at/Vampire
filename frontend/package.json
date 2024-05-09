@@ -10,7 +10,7 @@
     "clean": "rm -r ../oas dev/ dist/ 2>/dev/null",
     "build": "run-s build:oas build:client",
     "build:oas": "run-s generate:oas build-only:oas",
-    "build:client": "run-p type-check:client build-only:client",
+    "build:client": "run-p type-check:client build-only:client test:unit",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/ --passWithNoTests",
     "test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
