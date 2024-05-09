@@ -48,8 +48,5 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",
     "wait-on": "^7.2.0"
-  },
-  "optionalDependencies": {
-    "vampire-oas": "file:src/oas"
   }
 }
