@@ -7,10 +7,16 @@ import {Label} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import {emptyUUID, handleError} from '@/util/util';
 import {savedToast} from '@/util/toast';
+import {sharedDarkMode} from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
+import {ColorPicker} from 'vue3-colorpicker';
+import 'vue3-colorpicker/style.css';
 
 @Options({
   name: 'EditLabelModal',
-  components: {BootstrapModal},
+  components: {
+    BootstrapModal,
+    ColorPicker,
+  },
 })
 export default class EditLabelModal extends Vue {
   static readonly predefinedColors = [
@@ -34,6 +40,10 @@ export default class EditLabelModal extends Vue {
   readonly store = new LabelStore();
   label = new Label();
   isNew = false;
+
+  get sharedDarkMode() {
+    return sharedDarkMode;
+  }
 
   get uid(): number {
     return getCurrentInstance()?.uid!;
@@ -110,7 +120,14 @@ export default class EditLabelModal extends Vue {
         </div>
         <div class="mb-3">
           <label :for="uid + '_color'" class="form-label">{{ $t('label.model.color') }}</label>
-          <input type="color" class="form-control" :id="uid + '_color'" v-model="label.color">
+          <ColorPicker
+              :id="uid + '_color'"
+              style="height: 2em"
+              :disable-alpha="true"
+              lang="En"
+              :theme="sharedDarkMode.darkMode ? 'black' : 'white'"
+              v-model:pureColor="label.color"
+          />
         </div>
         <div class="mb-3">
           <label :for="uid + '_minReference'" class="form-label">{{ $t('label.model.minReference') }}</label>
@@ -132,3 +149,14 @@ export default class EditLabelModal extends Vue {
     </BootstrapModal>
   </div>
 </template>
+
+<style>
+.vc-color-wrap {
+  width: 100% !important;
+  height: 2.375em !important;
+  margin-right: 0 !important;
+  display: block !important;
+  border-radius: var(--bs-border-radius);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+</style>
