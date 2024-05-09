@@ -7,10 +7,12 @@ import {type Label, Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import {ValueStore} from '@/stores/ValueStore';
 import {emptyUUID, handleError} from '@/util/util';
-import {formatInputDateTime, parseInputDateTime} from '@/util/date';
 import {savedToast} from '@/util/toast';
 import {ApiStore} from '@/stores/ApiStore';
 import Loading from '@/components/Loading.vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 
 @Options({
   name: 'ValuesView',
@@ -18,6 +20,7 @@ import Loading from '@/components/Loading.vue';
     LabelDropdown,
     Loading,
     Values,
+    VueDatePicker,
   },
 })
 export default class ValuesView extends Vue {
@@ -33,16 +36,12 @@ export default class ValuesView extends Vue {
     return new Map<string, Label>(this.labelStore.labels.map(e => [e.id, e]));
   }
 
+  get sharedDarkMode() {
+    return sharedDarkMode;
+  }
+
   get uid(): number {
     return getCurrentInstance()?.uid!;
-  }
-
-  get inputDate(): string {
-    return formatInputDateTime(this.date);
-  }
-
-  set inputDate(value: string) {
-    this.date = parseInputDateTime(value);
   }
 
   async mounted(): Promise<void> {
@@ -76,6 +75,10 @@ export default class ValuesView extends Vue {
       return handleError(this.$i18n, err);
     }
   }
+
+  dateTimeFormat(d: Date): string {
+    return this.$d(d, 'datetime');
+  }
 }
 </script>
 
@@ -85,7 +88,15 @@ export default class ValuesView extends Vue {
     <template v-else>
       <div class="mb-3">
         <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>
-        <input type="datetime-local" class="form-control" :id="uid + '_date'" v-model="inputDate" :lang="$i18n.locale">
+        <VueDatePicker v-model="date"
+                       :auto-apply="true"
+                       :clearable="false"
+                       :config="{closeOnAutoApply: false}"
+                       :dark="sharedDarkMode.darkMode"
+                       :format="dateTimeFormat"
+                       :id="uid + '_date'"
+                       :locale="$i18n.locale"
+                       :time-picker-inline="true"/>
       </div>
       <table class="table table-striped">
         <thead>

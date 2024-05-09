@@ -8,11 +8,13 @@ import {ApiStore} from '@/stores/ApiStore';
 import {emptyUUID, handleError} from '@/util/util';
 import {savedToast} from '@/util/toast';
 import LabelDropdown from '@/components/values/LabelDropdown.vue';
-import {formatInputDateTime, parseInputDateTime} from '@/util/date';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 
 @Options({
   name: 'EditValueModal',
-  components: {LabelDropdown, BootstrapModal},
+  components: {VueDatePicker, LabelDropdown, BootstrapModal},
 })
 export default class EditValueModal extends Vue {
   readonly api = new ApiStore();
@@ -20,16 +22,12 @@ export default class EditValueModal extends Vue {
   value = new Value();
   isNew = false;
 
+  get sharedDarkMode() {
+    return sharedDarkMode;
+  }
+
   get uid(): number {
     return getCurrentInstance()?.uid!;
-  }
-
-  get date(): string {
-    return formatInputDateTime(this.value.date);
-  }
-
-  set date(value: string) {
-    this.value.date = parseInputDateTime(value);
   }
 
   open(value?: Value): Promise<void> {
@@ -67,6 +65,10 @@ export default class EditValueModal extends Vue {
       return handleError(this.$i18n, err);
     }
   }
+
+  dateTimeFormat(d: Date): string {
+    return this.$d(d, 'datetime');
+  }
 }
 </script>
 
@@ -83,7 +85,15 @@ export default class EditValueModal extends Vue {
         </div>
         <div class="mb-3">
           <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>
-          <input type="datetime-local" class="form-control" :id="uid + '_date'" v-model="date">
+          <VueDatePicker v-model="value.date"
+                         :auto-apply="true"
+                         :clearable="false"
+                         :config="{closeOnAutoApply: false}"
+                         :dark="sharedDarkMode.darkMode"
+                         :format="dateTimeFormat"
+                         :id="uid + '_date'"
+                         :locale="$i18n.locale"
+                         :time-picker-inline="true"/>
         </div>
         <div class="mb-3">
           <label :for="uid + '_value'" class="form-value">{{ $t('value.model.value') }}</label>
