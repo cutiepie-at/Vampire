@@ -11,6 +11,7 @@ import LabelDropdown from '@/components/values/LabelDropdown.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
+import {LabelStore} from '@/stores/LabelStore';
 
 @Options({
   name: 'EditValueModal',
@@ -18,7 +19,8 @@ import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSw
 })
 export default class EditValueModal extends Vue {
   readonly api = new ApiStore();
-  readonly store = new ValueStore();
+  readonly labelStore = new LabelStore();
+  readonly valueStore = new ValueStore();
   value = new Value();
   isNew = false;
 
@@ -53,11 +55,11 @@ export default class EditValueModal extends Vue {
     try {
       if (this.isNew) {
         const res = await this.api.valueApi.apiV1ValuePost(this.value);
-        this.store.addValue(res);
+        this.valueStore.addValue(res);
         savedToast(this.$i18n);
       } else {
         const res = await this.api.valueApi.apiV1ValuePut(this.value);
-        this.store.updateValue(res);
+        this.valueStore.updateValue(res);
         savedToast(this.$i18n);
       }
       await this.dismiss();
@@ -81,7 +83,7 @@ export default class EditValueModal extends Vue {
       <div>
         <div class="mb-3">
           <label :for="uid + '_labelId'" class="form-value">{{ $t('value.model.labelId') }}</label>
-          <LabelDropdown class="form-select" :id="uid + '_labelId'" v-model="value.labelId"/>
+          <LabelDropdown class="form-select" :labels="labelStore.labels" :id="uid + '_labelId'" v-model="value.labelId"/>
         </div>
         <div class="mb-3">
           <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>
