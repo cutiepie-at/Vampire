@@ -64,6 +64,7 @@ export default class NewValuesTable extends Vue {
           <button class="btn btn-sm btn-danger me-2" @click="modelValue.splice(i, 1)">
             <i class="fa fa-times"/>
           </button>
+          <i class="fa fa-circle" :style="{color: labelsById.get(value.labelId)?.color || '#000' }"/>
           {{ labelsById.get(value.labelId)?.name }}
         </td>
         <td>
