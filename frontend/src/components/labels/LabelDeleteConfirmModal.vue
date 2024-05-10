@@ -6,6 +6,7 @@ import {ApiStore} from '@/stores/ApiStore';
 import {toast} from 'vue3-toastify';
 import {LabelStore} from '@/stores/LabelStore';
 import {handleError} from '@/util/util';
+import {ValueStore} from '@/stores/ValueStore';
 
 @Options({
   name: 'LabelDeleteConfirmModal',
@@ -13,10 +14,15 @@ import {handleError} from '@/util/util';
 })
 export default class LabelDeleteConfirmModal extends Vue {
   private readonly api = new ApiStore();
-  private readonly store = new LabelStore();
+  private readonly labelStore = new LabelStore();
+  private readonly valueStore = new ValueStore();
 
   //runtime
   label: Label | null = null;
+
+  get associatedValueCount(): number {
+    return this.valueStore.values.filter(e => e.labelId === this.label?.id).length;
+  }
 
   //public functions
   open(label: Label): Promise<void> {
@@ -32,7 +38,7 @@ export default class LabelDeleteConfirmModal extends Vue {
   async confirm(): Promise<void> {
     try {
       await this.api.labelApi.apiV1LabelIdDelete(this.label!.id);
-      this.store.forgetLabel(this.label!);
+      this.labelStore.forgetLabel(this.label!);
       toast.info(this.$t('general.deleted'));
       await this.dismiss();
     } catch (e) {
@@ -54,6 +60,9 @@ export default class LabelDeleteConfirmModal extends Vue {
         <div v-if="label">
           {{ $t('label.model.name') + ': ' + label.name }}
         </div>
+        <small>
+          {{ $tc('label.delete.associatedValues', {count: associatedValueCount}) }}
+        </small>
       </template>
     </DeleteConfirmModal>
   </div>

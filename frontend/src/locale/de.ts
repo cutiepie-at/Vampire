@@ -44,6 +44,8 @@ export const messagesDe = {
       modalTitle: 'Label bearbeiten',
     },
     delete: {
+      associatedValues: 'Dieses Label hat 1 assoziierten Wert. Dieser Wert wird auch gelöscht! ' +
+        '| Dieses Label hat {count} assoziierte Werte. Diese Werte werden auch gelöscht!',
       reallyDelete: 'Dieses Label wirklich löschen?',
     },
     list: {

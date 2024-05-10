@@ -42,6 +42,8 @@ export const messagesEn = {
       modalTitle: 'Edit label',
     },
     delete: {
+      associatedValues: 'This label has 1 associated value. That value will also be deleted! ' +
+        '| This label has {count} associated values. Those values will also be deleted!',
       reallyDelete: 'Really delete this label?',
     },
     list: {
