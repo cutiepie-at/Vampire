@@ -1,12 +1,12 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import LabelDropdown from '@/components/values/LabelDropdown.vue';
-import {type Label, Value} from 'vampire-oas';
+import {Label, Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import {emptyUUID} from '@/util/util';
 import '@vuepic/vue-datepicker/dist/main.css';
-import {Prop} from 'vue-property-decorator';
 import Loading from '@/components/Loading.vue';
+import {findNewColor} from '@/util/label';
 
 @Options({
   name: 'NewValuesTable',
@@ -17,17 +17,20 @@ import Loading from '@/components/Loading.vue';
 })
 export default class NewValuesTable extends Vue {
   readonly labelStore = new LabelStore();
+  readonly createdLabels: Label[] = [];
+  readonly createdValues: Value[] = [];
 
-  @Prop({required: true})
-  readonly modelValue!: Value[];
+  get allLabels(): Label[] {
+    return this.labelStore.labels.concat(this.createdLabels);
+  }
 
   get unusedLabels(): Label[] {
-    const usedLabelIds = new Set(this.modelValue.map(e => e.labelId));
-    return this.labelStore.labels.filter(e => !usedLabelIds.has(e.id));
+    const usedLabelIds = new Set(this.createdValues.map(e => e.labelId));
+    return this.allLabels.filter(e => !usedLabelIds.has(e.id));
   }
 
   get labelsById(): Map<string, Label> {
-    return new Map<string, Label>(this.labelStore.labels.map(e => [e.id, e]));
+    return new Map<string, Label>(this.allLabels.map(e => [e.id, e]));
   }
 
   async mounted(): Promise<void> {
@@ -35,7 +38,10 @@ export default class NewValuesTable extends Vue {
   }
 
   newValue(labelId: string): void {
-    this.modelValue.push(new Value({
+    if (this.createdValues.some(e => e.labelId === labelId)) {
+      return;
+    }
+    this.createdValues.push(new Value({
       id: emptyUUID(),
       createdAt: new Date(),
       createdBy: emptyUUID(),
@@ -45,6 +51,40 @@ export default class NewValuesTable extends Vue {
       date: new Date(),
       value: 0,
     }));
+  }
+
+  removeValue(index: number): void {
+    const values = this.createdValues.splice(index, 1);
+
+    //if value used a created label and that label is not referenced in any other value, then remove that created label
+    const labelIndex = this.createdLabels.findIndex(e => e.id === values[0].labelId);
+    if (labelIndex >= 0 && !this.createdValues.some(e => e.labelId === values[0].labelId)) {
+      this.createdLabels.splice(labelIndex, 1);
+    }
+  }
+
+  createLabel(name: string): Label {
+    const matchingLabel = this.allLabels.find(e => e.name.trim().toLowerCase() === name.trim().toLowerCase());
+    if (matchingLabel) {
+      return matchingLabel;
+    }
+    return new Label({
+      id: crypto.randomUUID(),
+      createdAt: new Date(),
+      createdBy: emptyUUID(),
+      updatedAt: new Date(),
+      updatedBy: emptyUUID(),
+      name: name,
+      description: '',
+      unit: '',
+      color: findNewColor(this.allLabels.map(e => e.color)),
+      minReference: 0,
+      maxReference: 0,
+    });
+  }
+
+  onLabelCreated(label: Label): void {
+    this.createdLabels.push(label);
   }
 }
 </script>
@@ -59,9 +99,9 @@ export default class NewValuesTable extends Vue {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(value, i) in modelValue">
+      <tr v-for="(value, i) in createdValues">
         <td>
-          <button class="btn btn-sm btn-danger me-2" @click="modelValue.splice(i, 1)">
+          <button class="btn btn-sm btn-danger me-2" @click="removeValue(i)">
             <i class="fa fa-times"/>
           </button>
           <i class="fa fa-circle" :style="{color: labelsById.get(value.labelId)?.color || '#000' }"/>
@@ -76,7 +116,10 @@ export default class NewValuesTable extends Vue {
       </tr>
       <tr v-if="unusedLabels.length">
         <td>
-          <LabelDropdown class="w-100" :labels="unusedLabels" modelValue="" @update:modelValue="newValue"/>
+          <LabelDropdown class="w-100"
+                         :labels="unusedLabels" :allow-new-options="true"
+                         modelValue="" @update:modelValue="newValue"
+                         :create-label="createLabel" @label:created="onLabelCreated"/>
         </td>
         <td></td>
         <td></td>
@@ -87,6 +130,6 @@ export default class NewValuesTable extends Vue {
 
 <style scoped>
 table td {
-  vertical-align: middle;
+  vertical-align: middle; /*TODO alignment still off*/
 }
 </style>

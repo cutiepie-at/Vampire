@@ -83,7 +83,7 @@ export default class EditValueModal extends Vue {
       <div>
         <div class="mb-3">
           <label :for="uid + '_labelId'" class="form-value">{{ $t('value.model.labelId') }}</label>
-          <LabelDropdown class="form-select" :labels="labelStore.labels" :id="uid + '_labelId'" v-model="value.labelId"/>
+          <LabelDropdown :labels="labelStore.labels" :id="uid + '_labelId'" v-model="value.labelId"/>
         </div>
         <div class="mb-3">
           <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>

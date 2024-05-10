@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import {getCurrentInstance} from 'vue';
-import {Value} from 'vampire-oas';
+import {Label, Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import {ValueStore} from '@/stores/ValueStore';
 import {handleError} from '@/util/util';
@@ -27,7 +27,14 @@ export default class NewValues extends Vue {
   readonly valueStore = new ValueStore();
 
   date = new Date();
-  readonly values: Value[] = [];
+
+  get createdLabels(): Label[] {
+    return (this.$refs.newValuesTable as NewValuesTable).createdLabels;
+  }
+
+  get createdValues(): Value[] {
+    return (this.$refs.newValuesTable as NewValuesTable).createdValues;
+  }
 
   get sharedDarkMode() {
     return sharedDarkMode;
@@ -45,10 +52,26 @@ export default class NewValues extends Vue {
   }
 
   async save(): Promise<void> {
-    this.values.forEach(e => e.date = this.date);
+    //create labels on the fly
+    const usedLabelIds = this.createdValues.map(e => e.labelId);
+    const newLabelsToCreate = this.createdLabels.filter(e => usedLabelIds.includes(e.id));
+    for (let label of newLabelsToCreate) {
+      try {
+        const res = await this.api.labelApi.apiV1LabelPost(label);
+        this.labelStore.addLabel(res);
+
+        //update label ids in values
+        this.createdValues.filter(e => e.labelId === label.id).forEach(e => e.labelId = res.id);
+      } catch (err) {
+        return handleError(this.$i18n, err);
+      }
+    }
+
+    //save values
+    this.createdValues.forEach(e => e.date = this.date);
 
     try {
-      const res = await this.api.valueApi.apiV1ValueBatchPost(this.values);
+      const res = await this.api.valueApi.apiV1ValueBatchPost(this.createdValues);
       this.valueStore.addValues(res);
       savedToast(this.$i18n);
       this.$router.push('/values');
@@ -78,7 +101,7 @@ export default class NewValues extends Vue {
                      :locale="$i18n.locale"
                      :time-picker-inline="true"/>
     </div>
-    <NewValuesTable v-model="values"/>
+    <NewValuesTable ref="newValuesTable"/>
     <div class="d-flex">
       <button class="btn btn-primary ms-auto" @click="save">{{ $t('general.save') }}</button>
     </div>
