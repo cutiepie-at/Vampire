@@ -93,9 +93,9 @@ export default class NewValuesTable extends Vue {
   <table class="table table-striped">
     <thead>
       <tr>
-        <td>{{ $t('value.model.labelId') }}</td>
-        <td>{{ $t('value.model.value') }}</td>
-        <td>{{ $t('label.model.unit') }}</td>
+        <th>{{ $t('value.model.labelId') }}</th>
+        <th>{{ $t('value.model.value') }}</th>
+        <th>{{ $t('label.model.unit') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -116,7 +116,7 @@ export default class NewValuesTable extends Vue {
       </tr>
       <tr v-if="unusedLabels.length">
         <td>
-          <LabelDropdown class="w-100"
+          <LabelDropdown class="w-100" :drop-direction="'top'"
                          :labels="unusedLabels" :allow-new-options="true"
                          modelValue="" @update:modelValue="newValue"
                          :create-label="createLabel" @label:created="onLabelCreated"/>
@@ -129,6 +129,11 @@ export default class NewValuesTable extends Vue {
 </template>
 
 <style scoped>
+table th {
+  top: 0;
+  position: sticky;
+}
+
 table td {
   vertical-align: middle; /*TODO alignment still off*/
 }

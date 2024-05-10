@@ -88,7 +88,7 @@ export default class NewValues extends Vue {
 
 <template>
   <Loading v-if="labelStore.loading || valueStore.loading"/>
-  <template v-else>
+  <div v-else class="d-flex flex-column">
     <div class="mb-3">
       <label :for="uid + '_date'" class="form-value">{{ $t('value.model.date') }}</label>
       <VueDatePicker v-model="date"
@@ -101,9 +101,11 @@ export default class NewValues extends Vue {
                      :locale="$i18n.locale"
                      :time-picker-inline="true"/>
     </div>
-    <NewValuesTable ref="newValuesTable"/>
-    <div class="d-flex">
+    <div class="mb-3 overflow-auto">
+      <NewValuesTable ref="newValuesTable"/>
+    </div>
+    <div class="d-flex flex-row">
       <button class="btn btn-primary ms-auto" @click="save">{{ $t('general.save') }}</button>
     </div>
-  </template>
+  </div>
 </template>

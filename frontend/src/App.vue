@@ -31,7 +31,7 @@ export default class App extends Vue {
       <div class="flex-grow-1 overflow-hidden">
         <div class="d-flex flex-column w-100 h-100">
           <NavBar class="flex-grow-0" @toggleSidebar="sidebarToggled = !sidebarToggled"></NavBar>
-          <RouterView class="flex-grow-1 overflow-auto"/>
+          <RouterView class="flex-grow-1 overflow-hidden"/>
         </div>
       </div>
     </div>

@@ -97,7 +97,7 @@ export default class Values extends Vue {
 </script>
 
 <template>
-  <div>
+  <div class="d-flex flex-column">
     <div class="d-flex flex-row mb-2">
       <div class="btn-group ms-auto">
         <button class="btn btn-success" @click="onNew()">
@@ -110,27 +110,29 @@ export default class Values extends Vue {
     </div>
 
     <Loading v-if="labelStore.loading || valueStore.loading"/>
-    <VueGoodTable v-else :columns="columns" :rows="rows" theme="bootstrap">
-      <template #table-row="props">
-        <div v-if="props.column.templateKey === 'name'">
-          <i class="fa fa-circle" :style="{color: props.row.label.color || '#000' }"/>
-          {{ props.formattedRow[props.column.field] }}
-        </div>
-        <div v-else-if="props.column.field === 'actions'">
-          <div class="btn-group">
-            <button class="btn btn-sm btn-secondary" @click="onEdit(props.row)">
-              <i class="fa fa-edit"></i>
-            </button>
-            <button class="btn btn-sm btn-danger" @click="onDelete(props.row)">
-              <i class="fa fa-trash"></i>
-            </button>
+    <div v-else class="flex-grow-1 overflow-auto">
+      <VueGoodTable :columns="columns" :rows="rows" theme="bootstrap">
+        <template #table-row="props">
+          <div v-if="props.column.templateKey === 'name'">
+            <i class="fa fa-circle" :style="{color: props.row.label.color || '#000' }"/>
+            {{ props.formattedRow[props.column.field] }}
           </div>
-        </div>
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
-      </template>
-    </VueGoodTable>
+          <div v-else-if="props.column.field === 'actions'">
+            <div class="btn-group">
+              <button class="btn btn-sm btn-secondary" @click="onEdit(props.row)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" @click="onDelete(props.row)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <span v-else>
+            {{ props.formattedRow[props.column.field] }}
+          </span>
+        </template>
+      </VueGoodTable>
+    </div>
     <EditValueModal ref="editModal"/>
     <ValueDeleteConfirmModal ref="deleteModal"/>
   </div>

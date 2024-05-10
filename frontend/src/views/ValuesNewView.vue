@@ -13,7 +13,5 @@ export default class ValuesView extends Vue {
 </script>
 
 <template>
-  <div class="p-2">
-    <NewValues/>
-  </div>
+  <NewValues class="p-2"/>
 </template>
