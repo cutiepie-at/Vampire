@@ -10,6 +10,7 @@ import {savedToast} from '@/util/toast';
 import {sharedDarkMode} from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import {ColorPicker} from 'vue3-colorpicker';
 import 'vue3-colorpicker/style.css';
+import {findNewColor} from '@/util/label';
 
 @Options({
   name: 'EditLabelModal',
@@ -19,23 +20,6 @@ import 'vue3-colorpicker/style.css';
   },
 })
 export default class EditLabelModal extends Vue {
-  static readonly predefinedColors = [
-    '#ff3300',
-    '#ff9900',
-    '#ffff00',
-    '#99ff33',
-    '#33ff33',
-    '#00ff99',
-    '#00ffff',
-    '#0099ff',
-    '#0033ff',
-    '#3300ff',
-    '#6600ff',
-    '#9900ff',
-    '#ff0099',
-    '#ff0033',
-  ];
-
   readonly api = new ApiStore();
   readonly store = new LabelStore();
   label = new Label();
@@ -60,7 +44,7 @@ export default class EditLabelModal extends Vue {
       name: '',
       description: '',
       unit: '',
-      color: this.findNewColor(),
+      color: findNewColor(this.store.labels.map(e => e.color)),
       minReference: 0,
       maxReference: 0,
     });
@@ -86,15 +70,6 @@ export default class EditLabelModal extends Vue {
     } catch (err) {
       return handleError(this.$i18n, err);
     }
-  }
-
-  private findNewColor(): string {
-    for (let color of EditLabelModal.predefinedColors) {
-      if (!this.store.labels.some(e => e.color === color)) {
-        return color;
-      }
-    }
-    return '#' + Math.floor(Math.random() * 256 * 256 * 256).toString(16);
   }
 }
 </script>
