@@ -1,4 +1,5 @@
-.v-select {
+.v-select,
+.vs__dropdown-menu {
   --controls-alpha: 0.5;
 
   --vs-controls-color: var(--bs-body-color);
