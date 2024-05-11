@@ -2,10 +2,14 @@
 import {Options, Vue} from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import BootstrapModal from './BootstrapModal.vue';
+import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'ConfirmModal',
-  components: {BootstrapModal},
+  components: {
+    BootstrapModal,
+    Spinner,
+  },
   emits: {
     'confirm': () => undefined,
   },
@@ -24,6 +28,8 @@ export default class ConfirmModal extends Vue {
   readonly size!: 'sm' | 'lg' | 'xl' | null | undefined;
   @Prop({default: 'btn-primary'})
   readonly confirmButtonClass!: string;
+  @Prop({default: false})
+  readonly confirming!: boolean;
 
   //public functions
   open(): Promise<void> {
@@ -59,9 +65,12 @@ export default class ConfirmModal extends Vue {
     </template>
     <template #modal-footer>
       <slot name="modal-footer">
-        <button class="btn btn-secondary" type="button" @click="dismiss">{{ $t('general.cancel') }}</button>
-        <button class="btn" :class="confirmButtonClass" type="button" @click="$emit('confirm')">
-          <slot name="confirmButton">
+        <button class="btn btn-secondary" type="button" @click="dismiss" :disabled="confirming">
+          {{ $t('general.cancel') }}
+        </button>
+        <button class="btn" :class="confirmButtonClass" type="button" @click="$emit('confirm')" :disabled="confirming">
+          <Spinner v-if="confirming" :style="'text-light'" size="1" class="me-1"/>
+          <slot name="confirmButtonText">
             {{ $t('general.confirm') }}
           </slot>
         </button>

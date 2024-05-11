@@ -19,6 +19,7 @@ export default class ValueDeleteConfirmModal extends Vue {
 
   //runtime
   value: Value | null = null;
+  deleting = false;
 
   get label(): Label | null {
     return this.labelStore.labels.find(e => e.id === this.value?.labelId) ?? null;
@@ -36,6 +37,7 @@ export default class ValueDeleteConfirmModal extends Vue {
   }
 
   async confirm(): Promise<void> {
+    this.deleting = true;
     try {
       await this.api.valueApi.apiV1ValueIdDelete(this.value!.id);
       this.valueStore.forgetValue(this.value!);
@@ -43,6 +45,8 @@ export default class ValueDeleteConfirmModal extends Vue {
       await this.dismiss();
     } catch (e) {
       return handleError(this.$i18n, e);
+    } finally {
+      this.deleting = false;
     }
   }
 }
@@ -51,7 +55,7 @@ export default class ValueDeleteConfirmModal extends Vue {
 <template>
   <!-- <div> needed, otherwise @confirm event will merge into including <tag> a will trigger multiple times and with null as event param -->
   <div>
-    <DeleteConfirmModal ref="modal" @confirm="confirm">
+    <DeleteConfirmModal ref="modal" :deleting="deleting" @confirm="confirm">
       <template #modal-title>{{ $t('general.confirmation') }}</template>
       <template #default>
         <div>

@@ -2,10 +2,14 @@
 import {Options, Vue} from 'vue-class-component';
 import ConfirmModal from './ConfirmModal.vue';
 import {Prop} from 'vue-property-decorator';
+import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'DeleteConfirmModal',
-  components: {ConfirmModal},
+  components: {
+    ConfirmModal,
+    Spinner,
+  },
   emits: {
     'confirm': () => undefined,
   },
@@ -22,6 +26,8 @@ export default class DeleteConfirmModal extends Vue {
   readonly centerVertically!: boolean;
   @Prop({default: undefined})
   readonly size!: 'sm' | 'lg' | 'xl' | null | undefined;
+  @Prop({default: false})
+  readonly deleting!: boolean;
 
   //public functions
   open(): Promise<void> {
@@ -40,7 +46,8 @@ export default class DeleteConfirmModal extends Vue {
                 :closeOnKeyboardEsc="closeOnKeyboardEsc"
                 :scrollable="scrollable"
                 :centerVertically="centerVertically"
-                :size="size">
+                :size="size"
+                :confirming="deleting">
     <template #modal-header>
       <slot name="modal-header">
         <h5 class="modal-title">
@@ -48,7 +55,7 @@ export default class DeleteConfirmModal extends Vue {
             {{ $t('general.confirmation') }}
           </slot>
         </h5>
-        <button type="button" class="btn-close" @click="dismiss" aria-label="Close"></button>
+        <button aria-label="Close" type="button" class="btn-close" @click="dismiss"></button>
       </slot>
     </template>
     <template #default>
@@ -57,8 +64,17 @@ export default class DeleteConfirmModal extends Vue {
       </slot>
     </template>
     <template #modal-footer>
-      <button type="button" class="btn btn-secondary" @click="dismiss">{{ $t('general.cancel') }}</button>
-      <button type="button" class="btn btn-danger" @click="$emit('confirm')">{{ $t('general.delete') }}</button>
+      <slot name="modal-footer">
+        <button class="btn btn-secondary" type="button" @click="dismiss" :disabled="deleting">
+          {{ $t('general.cancel') }}
+        </button>
+        <button class="btn btn-danger" type="button" @click="$emit('confirm')" :disabled="deleting">
+          <Spinner v-if="deleting" :style="'text-light'" size="1" class="me-1"/>
+          <slot name="confirmButtonText">
+            {{ $t(deleting ? 'general.deleting' : 'general.delete') }}
+          </slot>
+        </button>
+      </slot>
     </template>
   </ConfirmModal>
 </template>

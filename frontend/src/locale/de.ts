@@ -28,6 +28,7 @@ export const messagesDe = {
     },
     delete: 'Löschen',
     deleted: 'Gelöscht',
+    deleting: 'Lösche ...',
     name: 'Name',
     reload: 'Neu laden',
     save: 'Speichern',

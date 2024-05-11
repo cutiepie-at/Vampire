@@ -12,10 +12,16 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import {LabelStore} from '@/stores/LabelStore';
+import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'EditValueModal',
-  components: {VueDatePicker, LabelDropdown, BootstrapModal},
+  components: {
+    BootstrapModal,
+    LabelDropdown,
+    Spinner,
+    VueDatePicker,
+  },
 })
 export default class EditValueModal extends Vue {
   readonly api = new ApiStore();
@@ -23,6 +29,7 @@ export default class EditValueModal extends Vue {
   readonly valueStore = new ValueStore();
   value = new Value();
   isNew = false;
+  saving = false;
 
   get sharedDarkMode() {
     return sharedDarkMode;
@@ -52,6 +59,7 @@ export default class EditValueModal extends Vue {
   }
 
   async save(): Promise<void> {
+    this.saving = true;
     try {
       if (this.isNew) {
         const res = await this.api.valueApi.apiV1ValuePost(this.value);
@@ -65,6 +73,8 @@ export default class EditValueModal extends Vue {
       await this.dismiss();
     } catch (err) {
       return handleError(this.$i18n, err);
+    } finally {
+      this.saving = false;
     }
   }
 
@@ -103,8 +113,11 @@ export default class EditValueModal extends Vue {
         </div>
       </div>
       <template #modal-footer>
-        <button class="btn btn-secondary" type="button" @click="dismiss">{{ $t('general.cancel') }}</button>
-        <button class="btn btn-primary" type="button" @click="save">
+        <button class="btn btn-secondary" type="button" @click="dismiss" :disabled="saving">
+          {{ $t('general.cancel') }}
+        </button>
+        <button class="btn btn-primary" type="button" @click="save" :disabled="saving">
+          <Spinner v-if="saving" :style="'text-light'" size="1" class="me-1"/>
           {{ isNew ? $t('value.create.button') : $t('value.edit.button') }}
         </button>
       </template>

@@ -11,12 +11,14 @@ import {sharedDarkMode} from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import {ColorPicker} from 'vue3-colorpicker';
 import 'vue3-colorpicker/style.css';
 import {findNewColor} from '@/util/label';
+import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'EditLabelModal',
   components: {
     BootstrapModal,
     ColorPicker,
+    Spinner,
   },
 })
 export default class EditLabelModal extends Vue {
@@ -24,6 +26,7 @@ export default class EditLabelModal extends Vue {
   readonly store = new LabelStore();
   label = new Label();
   isNew = false;
+  saving = false;
 
   get sharedDarkMode() {
     return sharedDarkMode;
@@ -56,6 +59,7 @@ export default class EditLabelModal extends Vue {
   }
 
   async save(): Promise<void> {
+    this.saving = true;
     try {
       if (this.isNew) {
         const res = await this.api.labelApi.apiV1LabelPost(this.label);
@@ -69,6 +73,8 @@ export default class EditLabelModal extends Vue {
       await this.dismiss();
     } catch (err) {
       return handleError(this.$i18n, err);
+    } finally {
+      this.saving = false;
     }
   }
 }
@@ -116,8 +122,11 @@ export default class EditLabelModal extends Vue {
         </div>
       </div>
       <template #modal-footer>
-        <button class="btn btn-secondary" type="button" @click="dismiss">{{ $t('general.cancel') }}</button>
-        <button class="btn btn-primary" type="button" @click="save">
+        <button class="btn btn-secondary" type="button" @click="dismiss" :disabled="saving">
+          {{ $t('general.cancel') }}
+        </button>
+        <button class="btn btn-primary" type="button" @click="save" :disabled="saving">
+          <Spinner v-if="saving" :style="'text-light'" size="1" class="me-1"/>
           {{ isNew ? $t('label.create.button') : $t('label.edit.button') }}
         </button>
       </template>

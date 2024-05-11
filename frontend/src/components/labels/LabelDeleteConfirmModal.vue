@@ -19,6 +19,7 @@ export default class LabelDeleteConfirmModal extends Vue {
 
   //runtime
   label: Label | null = null;
+  deleting = false;
 
   get associatedValueCount(): number {
     return this.valueStore.values.filter(e => e.labelId === this.label?.id).length;
@@ -36,6 +37,7 @@ export default class LabelDeleteConfirmModal extends Vue {
   }
 
   async confirm(): Promise<void> {
+    this.deleting = true;
     try {
       await this.api.labelApi.apiV1LabelIdDelete(this.label!.id);
       this.labelStore.forgetLabel(this.label!);
@@ -43,6 +45,8 @@ export default class LabelDeleteConfirmModal extends Vue {
       await this.dismiss();
     } catch (e) {
       return handleError(this.$i18n, e);
+    } finally {
+      this.deleting = false;
     }
   }
 }
@@ -51,7 +55,7 @@ export default class LabelDeleteConfirmModal extends Vue {
 <template>
   <!-- <div> needed, otherwise @confirm event will merge into including <tag> a will trigger multiple times and with null as event param -->
   <div>
-    <DeleteConfirmModal ref="modal" @confirm="confirm">
+    <DeleteConfirmModal ref="modal" :deleting="deleting" @confirm="confirm">
       <template #modal-title>{{ $t('general.confirmation') }}</template>
       <template #default>
         <div>

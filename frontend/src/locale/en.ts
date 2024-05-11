@@ -26,6 +26,7 @@ export const messagesEn = {
     },
     delete: 'Delete',
     deleted: 'Deleted',
+    deleting: 'Deleting ...',
     name: 'Name',
     reload: 'Reload',
     save: 'Save',

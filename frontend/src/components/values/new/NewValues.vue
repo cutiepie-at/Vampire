@@ -12,12 +12,14 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import NewValuesTable from '@/components/values/new/NewValuesTable.vue';
+import Spinner from '@/components/Spinner.vue';
 
 @Options({
   name: 'NewValues',
   components: {
     Loading,
     NewValuesTable,
+    Spinner,
     VueDatePicker,
   },
 })
@@ -27,6 +29,7 @@ export default class NewValues extends Vue {
   readonly valueStore = new ValueStore();
 
   date = new Date();
+  saving = false;
 
   get createdLabels(): Label[] {
     return (this.$refs.newValuesTable as NewValuesTable).createdLabels;
@@ -52,31 +55,30 @@ export default class NewValues extends Vue {
   }
 
   async save(): Promise<void> {
-    //create labels on the fly
-    const usedLabelIds = this.createdValues.map(e => e.labelId);
-    const newLabelsToCreate = this.createdLabels.filter(e => usedLabelIds.includes(e.id));
-    for (let label of newLabelsToCreate) {
-      try {
+    this.saving = true;
+    try {
+      //create labels on the fly
+      const usedLabelIds = this.createdValues.map(e => e.labelId);
+      const newLabelsToCreate = this.createdLabels.filter(e => usedLabelIds.includes(e.id));
+      for (let label of newLabelsToCreate) {
         const res = await this.api.labelApi.apiV1LabelPost(label);
         this.labelStore.addLabel(res);
 
         //update label ids in values
         this.createdValues.filter(e => e.labelId === label.id).forEach(e => e.labelId = res.id);
-      } catch (err) {
-        return handleError(this.$i18n, err);
       }
-    }
 
-    //save values
-    this.createdValues.forEach(e => e.date = this.date);
+      //save values
+      this.createdValues.forEach(e => e.date = this.date);
 
-    try {
       const res = await this.api.valueApi.apiV1ValueBatchPost(this.createdValues);
       this.valueStore.addValues(res);
       savedToast(this.$i18n);
       this.$router.push('/values');
     } catch (err) {
       return handleError(this.$i18n, err);
+    } finally {
+      this.saving = false;
     }
   }
 
@@ -105,7 +107,10 @@ export default class NewValues extends Vue {
       <NewValuesTable ref="newValuesTable"/>
     </div>
     <div class="d-flex flex-row">
-      <button class="btn btn-primary ms-auto" @click="save">{{ $t('general.save') }}</button>
+      <button class="btn btn-primary ms-auto" @click="save" :disabled="saving">
+        <Spinner v-if="saving" :style="'text-light'" size="1" class="me-1"/>
+        {{ $t('general.save') }}
+      </button>
     </div>
   </div>
 </template>
