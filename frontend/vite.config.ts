@@ -2,6 +2,7 @@ import {fileURLToPath, URL} from 'node:url';
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import {ManualChunkMeta} from 'rollup';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       input: ['./src/main.ts', './index.html'],
       output: {
-        manualChunks: (id) => {
+        manualChunks: (id: string, meta: ManualChunkMeta) => {
           if (id.includes('node_modules')) {
             return 'vendor';
           }

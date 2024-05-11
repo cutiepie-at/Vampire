@@ -2,6 +2,7 @@
   "name": "vampire-frontend",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "setup": "run-s setup:1 setup:2",
     "setup:1": "npm run build:oas",
@@ -18,7 +19,7 @@
     "build-only:oas": "cd ../oas && npm i && npm run build",
     "build-only:client": "vite build --outDir dist",
     "generate:oas": "openapi-generator-cli generate",
-    "type-check:client": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "type-check:client": "vue-tsc --noEmit -p tsconfig.vitest.json",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
@@ -34,7 +35,7 @@
     "moment": "^2.30.1",
     "pinia": "^2.1.7",
     "pinia-class-component": "^0.9.4",
-    "vue": "^3.2.45",
+    "vue": "^3.4.21",
     "vue-class-component": "^8.0.0-rc.1",
     "vue-good-table-next": "^0.2.1",
     "vue-i18n": "^9.13.1",
@@ -47,15 +48,16 @@
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.4",
     "@rushstack/eslint-patch": "^1.10.2",
+    "@tsconfig/node20": "^20.1.4",
     "@types/bootstrap": "^5.2.10",
     "@types/gravatar": "^1.8.6",
     "@types/jsdom": "^21.1.6",
     "@types/vue-select": "^3.16.8",
-    "@vitejs/plugin-vue": "^4.6.2",
+    "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.4.6",
-    "@vue/tsconfig": "^0.5.0",
+    "@vue/tsconfig": "^0.5.1",
     "cypress": "^13.9.0",
     "eslint": "^8.57.0",
     "eslint-plugin-cypress": "^3.2.0",
@@ -66,7 +68,7 @@
     "sass": "^1.77.0",
     "start-server-and-test": "^2.0.3",
     "typescript": "~5.4.0",
-    "vite": "^4.5.3",
+    "vite": "^5.2.8",
     "vitest": "^1.6.0",
     "vue-tsc": "^2.0.16"
   },
