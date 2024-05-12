@@ -33,6 +33,8 @@ const iso_locales = {
 export default class Diagram extends Vue {
   private root: any;
   private chart: any;
+  private xAxis: any;
+  private yAxis: any;
   readonly labelStore = new LabelStore();
   readonly reportStore = new ReportStore();
   readonly valueStore = new ValueStore();
@@ -76,6 +78,7 @@ export default class Diagram extends Vue {
     this.initChart0();
     this.initAxes();
     this.initSeries();
+    this.initReferenceRanges();
     this.initLegend();
     this.initCursor();
   }
@@ -106,13 +109,13 @@ export default class Diagram extends Vue {
   }
 
   private initAxes(): void {
-    const yAxis = this.chart.yAxes.push(
+    this.yAxis = this.chart.yAxes.push(
         am5xy.ValueAxis.new(this.root, {
           renderer: am5xy.AxisRendererY.new(this.root, {}),
           tooltip: am5.Tooltip.new(this.root, {}),
         }),
     );
-    const xAxis = this.chart.xAxes.push(
+    this.xAxis = this.chart.xAxes.push(
         am5xy.DateAxis.new(this.root, {
           baseInterval: {timeUnit: 'day', count: 1},
           renderer: am5xy.AxisRendererX.new(this.root, {}),
@@ -152,6 +155,48 @@ export default class Diagram extends Vue {
             fill: series.get('fill'),
           }),
         });
+      });
+
+      series.on('visible', (visible: boolean, target: any) => {
+        const visibleSeriesIndexes = (this.chart.series._values as any[])
+            .map((e, i) => e.get('visible') ? i : -1)
+            .filter(i => i >= 0);
+        if (visibleSeriesIndexes.length === 1) {
+          this.yAxis.axisRanges._values.forEach((e: any, i: number) => {
+            if (visibleSeriesIndexes[0] === i) {
+              e.show();
+            } else {
+              e.hide();
+            }
+          });
+        } else {
+          this.yAxis.axisRanges._values.forEach((e: any) => e.hide());
+        }
+      });
+    });
+  }
+
+  private initReferenceRanges(): void {
+    this.labelStore.labels.forEach(label => {
+      // Create range axis data item
+      let rangeDataItem = this.yAxis.makeDataItem({
+        value: label.minReference,
+        endValue: label.maxReference,
+      });
+
+      // Create a range
+      let range = this.yAxis.createAxisRange(rangeDataItem);
+      if (this.labelStore.labels.length !== 1) {
+        range.hide();
+      }
+
+      rangeDataItem.get('grid').setAll({
+        visible: false,
+      });
+      rangeDataItem.get('axisFill').setAll({
+        fill: am5.color(label.color || '#000'),
+        fillOpacity: 0.2,
+        visible: true,
       });
     });
   }
