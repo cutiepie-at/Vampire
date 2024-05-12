@@ -4,13 +4,14 @@ import {ValueStore} from '@/stores/ValueStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
-import type {Label, Value} from 'vampire-oas';
+import {type Label, type Report, type Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import EditValueModal from '@/components/values/EditValueModal.vue';
 import ValueDeleteConfirmModal from '@/components/values/ValueDeleteConfirmModal.vue';
 import Loading from '@/components/Loading.vue';
+import {ReportStore} from '@/stores/ReportStore';
 
-type Row = { value: Value, label: Label };
+type Row = { value: Value, label: Label, report: Report };
 
 @Options({
   name: 'Values',
@@ -23,6 +24,7 @@ type Row = { value: Value, label: Label };
 })
 export default class Values extends Vue {
   readonly labelStore = new LabelStore();
+  readonly reportStore = new ReportStore();
   readonly valueStore = new ValueStore();
 
   get columns(): any[] {
@@ -30,6 +32,12 @@ export default class Values extends Vue {
       label: this.$t('label.model.name'),
       field: (row: Row) => row.label.name,
       templateKey: 'name',
+    }, {
+      label: this.$t('report.report'),
+      field: (row: Row) => row.report.name,
+    }, {
+      label: this.$t('report.model.lab'),
+      field: (row: Row) => row.report.lab,
     }, {
       label: this.$t('value.model.value'),
       field: (row: Row) => row.value.value + ' ' + row.label.unit,
@@ -50,8 +58,8 @@ export default class Values extends Vue {
         return rowY.label.maxReference - rowX.label.maxReference;
       },
     }, {
-      label: this.$t('value.model.date'),
-      field: (row: Row) => new Date(row.value.date),
+      label: this.$t('report.model.date'),
+      field: (row: Row) => new Date(row.report.date),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
@@ -64,7 +72,11 @@ export default class Values extends Vue {
   }
 
   get rows(): Row[] {
-    const ret = this.valueStore.values.map(e => ({value: e, label: this.labelsById.get(e.labelId)}));
+    const ret = this.valueStore.values.map(e => ({
+      value: e,
+      label: this.labelsById.get(e.labelId),
+      report: this.reportsById.get(e.reportId),
+    }));
     return ret.filter(e => !!e.label) as Row[];
   }
 
@@ -72,18 +84,20 @@ export default class Values extends Vue {
     return new Map<string, Label>(this.labelStore.labels.map(e => [e.id, e]));
   }
 
+  get reportsById(): Map<string, Report> {
+    return new Map<string, Report>(this.reportStore.reports.map(e => [e.id, e]));
+  }
+
   async mounted(): Promise<void> {
     await this.labelStore.loadIfAbsent();
+    await this.reportStore.loadIfAbsent();
     await this.valueStore.loadIfAbsent();
   }
 
   async reload(): Promise<void> {
     await this.labelStore.reload();
+    await this.reportStore.reload();
     await this.valueStore.reload();
-  }
-
-  onNew(): void {
-    this.$router.push('/values/new');
   }
 
   onEdit(row: Row): void {
@@ -100,16 +114,13 @@ export default class Values extends Vue {
   <div class="d-flex flex-column">
     <div class="d-flex flex-row mb-2">
       <div class="btn-group ms-auto">
-        <button class="btn btn-success" @click="onNew()">
-          <i class="fa fa-plus"/>
-        </button>
         <button class="btn btn-secondary" @click="reload()">
           <i class="fa fa-refresh"/>
         </button>
       </div>
     </div>
 
-    <Loading v-if="labelStore.loading || valueStore.loading"/>
+    <Loading v-if="labelStore.loading || reportStore.loading || valueStore.loading"/>
     <div v-else class="flex-grow-1 overflow-auto">
       <VueGoodTable :columns="columns" :rows="rows" theme="bootstrap">
         <template #table-row="props">

@@ -285,6 +285,123 @@
         ]
       }
     },
+    "/api/v1/report": {
+      "get": {
+        "summary": "/api/v1/report",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Report"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      },
+      "post": {
+        "summary": "/api/v1/report",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Report"
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      },
+      "put": {
+        "summary": "/api/v1/report",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Report"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      }
+    },
+    "/api/v1/report/{id}": {
+      "get": {
+        "summary": "/api/v1/report/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/report/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "example": "e6af0709-1ca3-4150-b2ae-2b56257d38bd",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      }
+    },
     "/api/v1/user": {
       "get": {
         "summary": "/api/v1/user",
@@ -559,9 +676,19 @@
         ]
       }
     },
-    "/api/v1/value/batch": {
-      "post": {
-        "summary": "/api/v1/value/batch",
+    "/api/v1/value/report/{reportId}": {
+      "put": {
+        "summary": "/api/v1/value/report/{reportId}",
+        "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -576,7 +703,7 @@
           "required": true
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "OK",
             "content": {
               "application/json": {
@@ -602,12 +729,6 @@
     },
     {
       "name": "/api/v1/usersession"
-    },
-    {
-      "name": "/api/v1/usersession/"
-    },
-    {
-      "name": "/api/v1/user/"
     }
   ],
   "servers": [
@@ -622,6 +743,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/Value"
+            }
+          }
+        },
+        "required": true
+      },
+      "Report": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Report"
             }
           }
         },
@@ -893,8 +1024,8 @@
           "createdBy",
           "updatedAt",
           "updatedBy",
+          "reportId",
           "labelId",
-          "date",
           "value"
         ],
         "properties": {
@@ -918,7 +1049,50 @@
             "type": "string",
             "format": "uuid"
           },
+          "reportId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "labelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value": {
+            "type": "number"
+          }
+        }
+      },
+      "Report": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "createdBy",
+          "updatedAt",
+          "updatedBy",
+          "date",
+          "name",
+          "lab",
+          "comment"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedBy": {
             "type": "string",
             "format": "uuid"
           },
@@ -926,8 +1100,17 @@
             "type": "string",
             "format": "date-time"
           },
-          "value": {
-            "type": "number"
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "lab": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 32767
           }
         }
       }

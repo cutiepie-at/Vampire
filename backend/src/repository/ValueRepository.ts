@@ -39,4 +39,8 @@ export default class ValueRepository {
   async remove(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
     return await Value.query(trx).where('createdBy', createdBy).findById(id).delete() === 1;
   }
+
+  async removeByReportId(reportId: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<void> {
+    await Value.query(trx).where('createdBy', createdBy).where('reportId', reportId).delete();
+  }
 }

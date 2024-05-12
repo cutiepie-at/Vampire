@@ -47,6 +47,7 @@ export const messagesEn = {
         '| This label has {count} associated values. Those values will also be deleted!',
       reallyDelete: 'Really delete this label?',
     },
+    label: 'Label',
     list: {
       actions: 'Actions',
       createdAt: 'Created at',
@@ -72,7 +73,28 @@ export const messagesEn = {
     about: 'About',
     labels: 'Labels',
     main: 'Diagram',
+    reports: 'Reports',
     values: 'Values',
+  },
+  report: {
+    delete: {
+      associatedValues: 'This report has 1 associated value. That value will also be deleted! ' +
+        '| This report has {count} associated values. Those values will also be deleted!',
+      reallyDelete: 'Really delete this report?',
+    },
+    list: {
+      actions: 'Actions',
+      createdAt: 'Created at',
+      updatedAt: 'Last update',
+    },
+    model: {
+      comment: 'Comment',
+      date: 'Date',
+      lab: 'Lab',
+      name: 'Name',
+    },
+    report: 'Report',
+    valueCount: '#values',
   },
   value: {
     delete: {
@@ -89,7 +111,6 @@ export const messagesEn = {
     },
     model: {
       labelId: 'Label',
-      date: 'Date',
       value: 'Value',
     },
   },

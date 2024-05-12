@@ -254,8 +254,8 @@
         "createdBy",
         "updatedAt",
         "updatedBy",
+        "reportId",
         "labelId",
-        "date",
         "value"
       ],
       "properties": {
@@ -279,7 +279,50 @@
           "type": "string",
           "format": "uuid"
         },
+        "reportId": {
+          "type": "string",
+          "format": "uuid"
+        },
         "labelId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "Report": {
+      "type": "object",
+      "required": [
+        "id",
+        "createdAt",
+        "createdBy",
+        "updatedAt",
+        "updatedBy",
+        "date",
+        "name",
+        "lab",
+        "comment"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedBy": {
           "type": "string",
           "format": "uuid"
         },
@@ -287,8 +330,17 @@
           "type": "string",
           "format": "date-time"
         },
-        "value": {
-          "type": "number"
+        "name": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "lab": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "comment": {
+          "type": "string",
+          "maxLength": 32767
         }
       }
     }
@@ -578,6 +630,143 @@
         },
         "tags": [
           "/api/v1/label"
+        ]
+      }
+    },
+    "/api/v1/report": {
+      "get": {
+        "summary": "/api/v1/report",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Report"
+              }
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      },
+      "post": {
+        "summary": "/api/v1/report",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Report"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Report"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string",
+              "example": "}"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "summary": "/api/v1/report",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Report"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Report"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/report/{id}": {
+      "get": {
+        "summary": "/api/v1/report/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Report"
+            }
+          }
+        },
+        "tags": [
+          "/api/v1/report"
+        ]
+      },
+      "delete": {
+        "summary": "/api/v1/report/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "example": "e6af0709-1ca3-4150-b2ae-2b56257d38bd"
+          }
+        ],
+        "responses": {
+          "204": {}
+        },
+        "tags": [
+          "/api/v1/report"
         ]
       }
     },
@@ -878,13 +1067,18 @@
         ]
       }
     },
-    "/api/v1/value/batch": {
-      "post": {
-        "summary": "/api/v1/value/batch",
+    "/api/v1/value/report/{reportId}": {
+      "put": {
+        "summary": "/api/v1/value/report/{reportId}",
         "consumes": [
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "required": true
+          },
           {
             "in": "body",
             "name": "body",
@@ -898,7 +1092,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "OK",
             "schema": {
               "type": "array",
@@ -927,12 +1121,6 @@
     },
     {
       "name": "/api/v1/usersession"
-    },
-    {
-      "name": "/api/v1/usersession/"
-    },
-    {
-      "name": "/api/v1/user/"
     }
   ]
 }

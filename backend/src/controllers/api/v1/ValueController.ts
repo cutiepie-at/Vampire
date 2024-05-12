@@ -60,34 +60,6 @@ export default class ValueController {
     next();
   }
 
-  async addBatch(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      let values = (req.body as any[]).map(e => Value.fromJson(e));
-
-      values.forEach(value => {
-        value.id = randomUUID();
-        value.createdBy = req.session.user!.id;
-        value.updatedBy = req.session.user!.id;
-      });
-      try {
-        values = await this.repo.addBatch(values);
-      } catch (err) {
-        if (err instanceof UniqueViolationError) {
-          res.status(409).end();
-          next();
-          return;
-        }
-        next(err);
-        return;
-      }
-      res.status(201).json(values);
-    } catch (e) {
-      next(e);
-      return;
-    }
-    next();
-  }
-
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const value = Value.fromJson(req.body);
@@ -101,8 +73,8 @@ export default class ValueController {
       }
 
       //update props
+      dbvalue.reportId = value.reportId;
       dbvalue.labelId = value.labelId;
-      dbvalue.date = value.date;
       dbvalue.value = value.value;
       dbvalue.updatedBy = req.session.user!.id;
 
@@ -113,6 +85,38 @@ export default class ValueController {
       } else {
         res.status(404).end();
       }
+    } catch (e) {
+      next(e);
+      return;
+    }
+    next();
+  }
+
+  async updateBatchByReportId(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const reportId = req.params.reportId!;
+      let values = (req.body as any[]).map(e => Value.fromJson(e));
+
+      values.forEach(value => {
+        value.id = randomUUID();
+        value.createdBy = req.session.user!.id;
+        value.updatedBy = req.session.user!.id;
+      });
+      try {
+        values = await Value.transaction(async trx => {
+          await this.repo.removeByReportId(reportId, req.session.user!.id, trx);
+          return await this.repo.addBatch(values, trx);
+        });
+      } catch (err) {
+        if (err instanceof UniqueViolationError) {
+          res.status(409).end();
+          next();
+          return;
+        }
+        next(err);
+        return;
+      }
+      res.status(200).json(values);
     } catch (e) {
       next(e);
       return;

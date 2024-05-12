@@ -24,6 +24,14 @@ export class ValueStore extends Pinia {
     return this._values;
   }
 
+  get valuesByLabelId(): Map<string, Value[]> {
+    return Map.groupBy(this._values, e => e.labelId);
+  }
+
+  get valuesByReportId(): Map<string, Value[]> {
+    return Map.groupBy(this._values, e => e.reportId);
+  }
+
   //actions
   clear(): void {
     this._values.splice(0);
@@ -56,6 +64,14 @@ export class ValueStore extends Pinia {
     if (index >= 0) {
       this._values.splice(index, 1);
     }
+  }
+
+  forgetValuesByReportId(reportId: string): void {
+    this._values
+      .map((e, i) => e.reportId == reportId ? i : -1)
+      .filter(i => i >= 0)
+      .reverse()
+      .forEach(i => this._values.splice(i, 1));
   }
 
   async reload(): Promise<void> {

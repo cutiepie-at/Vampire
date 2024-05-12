@@ -12,6 +12,8 @@ import am5themes_Dark from '@amcharts/amcharts5/themes/Dark';
 import type {Theme} from '@amcharts/amcharts5/.internal/core/Theme';
 import {sharedDarkMode} from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import Loading from '@/components/Loading.vue';
+import type {Report} from 'vampire-oas';
+import {ReportStore} from '@/stores/ReportStore';
 
 const am5_locales = {
   en: am5locales_en_US,
@@ -31,26 +33,33 @@ const iso_locales = {
 export default class Diagram extends Vue {
   private root: any;
   private chart: any;
-  labelStore = new LabelStore();
-  valueStore = new ValueStore();
+  readonly labelStore = new LabelStore();
+  readonly reportStore = new ReportStore();
+  readonly valueStore = new ValueStore();
 
   private get dat(): ({ date: number } | any)[] {
     const ret = this.valueStore.values.map(e => {
       const ret = {} as any;
       ret[e.labelId] = e.value;
-      ret['date'] = e.date.getTime();
+      ret['date'] = this.reportsById.get(e.reportId)?.date.getTime();
       return ret;
     }) as { date: number }[];
     ret.sort((l, r) => l.date - r.date);
     return ret;
   }
 
+  get reportsById(): Map<string, Report> {
+    return new Map<string, Report>(this.reportStore.reports.map(e => [e.id, e]));
+  }
+
+  // noinspection JSUnusedLocalSymbols, used in @Watch
   private get sharedDarkMode() {
     return sharedDarkMode;
   }
 
   async mounted(): Promise<void> {
     await this.labelStore.loadIfAbsent();
+    await this.reportStore.loadIfAbsent();
     await this.valueStore.loadIfAbsent();
     this.redrawChart();
   }
@@ -179,7 +188,8 @@ export default class Diagram extends Vue {
 
 <template>
   <div>
-    <Loading v-if="labelStore.loading || valueStore.loading"/>
-    <div v-show="!labelStore.loading && !valueStore.loading" ref="chart" class="h-100 w-100"></div>
+    <Loading v-if="labelStore.loading || reportStore.loading || valueStore.loading"/>
+    <div v-show="!labelStore.loading && !reportStore.loading && !valueStore.loading" ref="chart" class="h-100 w-100">
+    </div>
   </div>
 </template>

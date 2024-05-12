@@ -13,8 +13,8 @@ describe('BaseModelCreatedUpdated model', () => {
     value.createdBy = randomUUID();
     value.updatedAt = new Date();
     value.updatedBy = randomUUID();
+    value.reportId = randomUUID();
     value.labelId = randomUUID();
-    value.date = new Date();
     value.value = Math.random();
     const res = Value.fromJson(value.toJSON());
     expect(res).toStrictEqual(value);
@@ -25,7 +25,7 @@ describe('BaseModelCreatedUpdated model', () => {
     expect(res).toStrictEqual({
       $id: 'Value',
       type: 'object',
-      required: ['id', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'labelId', 'date', 'value'],
+      required: ['id', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'reportId', 'labelId', 'value'],
 
       properties: {
         id: {type: 'string', format: 'uuid'},
@@ -33,8 +33,8 @@ describe('BaseModelCreatedUpdated model', () => {
         createdBy: {type: 'string', format: 'uuid'},
         updatedAt: {type: 'string', format: 'date-time'},
         updatedBy: {type: 'string', format: 'uuid'},
+        reportId: {type: 'string', format: 'uuid'},
         labelId: {type: 'string', format: 'uuid'},
-        date: {type: 'string', format: 'date-time'},
         value: {type: 'number'},
       },
 

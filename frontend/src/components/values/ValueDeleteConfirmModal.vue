@@ -1,12 +1,13 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import DeleteConfirmModal from '@/components/modals/DeleteConfirmModal.vue';
-import type {Label, Value} from 'vampire-oas';
+import {type Label, type Report, type Value} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import {toast} from 'vue3-toastify';
 import {ValueStore} from '@/stores/ValueStore';
 import {handleError} from '@/util/util';
 import {LabelStore} from '@/stores/LabelStore';
+import {ReportStore} from '@/stores/ReportStore';
 
 @Options({
   name: 'ValueDeleteConfirmModal',
@@ -15,6 +16,7 @@ import {LabelStore} from '@/stores/LabelStore';
 export default class ValueDeleteConfirmModal extends Vue {
   private readonly api = new ApiStore();
   private readonly labelStore = new LabelStore();
+  private readonly reportStore = new ReportStore();
   private readonly valueStore = new ValueStore();
 
   //runtime
@@ -23,6 +25,10 @@ export default class ValueDeleteConfirmModal extends Vue {
 
   get label(): Label | null {
     return this.labelStore.labels.find(e => e.id === this.value?.labelId) ?? null;
+  }
+
+  get report(): Report | null {
+    return this.reportStore.reports.find(e => e.id === this.value?.reportId) ?? null;
   }
 
   //public functions
@@ -62,8 +68,14 @@ export default class ValueDeleteConfirmModal extends Vue {
           {{ $t('value.delete.reallyDelete') }}
         </div>
         <div v-if="value">
-          <div>{{ $t('label.model.name') + ': ' + (label?.name ?? '(unknown)') }}</div>
-          <div>{{ $t('value.model.date') + ': ' + $d(value.date, 'datetime') }}</div>
+          <div>{{ $t('report.report') + ': ' + (report?.name ?? '(unknown)') }}</div>
+          <div>{{ $t('report.model.lab') + ': ' + (report?.lab ?? '(unknown)') }}</div>
+          <div>{{ $t('report.model.date') + ': ' + (report?.date ? $d(report.date, 'datetime') : '(unknown)') }}</div>
+          <div>
+            {{ $t('label.label') + ': ' }}
+            <i class="fa fa-circle" :style="{color: label?.color || '#000' }"/>
+            {{ (label?.name ?? '(unknown)') }}
+          </div>
           <div>{{ $t('value.model.value') + ': ' + value.value }}</div>
         </div>
       </template>

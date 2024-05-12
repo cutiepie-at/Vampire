@@ -4,8 +4,9 @@ import HomeView from '@/views/HomeView.vue';
 import LabelsView from '@/views/LabelsView.vue';
 import LoginView from '@/views/auth/LoginView.vue';
 import RegisterView from '@/views/auth/RegisterView.vue';
-import ValuesNewView from '@/views/ValuesNewView.vue';
 import ValuesView from '@/views/ValuesView.vue';
+import ReportsView from '@/views/ReportsView.vue';
+import ReportDetailsView from '@/views/ReportDetailsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,14 +32,25 @@ const router = createRouter({
       component: LabelsView,
     },
     {
+      path: '/reports',
+      name: 'reports',
+      component: ReportsView,
+    },
+    {
+      path: '/reports/:id',
+      name: 'report details',
+      component: ReportDetailsView,
+    },
+    {
+      path: '/reports/:id/edit',
+      name: 'report edit',
+      component: ReportDetailsView,
+      props: {readonly: false},
+    },
+    {
       path: '/values',
       name: 'values',
       component: ValuesView,
-    },
-    {
-      path: '/values/new',
-      name: 'values-new',
-      component: ValuesNewView,
     },
     {
       path: '/about',
