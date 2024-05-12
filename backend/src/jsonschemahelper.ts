@@ -23,7 +23,7 @@ export function getSchemaDefinitions(): { definitions: { [key: string]: any } } 
   }
 
   //update models
-  const res = globSync(patterns, {ignore: patternExcludes, absolute: true});
+  const res = globSync(patterns, {cwd: __dirname, ignore: patternExcludes, absolute: true});
   const modules = res.map((file) => (
     //or use importSync https://stackoverflow.com/a/77308393
     [file, require(file.replace(__dirname, '.').replace(useJs ? '.js' : '.ts', ''))]
