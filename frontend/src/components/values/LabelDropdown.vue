@@ -39,8 +39,6 @@ export default class LabelDropdown extends Vue {
      */
     dropdownList.style.width = width;
     dropdownList.style.zIndex = 10000;
-    console.log(dropdownList);
-    console.log(component);
 
     /**
      * Here we position the dropdownList relative to the $refs.toggle Element.
