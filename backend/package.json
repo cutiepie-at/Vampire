@@ -10,7 +10,7 @@
     "build": "run-s type-check build-only test",
     "build-only": "tsc",
     "type-check": "tsc --noEmit --composite false",
-    "migrate:make": "knex migrate:make -x ts newmig",
+    "migrate:make": "knex migrate:make -x ts",
     "run": "node dist/main.js",
     "test": "jest"
   },
