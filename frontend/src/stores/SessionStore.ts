@@ -13,6 +13,7 @@ export class SessionStore extends Pinia {
   }
 
   //data
+  private _loadedOnce: boolean = false;
   private _loading: boolean = false;
   private _user: UserInfo | null = null;
   private _session: UserSessionInfo | null = null;
@@ -58,7 +59,15 @@ export class SessionStore extends Pinia {
       this.clear();
     } finally {
       this._loading = false;
+      this._loadedOnce = true;
     }
+  }
+
+  async loadIfAbsent(): Promise<void> {
+    if (this._loadedOnce) {
+      return;
+    }
+    return await this.reload();
   }
 
   //

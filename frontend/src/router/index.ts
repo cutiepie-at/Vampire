@@ -66,8 +66,9 @@ const router = createRouter({
   ],
 });
 
-const routeCheck = (route: RouteLocationNormalized): any => {
+const routeCheck = async (route: RouteLocationNormalized): Promise<any> => {
   const sessionStore = new SessionStore();
+  await sessionStore.loadIfAbsent();
   if (!route.meta?.anon && !sessionStore.isLoggedIn) {
     return {name: 'login'};
   } else if (['login', 'register'].includes(route.name as string) && sessionStore.isLoggedIn) {
@@ -76,17 +77,17 @@ const routeCheck = (route: RouteLocationNormalized): any => {
 };
 
 router.beforeEach(async (to, from) => {
-  const route = routeCheck(to);
+  const route = await routeCheck(to);
   if (route) {
     return route;
   }
 });
 
 useEmitter().on('authChanged', async () => {
-  await nextTick(() => {
-    const route = routeCheck(router.currentRoute.value);
+  await nextTick(async () => {
+    const route = await routeCheck(router.currentRoute.value);
     if (route) {
-      router.push(route);
+      await router.push(route);
     }
   });
 });
