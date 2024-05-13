@@ -7,6 +7,7 @@ import RegisterView from '@/views/auth/RegisterView.vue';
 import ValuesView from '@/views/ValuesView.vue';
 import ReportsView from '@/views/ReportsView.vue';
 import ReportDetailsView from '@/views/ReportDetailsView.vue';
+import {SessionStore} from '@/stores/SessionStore';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,11 +21,13 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView,
+      meta: {anon: true},
     },
     {
       path: '/login',
       name: 'login',
       component: LoginView,
+      meta: {anon: true},
     },
     {
       path: '/labels',
@@ -56,8 +59,15 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: AboutView,
+      meta: {anon: true},
     },
   ],
+});
+
+router.beforeEach(async (to, from) => {
+  if (!to.meta?.anon && !new SessionStore().isLoggedIn) {
+    return {name: 'login'};
+  }
 });
 
 export default router;

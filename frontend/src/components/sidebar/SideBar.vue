@@ -6,6 +6,7 @@ import SideBarHead from '@/components/sidebar/SideBarHead.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import {Prop} from 'vue-property-decorator';
+import {SessionStore} from '@/stores/SessionStore';
 
 @Options({
   name: 'SideBar',
@@ -20,6 +21,12 @@ import {Prop} from 'vue-property-decorator';
 export default class SideBar extends Vue {
   @Prop({default: false})
   toggled!: boolean;
+
+  private readonly sessionStore = new SessionStore();
+
+  get loggedIn(): boolean {
+    return this.sessionStore.isLoggedIn;
+  }
 }
 </script>
 
@@ -28,13 +35,13 @@ export default class SideBar extends Vue {
     <SideBarHead @close="$emit('close')"/>
     <div class="flex-grow-1 overflow-y-auto">
       <ul class="nav flex-column">
-        <SideBarNavLink :text="$t('menu.main')" to="/" faIcon="fa-chart-line"
+        <SideBarNavLink v-if="loggedIn" :text="$t('menu.main')" to="/" faIcon="fa-chart-line"
                         @click="$emit('close')"/>
-        <SideBarNavLink :text="$t('menu.labels')" to="/labels" faIcon="fa-ribbon"
+        <SideBarNavLink v-if="loggedIn" :text="$t('menu.labels')" to="/labels" faIcon="fa-ribbon"
                         @click="$emit('close')"/>
-        <SideBarNavLink :text="$t('menu.reports')" to="/reports" faIcon="fa-file"
+        <SideBarNavLink v-if="loggedIn" :text="$t('menu.reports')" to="/reports" faIcon="fa-file"
                         @click="$emit('close')"/>
-        <SideBarNavLink :text="$t('menu.values')" to="/values" faIcon="fa-database"
+        <SideBarNavLink v-if="loggedIn" :text="$t('menu.values')" to="/values" faIcon="fa-database"
                         @click="$emit('close')"/>
         <SideBarNavLink :text="$t('menu.about')" to="/about" faIcon="fa-question"
                         @click="$emit('close')"/>
