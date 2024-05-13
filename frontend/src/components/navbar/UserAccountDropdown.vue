@@ -27,7 +27,7 @@ export default class UserAccountDropdown extends Vue {
   }
 
   async created(): Promise<void> {
-    await this.sessionStore.reload();
+    await this.sessionStore.loadIfAbsent();
   }
 }
 </script>
