@@ -95,6 +95,7 @@ export const messagesEn = {
     },
     report: 'Report',
     valueCount: '#values',
+    valueCountShort: '#',
   },
   value: {
     delete: {

@@ -4,6 +4,7 @@ import {ValueStore} from '@/stores/ValueStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
+import '@/assets/vue-good-table/mobile.scss';
 import {type Label, type Report, type Value} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import EditValueModal from '@/components/values/EditValueModal.vue';
@@ -35,9 +36,13 @@ export default class Values extends Vue {
     }, {
       label: this.$t('report.report'),
       field: (row: Row) => row.report.name,
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('report.model.lab'),
       field: (row: Row) => row.report.lab,
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('value.model.value'),
       field: (row: Row) => row.value.value + ' ' + row.label.unit,
@@ -57,17 +62,21 @@ export default class Values extends Vue {
         }
         return rowY.label.maxReference - rowX.label.maxReference;
       },
+      thClass: 'mobile-hidden-md',
+      tdClass: 'mobile-hidden-md',
     }, {
       label: this.$t('report.model.date'),
       field: (row: Row) => new Date(row.report.date),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
+      thClass: 'mobile-hidden-sm',
+      tdClass: 'mobile-hidden-sm',
     }, {
       label: this.$t('value.list.actions'),
       field: 'actions',
       sortable: false,
-      width: '7em',
+      width: '1%',
     }];
   }
 

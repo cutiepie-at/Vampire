@@ -4,6 +4,7 @@ import {LabelStore} from '@/stores/LabelStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
+import '@/assets/vue-good-table/mobile.scss';
 import type {Label} from 'vampire-oas';
 import EditLabelModal from '@/components/labels/EditLabelModal.vue';
 import LabelDeleteConfirmModal from '@/components/labels/LabelDeleteConfirmModal.vue';
@@ -28,12 +29,16 @@ export default class Labels extends Vue {
     }, {
       label: this.$t('label.model.description'),
       field: 'description',
+      thClass: 'mobile-hidden-md',
+      tdClass: 'mobile-hidden-md',
     }, {
       label: this.$t('label.reference'),
       field: (label: Label) => (label.minReference !== 0 || label.maxReference !== 0)
           ? label.minReference + ' - ' + label.maxReference
           : '',
       type: 'number',
+      thClass: 'mobile-hidden-sm',
+      tdClass: 'mobile-hidden-sm',
     }, {
       label: this.$t('label.model.unit'),
       field: 'unit',
@@ -43,17 +48,21 @@ export default class Labels extends Vue {
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('label.list.createdAt'),
       field: (label: Label) => new Date(label.createdAt),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('label.list.actions'),
       field: 'actions',
       sortable: false,
-      width: '7em',
+      width: '1%',
     }];
   }
 

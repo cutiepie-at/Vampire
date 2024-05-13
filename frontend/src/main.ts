@@ -5,6 +5,7 @@ import App from './App.vue';
 import router from './router';
 
 import './assets/main.css';
+import './assets/mobile.scss';
 import './assets/bootstrap.extensions.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 // noinspection ES6UnusedImports

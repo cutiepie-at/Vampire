@@ -4,6 +4,7 @@ import {ReportStore} from '@/stores/ReportStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
+import '@/assets/vue-good-table/mobile.scss';
 import type {Report} from 'vampire-oas';
 import ReportDeleteConfirmModal from '@/components/reports/ReportDeleteConfirmModal.vue';
 import Loading from '@/components/Loading.vue';
@@ -25,12 +26,18 @@ export default class Reports extends Vue {
     return [{
       label: this.$t('report.model.name'),
       field: 'name',
+      thClass: 'mobile-hidden-sm',
+      tdClass: 'mobile-hidden-sm',
     }, {
       label: this.$t('report.model.lab'),
       field: 'lab',
+      thClass: 'mobile-hidden-md',
+      tdClass: 'mobile-hidden-md',
     }, {
       label: this.$t('report.model.comment'),
       field: 'comment',
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('report.model.date'),
       field: (report: Report) => new Date(report.date),
@@ -39,6 +46,7 @@ export default class Reports extends Vue {
       formatFn: (d: Date) => this.$d(d, 'datetime'),
     }, {
       label: this.$t('report.valueCount'),
+      labelShort: this.$t('report.valueCountShort'),
       field: (report: Report) => this.valueStore.valuesByReportId.get(report.id)?.length ?? 0,
       type: 'number',
     }, {
@@ -47,17 +55,21 @@ export default class Reports extends Vue {
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('report.list.createdAt'),
       field: (report: Report) => new Date(report.createdAt),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
+      thClass: 'mobile-hidden-lg',
+      tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('report.list.actions'),
       field: 'actions',
       sortable: false,
-      width: '7em',
+      width: '1%',
     }];
   }
 
@@ -107,6 +119,10 @@ export default class Reports extends Vue {
     <Loading v-if="reportStore.loading || valueStore.loading"/>
     <div v-else class="flex-grow-1 overflow-auto">
       <VueGoodTable :columns="columns" :rows="reports" theme="bootstrap">
+        <template #table-column="props">
+          <span class="mobile-show-sm">{{ props.column.labelShort ?? props.column.label }}</span>
+          <span class="mobile-hidden-sm">{{ props.column.label }}</span>
+        </template>
         <template #table-row="props">
           <div v-if="props.column.field === 'actions'">
             <div class="btn-group">
