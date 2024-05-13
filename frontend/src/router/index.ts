@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter, createWebHistory, type RouteLocationNormalized} from 'vue-router';
 import AboutView from '@/views/AboutView.vue';
 import HomeView from '@/views/HomeView.vue';
 import LabelsView from '@/views/LabelsView.vue';
@@ -8,6 +8,8 @@ import ValuesView from '@/views/ValuesView.vue';
 import ReportsView from '@/views/ReportsView.vue';
 import ReportDetailsView from '@/views/ReportDetailsView.vue';
 import {SessionStore} from '@/stores/SessionStore';
+import useEmitter from '@/composables/emitter';
+import {nextTick} from 'vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,10 +66,29 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from) => {
-  if (!to.meta?.anon && !new SessionStore().isLoggedIn) {
+const routeCheck = (route: RouteLocationNormalized): any => {
+  const sessionStore = new SessionStore();
+  if (!route.meta?.anon && !sessionStore.isLoggedIn) {
     return {name: 'login'};
+  } else if (['login', 'register'].includes(route.name as string) && sessionStore.isLoggedIn) {
+    return {name: 'home'};
   }
+};
+
+router.beforeEach(async (to, from) => {
+  const route = routeCheck(to);
+  if (route) {
+    return route;
+  }
+});
+
+useEmitter().on('authChanged', async () => {
+  await nextTick(() => {
+    const route = routeCheck(router.currentRoute.value);
+    if (route) {
+      router.push(route);
+    }
+  });
 });
 
 export default router;
