@@ -8,7 +8,7 @@ import {ApiStore} from '@/stores/ApiStore';
   name: 'LoginComponent',
   components: {},
   emits: {
-    'loggedIn': () => undefined,
+    'loggedIn': () => true,
   },
 })
 export default class LoginComponent extends Vue {
