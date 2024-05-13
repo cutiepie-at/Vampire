@@ -2,6 +2,7 @@
 import {ApiException, RegisterRequest, RegisterResponse} from 'vampire-oas';
 import {Options, Vue} from 'vue-class-component';
 import {ApiStore} from '@/stores/ApiStore';
+import {SessionStore} from '@/stores/SessionStore';
 
 @Options({
   name: 'RegisterView',
@@ -14,12 +15,14 @@ export default class RegisterView extends Vue {
   error: string = '';
 
   private readonly apiStore = new ApiStore();
+  private readonly sessionStore = new SessionStore();
 
   async register(): Promise<void> {
     this.error = '';
     try {
       const res = await this.apiStore.authApi.apiV1AuthRegisterPost(RegisterRequest.fromJson({ username: this.username, password: this.password }));
       if (res.success) {
+        this.sessionStore.setSession(res.user!, res.session!);
         this.$router.push('/');
       } else {
         this.error = 'Something went wrong (unknown reason).';//TODO translate
