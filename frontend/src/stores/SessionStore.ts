@@ -1,5 +1,5 @@
 import {Pinia, Store} from 'pinia-class-component';
-import type {UserInfo, UserSessionInfo} from 'vampire-oas';
+import {type UserInfo, type UserSessionInfo, VerifyResponse} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import useEmitter from '@/composables/emitter';
 
@@ -14,13 +14,13 @@ export class SessionStore extends Pinia {
 
   //data
   private _loadedOnce: boolean = false;
-  private _loading: boolean = false;
+  private _loadingPromise: Promise<VerifyResponse> | null = null;
   private _user: UserInfo | null = null;
   private _session: UserSessionInfo | null = null;
 
   //getter
   get loading(): boolean {
-    return this._loading;
+    return this._loadingPromise !== null;
   }
 
   get isLoggedIn(): boolean {
@@ -48,17 +48,24 @@ export class SessionStore extends Pinia {
     this.triggerEvent();
   }
 
-  async reload() {
-    this._loading = true;
+  async reload(force: boolean = false) {
+    if (this._loadingPromise) {
+      await this._loadingPromise;
+      if (!force) {// when force is true, wait for the current operation to complete, then reload
+        return;
+      }
+    }
+
     try {
-      const res = await this.apiStore.authApi.apiV1AuthVerifyPost();
+      this._loadingPromise =this.apiStore.authApi.apiV1AuthVerifyPost()
+      const res = await this._loadingPromise;
       this._user = res.user ?? null;
       this._session = res.session ?? null;
       this.triggerEvent();
     } catch (err) {
       this.clear();
     } finally {
-      this._loading = false;
+      this._loadingPromise = null;
       this._loadedOnce = true;
     }
   }

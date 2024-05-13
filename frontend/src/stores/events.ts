@@ -3,6 +3,6 @@ import {LabelStore} from '@/stores/LabelStore';
 import {ReportStore} from '@/stores/ReportStore';
 import {ValueStore} from '@/stores/ValueStore';
 
-useEmitter().on('authChanged', () => new LabelStore().reload());
-useEmitter().on('authChanged', () => new ReportStore().reload());
-useEmitter().on('authChanged', () => new ValueStore().reload());
+useEmitter().on('authChanged', () => new LabelStore().reload(true));
+useEmitter().on('authChanged', () => new ReportStore().reload(true));
+useEmitter().on('authChanged', () => new ValueStore().reload(true));

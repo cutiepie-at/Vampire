@@ -12,12 +12,12 @@ export class ReportStore extends Pinia {
   }
 
   //data
-  private _loading: boolean = false;
+  private _loadingPromise: Promise<Report[]> | null = null;
   private _reports: Report[] = [];
 
   //getter
   get loading(): boolean {
-    return this._loading;
+    return this._loadingPromise !== null;
   }
 
   get reports(): Report[] {
@@ -54,15 +54,22 @@ export class ReportStore extends Pinia {
     }
   }
 
-  async reload(): Promise<void> {
-    this._loading = true;
+  async reload(force: boolean = false): Promise<void> {
+    if (this._loadingPromise) {
+      await this._loadingPromise;
+      if (!force) {// when force is true, wait for the current operation to complete, then reload
+        return;
+      }
+    }
+
     try {
-      const reports = await this.apiStore.reportApi.apiV1ReportGet();
+      this._loadingPromise = this.apiStore.reportApi.apiV1ReportGet();
+      const reports = await this._loadingPromise;
       this.setReports(reports);
     } catch (err) {
       this.clear();
     } finally {
-      this._loading = false;
+      this._loadingPromise = null;
     }
   }
 
