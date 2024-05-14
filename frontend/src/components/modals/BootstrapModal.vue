@@ -21,8 +21,10 @@ export default class BootstrapModal extends Vue {
   readonly size!: 'sm' | 'lg' | 'xl' | null | undefined;
 
   //runtime
-  private shownPromiseChain: Promise<void> | null = null;
-  private hiddenPromiseChain: Promise<void> | null = null;
+  private shownPromise: Promise<void> | null = null;
+  private shownPromiseResolve: (() => void) | null = null;
+  private hiddenPromise: Promise<void> | null = null;
+  private hiddenPromiseResolve: (() => void) | null = null;
 
   //props
   get modalDialogClasses() {
@@ -51,29 +53,21 @@ export default class BootstrapModal extends Vue {
 
   //public functions
   open(): Promise<void> {
-    if (!this.shownPromiseChain) {
-      this.shownPromiseChain = new Promise(_ => {
-      });
+    if (!this.shownPromise) {
+      this.shownPromise = new Promise(resolve => this.shownPromiseResolve = resolve);
     }
-    const ret = new Promise<void>(_ => {
-    });
-    this.shownPromiseChain.then(_ => ret);
 
     this.getModal().show();
-    return ret;
+    return this.shownPromise;
   }
 
   dismiss(): Promise<void> {
-    if (!this.hiddenPromiseChain) {
-      this.hiddenPromiseChain = new Promise(_ => {
-      });
+    if (!this.hiddenPromise) {
+      this.hiddenPromise = new Promise(resolve => this.hiddenPromiseResolve = resolve);
     }
-    const ret = new Promise<void>(resolve => {
-    });
-    this.hiddenPromiseChain.then(_ => ret);
 
     this.getModal().hide();
-    return ret;
+    return this.hiddenPromise;
   }
 
   //internal
@@ -96,24 +90,20 @@ export default class BootstrapModal extends Vue {
   }
 
   private onShown(): void {
-    if (this.shownPromiseChain) {
+    if (this.shownPromise) {
       //trigger promise chain
-      Promise.resolve().then(_ => {
-        const ret = this.shownPromiseChain;
-        this.shownPromiseChain = null;
-        return ret;
-      });
+      this.shownPromiseResolve!();
+      this.shownPromiseResolve = null;
+      this.shownPromise = null;
     }
   }
 
   private onHidden(): void {
-    if (this.hiddenPromiseChain) {
+    if (this.hiddenPromise) {
       //trigger promise chain
-      Promise.resolve().then(_ => {
-        const ret = this.hiddenPromiseChain;
-        this.hiddenPromiseChain = null;
-        return ret;
-      });
+      this.hiddenPromiseResolve!();
+      this.hiddenPromiseResolve = null;
+      this.hiddenPromise = null;
     }
   }
 }
