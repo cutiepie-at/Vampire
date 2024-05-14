@@ -32,6 +32,7 @@ export const messagesEn = {
     save: 'Save',
     saved: 'Saved',
     saving: 'Saving ...',
+    search: 'Search',
   },
   label: {
     create: {

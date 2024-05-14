@@ -34,6 +34,7 @@ export const messagesDe = {
     save: 'Speichern',
     saved: 'Gespeichert',
     saving: 'Wird gespeichert ...',
+    search: 'Suche',
   },
   label: {
     create: {
