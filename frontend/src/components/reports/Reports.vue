@@ -79,6 +79,13 @@ export default class Reports extends Vue {
     return reports;
   }
 
+  get searchOptions(): any {
+    return {
+      enabled: true,
+      placeholder: this.$t('general.search'),
+    };
+  }
+
   async mounted(): Promise<void> {
     await this.reportStore.loadIfAbsent();
     await this.valueStore.loadIfAbsent();
@@ -118,7 +125,7 @@ export default class Reports extends Vue {
 
     <Loading v-if="reportStore.loading || valueStore.loading"/>
     <div v-else class="flex-grow-1 overflow-auto">
-      <VueGoodTable :columns="columns" :rows="reports" theme="bootstrap">
+      <VueGoodTable :columns="columns" :rows="reports" :search-options="searchOptions" theme="bootstrap">
         <template #table-column="props">
           <span class="mobile-show-sm">{{ props.column.labelShort ?? props.column.label }}</span>
           <span class="mobile-hidden-sm">{{ props.column.label }}</span>

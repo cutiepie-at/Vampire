@@ -89,6 +89,13 @@ export default class Values extends Vue {
     return ret.filter(e => !!e.label) as Row[];
   }
 
+  get searchOptions(): any {
+    return {
+      enabled: true,
+      placeholder: this.$t('general.search'),
+    };
+  }
+
   get labelsById(): Map<string, Label> {
     return new Map<string, Label>(this.labelStore.labels.map(e => [e.id, e]));
   }
@@ -131,7 +138,7 @@ export default class Values extends Vue {
 
     <Loading v-if="labelStore.loading || reportStore.loading || valueStore.loading"/>
     <div v-else class="flex-grow-1 overflow-auto">
-      <VueGoodTable :columns="columns" :rows="rows" theme="bootstrap">
+      <VueGoodTable :columns="columns" :rows="rows" :search-options="searchOptions" theme="bootstrap">
         <template #table-row="props">
           <div v-if="props.column.templateKey === 'name'">
             <i class="fa fa-circle" :style="{color: props.row.label.color || '#000' }"/>

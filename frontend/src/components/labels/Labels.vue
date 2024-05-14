@@ -66,6 +66,13 @@ export default class Labels extends Vue {
     }];
   }
 
+  get searchOptions(): any {
+    return {
+      enabled: true,
+      placeholder: this.$t('general.search'),
+    };
+  }
+
   async mounted(): Promise<void> {
     await this.store.loadIfAbsent();
   }
@@ -104,7 +111,7 @@ export default class Labels extends Vue {
 
     <Loading v-if="store.loading"/>
     <div v-else class="flex-grow-1 overflow-auto">
-      <VueGoodTable :columns="columns" :rows="store.labels" theme="bootstrap">
+      <VueGoodTable :columns="columns" :rows="store.labels" :search-options="searchOptions" theme="bootstrap">
         <template #table-row="props">
           <div v-if="props.column.field === 'name'">
             <i class="fa fa-circle" :style="{color: props.row.color || '#000' }"/>
