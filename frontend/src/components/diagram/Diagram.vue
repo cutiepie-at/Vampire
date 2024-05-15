@@ -2,7 +2,7 @@
 import {Options, Vue} from 'vue-class-component';
 import {LabelStore} from '@/stores/LabelStore';
 import {ValueStore} from '@/stores/ValueStore';
-import {Watch} from 'vue-property-decorator';
+import {Prop, Watch} from 'vue-property-decorator';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5locales_en_US from '@amcharts/amcharts5/locales/en_US';
@@ -31,6 +31,9 @@ const iso_locales = {
   },
 })
 export default class Diagram extends Vue {
+  @Prop({default: false})
+  readonly showOnlyOneLabelAtATime!: boolean;
+
   private root: any;
   private chart: any;
   private xAxis: any;
@@ -125,7 +128,7 @@ export default class Diagram extends Vue {
   }
 
   private initSeries(): void {
-    this.labelStore.labels.forEach(label => {
+    this.labelStore.labels.forEach((label, i) => {
       const data = this.dat.filter(e => e[label.id] !== undefined);
       if (!data.length) {
         return;
@@ -157,7 +160,20 @@ export default class Diagram extends Vue {
         });
       });
 
+      if (this.showOnlyOneLabelAtATime && i !== 0) {
+        series.hide();
+      }
       series.on('visible', (visible: boolean, target: any) => {
+        //series
+        if (this.showOnlyOneLabelAtATime && visible) {
+          (this.chart.series._values as any[]).forEach(s => {
+            if (s !== series) {
+              s.hide();
+            }
+          });
+        }
+
+        //ranges
         const visibleSeriesIndexes = (this.chart.series._values as any[])
             .map((e, i) => e.get('visible') ? i : -1)
             .filter(i => i >= 0);
