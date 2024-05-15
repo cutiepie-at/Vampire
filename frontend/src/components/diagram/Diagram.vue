@@ -203,9 +203,32 @@ export default class Diagram extends Vue {
 
   private initLegend(): void {
     let legend = this.chart.children.push(am5.Legend.new(this.root, {
+      centerY: am5.percent(50),
+      y: am5.percent(50),
       layout: this.root.verticalLayout,
+      height: am5.percent(100),
+      verticalScrollbar: am5.Scrollbar.new(this.root, {
+        orientation: 'vertical',
+        marginRight: -20,
+      }),
     }));
+    legend.labels.template.setAll({
+      oversizedBehavior: 'truncate',
+    });
     legend.data.setAll(this.chart.series.values);
+
+    // https://www.amcharts.com/docs/v5/tutorials/pie-chart-with-a-legend-with-dynamically-sized-labels/
+    this.chart.onPrivate('width', (width: number) => {
+      const availableSpace = Math.max(width * 0.2, 50);
+      legend.labels.template.setAll({
+        width: availableSpace - 25,
+        maxWidth: availableSpace - 25,
+      });
+      legend.setAll({
+        width: availableSpace,
+        maxWidth: availableSpace,
+      });
+    });
   }
 
   private initCursor(): void {
