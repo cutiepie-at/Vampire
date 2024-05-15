@@ -7,6 +7,14 @@ export const messagesDe = {
     register: 'Registrieren',
     logout: 'Ausloggen',
   },
+  dashboard: {
+    actions: {
+      newLabel: 'Neues Label',
+      newReport: 'Neuer Bereicht',
+    },
+    hello: 'Hallo {displayName}!',
+    recentReports: 'Letzte Berichte',
+  },
   design: 'Design',
   error: {
     badRequest: 'Ungültige Anforderung',
@@ -72,7 +80,7 @@ export const messagesDe = {
   menu: {
     about: 'Über',
     labels: 'Labels',
-    main: 'Diagramm',
+    main: 'Dashboard',
     reports: 'Berichte',
     values: 'Werte',
   },

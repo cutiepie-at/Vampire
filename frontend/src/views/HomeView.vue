@@ -1,15 +1,19 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import Diagram from '@/components/diagram/Diagram.vue';
+import Dashboard from '@/components/dashboard/Dashboard.vue';
+import Name from '@/components/dashboard/components/Name.vue';
 
 @Options({
   name: 'MainView',
-  components: {Diagram},
+  components: {
+    Dashboard,
+    Name,
+  },
 })
 export default class MainView extends Vue {
 }
 </script>
 
 <template>
-  <Diagram/>
+  <Dashboard class="m-2"/>
 </template>

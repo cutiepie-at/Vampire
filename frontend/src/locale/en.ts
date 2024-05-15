@@ -5,6 +5,14 @@ export const messagesEn = {
     register: 'Register',
     logout: 'Log out',
   },
+  dashboard: {
+    actions: {
+      newLabel: 'New label',
+      newReport: 'New report',
+    },
+    hello: 'Hello {displayName}!',
+    recentReports: 'Recent reports',
+  },
   design: 'Design',
   error: {
     badRequest: 'Bad request',
@@ -73,7 +81,7 @@ export const messagesEn = {
   menu: {
     about: 'About',
     labels: 'Labels',
-    main: 'Diagram',
+    main: 'Dashboard',
     reports: 'Reports',
     values: 'Values',
   },
