@@ -142,4 +142,8 @@ table th {
 table td {
   vertical-align: middle; /*TODO alignment still off*/
 }
+
+input[type="number"] {
+  width: 7em;
+}
 </style>
