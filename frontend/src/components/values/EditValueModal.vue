@@ -10,6 +10,8 @@ import {savedToast} from '@/util/toast';
 import LabelDropdown from '@/components/values/LabelDropdown.vue';
 import {LabelStore} from '@/stores/LabelStore';
 import Spinner from '@/components/Spinner.vue';
+import {Validate} from '@/directives/Validate';
+import {checkValidity, resetValidity} from '@/util/validation';
 
 @Options({
   name: 'EditValueModal',
@@ -17,6 +19,9 @@ import Spinner from '@/components/Spinner.vue';
     BootstrapModal,
     LabelDropdown,
     Spinner,
+  },
+  directives: {
+    Validate,
   },
 })
 export default class EditValueModal extends Vue {
@@ -26,6 +31,10 @@ export default class EditValueModal extends Vue {
   value = new Value();
   isNew = false;
   saving = false;
+
+  get Value() {
+    return Value;
+  }
 
   get uid(): number {
     return getCurrentInstance()?.uid!;
@@ -43,6 +52,7 @@ export default class EditValueModal extends Vue {
       date: new Date(),
       value: 0,
     });
+    resetValidity(this.$el)
     return (this.$refs.modal as BootstrapModal).open();
   }
 
@@ -53,6 +63,10 @@ export default class EditValueModal extends Vue {
   async save(): Promise<void> {
     this.saving = true;
     try {
+      if (!checkValidity(this.$el)) {
+        return;
+      }
+
       if (this.isNew) {
         const res = await this.api.valueApi.apiV1ValuePost(this.value);
         this.valueStore.addValue(res);
@@ -81,11 +95,13 @@ export default class EditValueModal extends Vue {
       <div>
         <div class="mb-3">
           <label :for="uid + '_labelId'" class="form-value">{{ $t('value.model.labelId') }}</label>
-          <LabelDropdown :labels="labelStore.labels" :id="uid + '_labelId'" v-model="value.labelId"/>
+          <LabelDropdown :labels="labelStore.labels" :id="uid + '_labelId'" v-model="value.labelId"
+                         v-validate="[Value, 'labelId', $i18n]"/>
         </div>
         <div class="mb-3">
           <label :for="uid + '_value'" class="form-value">{{ $t('value.model.value') }}</label>
-          <input type="number" class="form-control" :id="uid + '_value'" v-model="value.value">
+          <input type="number" class="form-control" :id="uid + '_value'" v-model="value.value"
+                 v-validate="[Value, 'value', $i18n]">
         </div>
       </div>
       <template #modal-footer>

@@ -12,6 +12,8 @@ import {ColorPicker} from 'vue3-colorpicker';
 import 'vue3-colorpicker/style.css';
 import {findNewColor} from '@/util/label';
 import Spinner from '@/components/Spinner.vue';
+import {Validate} from '@/directives/Validate';
+import {checkValidity, resetValidity} from '@/util/validation';
 
 @Options({
   name: 'EditLabelModal',
@@ -20,6 +22,9 @@ import Spinner from '@/components/Spinner.vue';
     ColorPicker,
     Spinner,
   },
+  directives: {
+    Validate,
+  },
 })
 export default class EditLabelModal extends Vue {
   readonly api = new ApiStore();
@@ -27,6 +32,10 @@ export default class EditLabelModal extends Vue {
   label = new Label();
   isNew = false;
   saving = false;
+
+  get Label() {
+    return Label;
+  }
 
   get sharedDarkMode() {
     return sharedDarkMode;
@@ -51,6 +60,7 @@ export default class EditLabelModal extends Vue {
       minReference: 0,
       maxReference: 0,
     });
+    resetValidity(this.$el)
     return (this.$refs.modal as BootstrapModal).open();
   }
 
@@ -61,6 +71,10 @@ export default class EditLabelModal extends Vue {
   async save(): Promise<void> {
     this.saving = true;
     try {
+      if (!checkValidity(this.$el)) {
+        return;
+      }
+
       if (this.isNew) {
         const res = await this.api.labelApi.apiV1LabelPost(this.label);
         this.store.addLabel(res);
@@ -89,15 +103,18 @@ export default class EditLabelModal extends Vue {
       <div>
         <div class="mb-3">
           <label :for="uid + '_name'" class="form-label">{{ $t('label.model.name') }}</label>
-          <input type="text" class="form-control" :id="uid + '_name'" v-model="label.name">
+          <input type="text" class="form-control" :id="uid + '_name'" v-model="label.name"
+                 v-validate="[Label, 'name', $i18n]">
         </div>
         <div class="mb-3">
           <label :for="uid + '_description'" class="form-label">{{ $t('label.model.description') }}</label>
-          <input type="text" class="form-control" :id="uid + '_description'" v-model="label.description">
+          <input type="text" class="form-control" :id="uid + '_description'" v-model="label.description"
+                 v-validate="[Label, 'description', $i18n]">
         </div>
         <div class="mb-3">
           <label :for="uid + '_unit'" class="form-label">{{ $t('label.model.unit') }}</label>
-          <input type="text" class="form-control" :id="uid + '_unit'" v-model="label.unit">
+          <input type="text" class="form-control" :id="uid + '_unit'" v-model="label.unit"
+                 v-validate="[Label, 'unit', $i18n]">
         </div>
         <div class="mb-3">
           <label :for="uid + '_color'" class="form-label">{{ $t('label.model.color') }}</label>
@@ -113,12 +130,12 @@ export default class EditLabelModal extends Vue {
         <div class="mb-3">
           <label :for="uid + '_minReference'" class="form-label">{{ $t('label.model.minReference') }}</label>
           <input type="number" class="form-control" :id="uid + '_minReference'" v-model="label.minReference" min="0"
-                 :max="label.maxReference">
+                 :max="label.maxReference" v-validate="[Label, 'minReference', $i18n]">
         </div>
         <div class="mb-3">
           <label :for="uid + '_maxReference'" class="form-label">{{ $t('label.model.maxReference') }}</label>
           <input type="number" class="form-control" :id="uid + '_maxReference'" v-model="label.maxReference"
-                 :min="label.minReference">
+                 :min="label.minReference" v-validate="[Label, 'maxReference', $i18n]">
         </div>
       </div>
       <template #modal-footer>

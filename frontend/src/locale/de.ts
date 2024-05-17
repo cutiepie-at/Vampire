@@ -105,6 +105,15 @@ export const messagesDe = {
     valueCount: '#Werte',
     valueCountShort: '#',
   },
+  validation: {
+    patternMismatch: 'Eingabe entspricht nicht dem Muster! "{pattern}".',
+    rangeOverflow: 'Eingabe ist zu groß! Maximaler Wert: {max}.',
+    rangeUnderflow: 'Eingabe ist zu klein! Minimaler Wert: {min}.',
+    tooLong: 'Eingabe ist zu lang! Maximale Länge: {maxLength}.',
+    tooShort: 'Eingabe ist zu kurz! Minimale Länge: {minLength}.',
+    unknown: 'Unbekannter Validierungsfehler!',
+    valueMissing: 'Dieses Feld ist notwendig!',
+  },
   value: {
     delete: {
       reallyDelete: 'Diesen Wert wirklich löschen?',

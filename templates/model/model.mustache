@@ -41,13 +41,19 @@ export class {{classname}} {{#parent}}extends {{{.}}} {{/parent}}implements I{{c
     {{/discriminator}}
 
     {{^isArray}}
-    static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
+    static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string, required?: boolean, minLength?: number, maxLength?: number, min?: number, max?: number, pattern?: string}> = [
         {{#vars}}
         {
             "name": "{{name}}",
             "baseName": "{{baseName}}",
             "type": "{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}",
             "format": "{{dataFormat}}"
+            {{#required}},"required": {{required}}{{/required}}
+            {{#minLength}},"minLength": {{minLength}}{{/minLength}}
+            {{#maxLength}},"maxLength": {{maxLength}}{{/maxLength}}
+            {{#min}},"min": {{min}}{{/min}}
+            {{#max}},"max": {{max}}{{/max}}
+            {{#pattern}},"pattern": {{pattern}}{{/pattern}}
         }{{^-last}},
         {{/-last}}
         {{/vars}}

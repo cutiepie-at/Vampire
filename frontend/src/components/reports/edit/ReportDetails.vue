@@ -16,6 +16,8 @@ import Spinner from '@/components/Spinner.vue';
 import {Prop} from 'vue-property-decorator';
 import {ReportStore} from '@/stores/ReportStore';
 import ReportDetailsModel from '@/components/reports/edit/ReportDetailsModel';
+import {Validate} from '@/directives/Validate';
+import {checkValidity, resetValidity} from '@/util/validation';
 
 @Options({
   name: 'ReportDetails',
@@ -24,6 +26,9 @@ import ReportDetailsModel from '@/components/reports/edit/ReportDetailsModel';
     ReportValuesTable,
     Spinner,
     VueDatePicker,
+  },
+  directives: {
+    Validate,
   },
 })
 export default class ReportDetails extends Vue {
@@ -38,6 +43,10 @@ export default class ReportDetails extends Vue {
   readonly valueStore = new ValueStore();
 
   saving = false;
+
+  get Report() {
+    return Report;
+  }
 
   get reportDetails(): ReportDetailsModel {
     const report = Report.fromJson(this.reportId !== '0'
@@ -67,6 +76,7 @@ export default class ReportDetails extends Vue {
   }
 
   async mounted(): Promise<void> {
+    resetValidity(this.$el);
     await this.labelStore.loadIfAbsent();
     await this.reportStore.loadIfAbsent();
     await this.valueStore.loadIfAbsent();
@@ -80,6 +90,10 @@ export default class ReportDetails extends Vue {
 
     this.saving = true;
     try {
+      if (!checkValidity(this.$el)) {
+        return;
+      }
+
       //create labels on the fly
       const usedLabelIds = values.map(e => e.labelId);
       const newLabelsToCreate = newLabels.filter(e => usedLabelIds.includes(e.id));
@@ -141,15 +155,18 @@ export default class ReportDetails extends Vue {
     </div>
     <div class="mb-3">
       <label :for="uid + '_name'" class="form-report">{{ $t('report.model.name') }}</label>
-      <input type="text" class="form-control" :id="uid + '_name'" v-model="reportDetails.report.name" :disabled="readonly">
+      <input type="text" class="form-control" :id="uid + '_name'" v-model="reportDetails.report.name"
+             v-validate="[Report, 'name', $i18n]" :disabled="readonly">
     </div>
     <div class="mb-3">
       <label :for="uid + '_lab'" class="form-report">{{ $t('report.model.lab') }}</label>
-      <input type="text" class="form-control" :id="uid + '_lab'" v-model="reportDetails.report.lab" :disabled="readonly">
+      <input type="text" class="form-control" :id="uid + '_lab'" v-model="reportDetails.report.lab"
+             v-validate="[Report, 'lab', $i18n]" :disabled="readonly">
     </div>
     <div class="mb-3">
       <label :for="uid + '_comment'" class="form-report">{{ $t('report.model.comment') }}</label>
-      <input type="text" class="form-control" :id="uid + '_comment'" v-model="reportDetails.report.comment" :disabled="readonly">
+      <input type="text" class="form-control" :id="uid + '_comment'" v-model="reportDetails.report.comment"
+             v-validate="[Report, 'comment', $i18n]" :disabled="readonly">
     </div>
     <div class="mb-3 overflow-auto">
       <ReportValuesTable ref="newValuesTable" :details="reportDetails" :readonly="readonly"/>
