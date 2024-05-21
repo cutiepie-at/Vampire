@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import DeleteConfirmModal from '@/components/modals/DeleteConfirmModal.vue';
-import {type Label, type Report, type Value} from 'vampire-oas';
+import {type LabelVmV1, type ValueVmV1, type ReportVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import {toast} from 'vue3-toastify';
 import {ValueStore} from '@/stores/ValueStore';
@@ -20,19 +20,19 @@ export default class ValueDeleteConfirmModal extends Vue {
   private readonly valueStore = new ValueStore();
 
   //runtime
-  value: Value | null = null;
+  value: ValueVmV1 | null = null;
   deleting = false;
 
-  get label(): Label | null {
+  get label(): LabelVmV1 | null {
     return this.labelStore.labels.find(e => e.id === this.value?.labelId) ?? null;
   }
 
-  get report(): Report | null {
+  get report(): ReportVmV1 | null {
     return this.reportStore.reports.find(e => e.id === this.value?.reportId) ?? null;
   }
 
   //public functions
-  open(value: Value): Promise<void> {
+  open(value: ValueVmV1): Promise<void> {
     this.value = value;
     return (this.$refs.modal as DeleteConfirmModal).open();
   }
@@ -45,7 +45,7 @@ export default class ValueDeleteConfirmModal extends Vue {
   async confirm(): Promise<void> {
     this.deleting = true;
     try {
-      await this.api.valueApi.apiV1ValueIdDelete(this.value!.id);
+      await this.api.valueApi.remove(this.value!.id);
       this.valueStore.forgetValue(this.value!);
       toast.info(this.$t('general.deleted'));
       await this.dismiss();

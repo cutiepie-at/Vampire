@@ -3,7 +3,7 @@ import {Options, Vue} from 'vue-class-component';
 import {ValueStore} from '@/stores/ValueStore';
 import BootstrapModal from '@/components/modals/BootstrapModal.vue';
 import {getCurrentInstance} from 'vue';
-import {Value} from 'vampire-oas';
+import {ValueVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import {emptyUUID, handleError} from '@/util/util';
 import {savedToast} from '@/util/toast';
@@ -28,21 +28,21 @@ export default class EditValueModal extends Vue {
   readonly api = new ApiStore();
   readonly labelStore = new LabelStore();
   readonly valueStore = new ValueStore();
-  value = new Value();
+  value = new ValueVmV1();
   isNew = false;
   saving = false;
 
   get Value() {
-    return Value;
+    return ValueVmV1;
   }
 
   get uid(): number {
     return getCurrentInstance()?.uid!;
   }
 
-  open(value?: Value): Promise<void> {
+  open(value?: ValueVmV1): Promise<void> {
     this.isNew = !value;
-    this.value = Value.fromJson(!this.isNew ? value : {
+    this.value = ValueVmV1.fromJson(!this.isNew ? value : {
       id: emptyUUID(),
       createdAt: new Date(),
       createdBy: emptyUUID(),
@@ -68,11 +68,11 @@ export default class EditValueModal extends Vue {
       }
 
       if (this.isNew) {
-        const res = await this.api.valueApi.apiV1ValuePost(this.value);
+        const res = await this.api.valueApi.add(this.value);
         this.valueStore.addValue(res);
         savedToast(this.$i18n);
       } else {
-        const res = await this.api.valueApi.apiV1ValuePut(this.value);
+        const res = await this.api.valueApi.update(this.value);
         this.valueStore.updateValue(res);
         savedToast(this.$i18n);
       }

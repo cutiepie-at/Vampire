@@ -1,5 +1,5 @@
 import {Pinia, Store} from 'pinia-class-component';
-import type {Report} from 'vampire-oas';
+import type {ReportVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 
 @Store({
@@ -12,15 +12,15 @@ export class ReportStore extends Pinia {
   }
 
   //data
-  private _loadingPromise: Promise<Report[]> | null = null;
-  private _reports: Report[] = [];
+  private _loadingPromise: Promise<ReportVmV1[]> | null = null;
+  private _reports: ReportVmV1[] = [];
 
   //getter
   get loading(): boolean {
     return this._loadingPromise !== null;
   }
 
-  get reports(): Report[] {
+  get reports(): ReportVmV1[] {
     return this._reports;
   }
 
@@ -29,16 +29,16 @@ export class ReportStore extends Pinia {
     this._reports.splice(0);
   }
 
-  setReports(reports: Report[]): void {
+  setReports(reports: ReportVmV1[]): void {
     this._reports.splice(0);
     this._reports.push(...reports);
   }
 
-  addReport(report: Report): void {
+  addReport(report: ReportVmV1): void {
     this._reports.push(report);
   }
 
-  updateReport(report: Report): void {
+  updateReport(report: ReportVmV1): void {
     const index = this._reports.findIndex(e => e.id == report.id);
     if (index >= 0) {
       this._reports.splice(index, 1, report);
@@ -47,7 +47,7 @@ export class ReportStore extends Pinia {
     }
   }
 
-  forgetReport(report: Report): void {
+  forgetReport(report: ReportVmV1): void {
     const index = this._reports.findIndex(e => e.id == report.id);
     if (index >= 0) {
       this._reports.splice(index, 1);
@@ -63,7 +63,7 @@ export class ReportStore extends Pinia {
     }
 
     try {
-      this._loadingPromise = this.apiStore.reportApi.apiV1ReportGet();
+      this._loadingPromise = this.apiStore.reportApi.list();
       const reports = await this._loadingPromise;
       this.setReports(reports);
     } catch (err) {

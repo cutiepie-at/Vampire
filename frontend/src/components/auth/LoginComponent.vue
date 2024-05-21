@@ -1,5 +1,5 @@
 <script lang="ts">
-import {ApiException, LoginRequest, LoginResponse} from 'vampire-oas';
+import {ApiException, LoginRequestVmV1, LoginResponseVmV1} from 'vampire-oas';
 import {Options, Vue} from 'vue-class-component';
 import {SessionStore} from '@/stores/SessionStore';
 import {ApiStore} from '@/stores/ApiStore';
@@ -23,7 +23,7 @@ export default class LoginComponent extends Vue {
   async login(): Promise<void> {
     this.error = '';
     try {
-      const res = await this.apiStore.authApi.apiV1AuthLoginPost(LoginRequest.fromJson({
+      const res = await this.apiStore.authApi.login(LoginRequestVmV1.fromJson({
         username: this.username,
         password: this.password,
       }));
@@ -34,7 +34,7 @@ export default class LoginComponent extends Vue {
         this.error = 'Something went wrong (unknown reason).';
       }
     } catch (err) {
-      this.error = (err as ApiException<LoginResponse>).body.message ?? '';
+      this.error = (err as ApiException<LoginResponseVmV1>).body.message ?? '';
     }
   }
 }

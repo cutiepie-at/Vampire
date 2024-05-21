@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import LabelDropdown from '@/components/values/LabelDropdown.vue';
-import {Label, Value} from 'vampire-oas';
+import {LabelVmV1, ValueVmV1} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import {emptyUUID} from '@/util/util';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -25,17 +25,17 @@ export default class ReportValuesTable extends Vue {
   @Prop({default: true})
   readonly readonly!: boolean;
 
-  get allLabels(): Label[] {
+  get allLabels(): LabelVmV1[] {
     return this.labelStore.labels.concat(this.details.newLabels);
   }
 
-  get unusedLabels(): Label[] {
+  get unusedLabels(): LabelVmV1[] {
     const usedLabelIds = new Set(this.details.values.map(e => e.labelId));
     return this.allLabels.filter(e => !usedLabelIds.has(e.id));
   }
 
-  get labelsById(): Map<string, Label> {
-    return new Map<string, Label>(this.allLabels.map(e => [e.id, e]));
+  get labelsById(): Map<string, LabelVmV1> {
+    return new Map<string, LabelVmV1>(this.allLabels.map(e => [e.id, e]));
   }
 
   async mounted(): Promise<void> {
@@ -46,7 +46,7 @@ export default class ReportValuesTable extends Vue {
     if (this.details.values.some(e => e.labelId === labelId)) {
       return;
     }
-    this.details.values.push(new Value({
+    this.details.values.push(new ValueVmV1({
       id: emptyUUID(),
       createdAt: new Date(),
       createdBy: emptyUUID(),
@@ -68,12 +68,12 @@ export default class ReportValuesTable extends Vue {
     }
   }
 
-  initLabel(name: string): Label {
+  initLabel(name: string): LabelVmV1 {
     const matchingLabel = this.allLabels.find(e => e.name.trim().toLowerCase() === name.trim().toLowerCase());
     if (matchingLabel) {
       return matchingLabel;
     }
-    return new Label({
+    return new LabelVmV1({
       id: crypto.randomUUID(),
       createdAt: new Date(),
       createdBy: emptyUUID(),
@@ -88,7 +88,7 @@ export default class ReportValuesTable extends Vue {
     });
   }
 
-  onLabelCreated(label: Label): void {
+  onLabelCreated(label: LabelVmV1): void {
     this.details.newLabels.push(label);
   }
 }

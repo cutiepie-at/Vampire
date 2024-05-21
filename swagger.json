@@ -1,1126 +1,1181 @@
 {
-  "definitions": {
-    "UserInfo": {
-      "type": "object",
-      "required": [
-        "id",
-        "createdAt",
-        "createdBy",
-        "updatedAt",
-        "updatedBy",
-        "name",
-        "displayName"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "createdBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "name": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 32
-        },
-        "email": {
-          "type": "string",
-          "format": "email",
-          "nullable": true,
-          "maxLength": 255
-        },
-        "displayName": {
-          "type": "string",
-          "maxLength": 255
-        }
-      }
-    },
-    "UserSessionInfo": {
-      "type": "object",
-      "required": [
-        "id"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        }
-      }
-    },
-    "LoginResponse": {
-      "type": "object",
-      "required": [
-        "success"
-      ],
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "user": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "session": {
-          "$ref": "#/definitions/UserSessionInfo"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "LoginRequest": {
-      "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
-      "properties": {
-        "username": {
-          "type": "string",
-          "maxLength": 32
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "RegisterRequest": {
-      "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
-      "properties": {
-        "username": {
-          "type": "string",
-          "maxLength": 32
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "RegisterResponse": {
-      "type": "object",
-      "required": [
-        "success"
-      ],
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "user": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "session": {
-          "$ref": "#/definitions/UserSessionInfo"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "LogoutResponse": {
-      "type": "object",
-      "required": [
-        "success"
-      ],
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "VerifyResponse": {
-      "type": "object",
-      "required": [
-        "success"
-      ],
-      "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "user": {
-          "$ref": "#/definitions/UserInfo"
-        },
-        "session": {
-          "$ref": "#/definitions/UserSessionInfo"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "ValidationError": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string",
-              "example": "validation"
-            },
-            "message": {
-              "type": "string",
-              "example": ""
-            }
-          }
-        }
-      }
-    },
-    "Label": {
-      "type": "object",
-      "required": [
-        "id",
-        "createdAt",
-        "createdBy",
-        "updatedAt",
-        "updatedBy",
-        "name",
-        "description",
-        "unit",
-        "color",
-        "minReference",
-        "maxReference"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "createdBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "name": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 255
-        },
-        "description": {
-          "type": "string",
-          "maxLength": 32767
-        },
-        "unit": {
-          "type": "string",
-          "maxLength": 32
-        },
-        "color": {
-          "type": "string",
-          "maxLength": 32
-        },
-        "minReference": {
-          "type": "number"
-        },
-        "maxReference": {
-          "type": "number"
-        }
-      }
-    },
-    "Value": {
-      "type": "object",
-      "required": [
-        "id",
-        "createdAt",
-        "createdBy",
-        "updatedAt",
-        "updatedBy",
-        "reportId",
-        "labelId",
-        "value"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "createdBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "reportId": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "labelId": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "value": {
-          "type": "number"
-        }
-      }
-    },
-    "Report": {
-      "type": "object",
-      "required": [
-        "id",
-        "createdAt",
-        "createdBy",
-        "updatedAt",
-        "updatedBy",
-        "date",
-        "name",
-        "lab",
-        "comment"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "createdBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedBy": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "date": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "name": {
-          "type": "string",
-          "maxLength": 255
-        },
-        "lab": {
-          "type": "string",
-          "maxLength": 255
-        },
-        "comment": {
-          "type": "string",
-          "maxLength": 32767
-        }
-      }
-    }
-  },
-  "host": "localhost:5173",
-  "info": {
-    "title": "vampire",
-    "version": "0.0.0",
-    "description": "Specification JSONs: [v2](/api-spec/v2), [v3](/api-spec/v3)."
-  },
-  "paths": {
-    "/api/v1/auth/register": {
-      "post": {
-        "summary": "/api/v1/auth/register",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RegisterRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/RegisterResponse"
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "schema": {
-              "$ref": "#/definitions/RegisterResponse"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/auth"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/auth/login": {
-      "post": {
-        "summary": "/api/v1/auth/login",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LoginRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/LoginResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/ValidationError"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/LoginResponse"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/auth"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/auth/verify": {
-      "post": {
-        "summary": "/api/v1/auth/verify",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/VerifyResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Not authenticated!"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/auth"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/auth/logout": {
-      "post": {
-        "summary": "/api/v1/auth/logout",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/LogoutResponse"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/auth"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/label": {
-      "get": {
-        "summary": "/api/v1/label",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Label"
-              }
-            }
-          },
-          "304": {}
-        },
-        "tags": [
-          "/api/v1/label"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "post": {
-        "summary": "/api/v1/label",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Label"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Label"
-            }
-          },
-          "409": {}
-        },
-        "tags": [
-          "/api/v1/label"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "put": {
-        "summary": "/api/v1/label",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Label"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Label"
-            }
-          },
-          "404": {}
-        },
-        "tags": [
-          "/api/v1/label"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/label/{id}": {
-      "get": {
-        "summary": "/api/v1/label/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Label"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/label"
-        ]
-      },
-      "delete": {
-        "summary": "/api/v1/label/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": "e6af0709-1ca3-4150-b2ae-2b56257d38bd"
-          }
-        ],
-        "responses": {
-          "204": {},
-          "404": {}
-        },
-        "tags": [
-          "/api/v1/label"
-        ]
-      }
-    },
-    "/api/v1/report": {
-      "get": {
-        "summary": "/api/v1/report",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Report"
-              }
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/report"
-        ]
-      },
-      "post": {
-        "summary": "/api/v1/report",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Report"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Report"
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "type": "string",
-              "example": "}"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/report"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "put": {
-        "summary": "/api/v1/report",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Report"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Report"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/report"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/report/{id}": {
-      "get": {
-        "summary": "/api/v1/report/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Report"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/report"
-        ]
-      },
-      "delete": {
-        "summary": "/api/v1/report/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": "e6af0709-1ca3-4150-b2ae-2b56257d38bd"
-          }
-        ],
-        "responses": {
-          "204": {}
-        },
-        "tags": [
-          "/api/v1/report"
-        ]
-      }
-    },
-    "/api/v1/user": {
-      "get": {
-        "summary": "/api/v1/user",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserInfo"
-              }
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/user"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "post": {
-        "summary": "/api/v1/user",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserInfo"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/UserInfo"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/user"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "put": {
-        "summary": "/api/v1/user",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {},
-        "tags": [
-          "/api/v1/user"
-        ]
-      }
-    },
-    "/api/v1/user/{id}": {
-      "get": {
-        "summary": "/api/v1/user/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": "7b24bce9-1098-48c9-945b-9b2cf412ae6c"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UserInfo"
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "tags": [
-          "/api/v1/user",
-          "/api/v1/user/"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "delete": {
-        "summary": "/api/v1/user/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "example": "db28837f-9600-426c-85a1-c486d0b88c6d"
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "tags": [
-          "/api/v1/user",
-          "/api/v1/user/"
-        ],
-        "produces": []
-      }
-    },
-    "/api/v1/usersession/{userId}": {
-      "get": {
-        "summary": "/api/v1/usersession/{userId}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {},
-        "tags": [
-          "/api/v1/user",
-          "/api/v1/usersession",
-          "/api/v1/usersession/"
-        ]
-      }
-    },
-    "/api/v1/usersession/{id}": {
-      "delete": {
-        "summary": "/api/v1/usersession/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {},
-        "tags": [
-          "/api/v1/user",
-          "/api/v1/usersession",
-          "/api/v1/usersession/"
-        ]
-      }
-    },
-    "/api/v1/value": {
-      "get": {
-        "summary": "/api/v1/value",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Value"
-              }
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/value"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "post": {
-        "summary": "/api/v1/value",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Value"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Value"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/value"
-        ]
-      },
-      "put": {
-        "summary": "/api/v1/value",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Value"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Value"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/value"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/api/v1/value/{id}": {
-      "get": {
-        "summary": "/api/v1/value/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Value"
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/value"
-        ]
-      },
-      "delete": {
-        "summary": "/api/v1/value/{id}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {}
-        },
-        "tags": [
-          "/api/v1/value"
-        ]
-      }
-    },
-    "/api/v1/value/report/{reportId}": {
-      "put": {
-        "summary": "/api/v1/value/report/{reportId}",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "reportId",
-            "in": "path",
-            "required": true
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Value"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Value"
-              }
-            }
-          }
-        },
-        "tags": [
-          "/api/v1/value"
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    }
-  },
-  "schemes": [
-    "http"
-  ],
-  "swagger": "2.0",
-  "tags": [
-    {
-      "name": "/api/v1/user"
-    },
-    {
-      "name": "/api/v1/usersession"
-    }
-  ]
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"UUID": {
+				"type": "string",
+				"format": "uuid",
+				"description": "Stringified UUIDv4.\nSee [RFC 4112](https://tools.ietf.org/html/rfc4122)",
+				"pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}"
+			},
+			"ValueVmV1": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"reportId": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"labelId": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"createdBy",
+					"updatedAt",
+					"updatedBy",
+					"reportId",
+					"labelId",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserSessionInfoVmV1": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/UUID"
+					}
+				},
+				"required": [
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserInfoVmV1": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 32
+					},
+					"email": {
+						"type": "string",
+						"format": "email",
+						"maxLength": 255
+					},
+					"displayName": {
+						"type": "string",
+						"maxLength": 255
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"createdBy",
+					"updatedAt",
+					"updatedBy",
+					"name",
+					"displayName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReportVmV1": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string",
+						"maxLength": 255
+					},
+					"lab": {
+						"type": "string",
+						"maxLength": 255
+					},
+					"comment": {
+						"type": "string",
+						"maxLength": 32767
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"createdBy",
+					"updatedAt",
+					"updatedBy",
+					"date",
+					"name",
+					"lab",
+					"comment"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LabelVmV1": {
+				"properties": {
+					"id": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedBy": {
+						"$ref": "#/components/schemas/UUID"
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 255
+					},
+					"description": {
+						"type": "string",
+						"maxLength": 32767
+					},
+					"unit": {
+						"type": "string",
+						"maxLength": 32
+					},
+					"color": {
+						"type": "string",
+						"maxLength": 32
+					},
+					"minReference": {
+						"type": "number",
+						"format": "double"
+					},
+					"maxReference": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"createdBy",
+					"updatedAt",
+					"updatedBy",
+					"name",
+					"description",
+					"unit",
+					"color",
+					"minReference",
+					"maxReference"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RegisterResponseVmV1": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserInfoVmV1"
+					},
+					"session": {
+						"$ref": "#/components/schemas/UserSessionInfoVmV1"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RegisterRequestVmV1": {
+				"properties": {
+					"username": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 32
+					},
+					"password": {
+						"type": "string",
+						"maxLength": 255
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginResponseVmV1": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserInfoVmV1"
+					},
+					"session": {
+						"$ref": "#/components/schemas/UserSessionInfoVmV1"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginRequestVmV1": {
+				"properties": {
+					"username": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 32
+					},
+					"password": {
+						"type": "string",
+						"maxLength": 255
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyResponseVmV1": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserInfoVmV1"
+					},
+					"session": {
+						"$ref": "#/components/schemas/UserSessionInfoVmV1"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LogoutResponseVmV1": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "vampire-api",
+		"version": "1.0.0",
+		"contact": {}
+	},
+	"paths": {
+		"/api/v1/values": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ValueVmV1"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"values"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Add",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValueVmV1"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"values"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ValueVmV1"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValueVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"values"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ValueVmV1"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/values/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValueVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"values"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"values"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/values/report/{reportId}": {
+			"put": {
+				"operationId": "UpdateBatchByReportId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ValueVmV1"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"values"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "reportId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/ValueVmV1"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/usersessions": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/UserSessionInfoVmV1"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"usersessions"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/v1/usersessions/{id}": {
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"usersessions"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/users": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/UserInfoVmV1"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Add",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserInfoVmV1"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict"
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserInfoVmV1"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserInfoVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"409": {
+						"description": "Conflict"
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserInfoVmV1"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/users/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserInfoVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/reports": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ReportVmV1"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"reports"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Add",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReportVmV1"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"reports"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReportVmV1"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReportVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"reports"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReportVmV1"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/reports/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReportVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"reports"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"reports"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/labels": {
+			"get": {
+				"operationId": "List",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/LabelVmV1"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"labels"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Add",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LabelVmV1"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict"
+					}
+				},
+				"tags": [
+					"labels"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LabelVmV1"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LabelVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					},
+					"409": {
+						"description": "Conflict"
+					}
+				},
+				"tags": [
+					"labels"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LabelVmV1"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/labels/{id}": {
+			"get": {
+				"operationId": "GetById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LabelVmV1"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"labels"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Remove",
+				"responses": {
+					"204": {
+						"description": "Deleted"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"labels"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UUID"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RegisterResponseVmV1"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"409": {
+						"description": "Conflict"
+					}
+				},
+				"tags": [
+					"auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterRequestVmV1"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LoginResponseVmV1"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginRequestVmV1"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/auth/verify": {
+			"post": {
+				"operationId": "Verify",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyResponseVmV1"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"auth"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/v1/auth/logout": {
+			"post": {
+				"operationId": "Logout",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LogoutResponseVmV1"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"auth"
+				],
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
 }

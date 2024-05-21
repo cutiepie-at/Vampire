@@ -1,5 +1,5 @@
 import {Pinia, Store} from 'pinia-class-component';
-import {type UserInfo, type UserSessionInfo, VerifyResponse} from 'vampire-oas';
+import {type UserInfoVmV1, type UserSessionInfoVmV1, VerifyResponseVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import useEmitter from '@/composables/emitter';
 
@@ -14,9 +14,9 @@ export class SessionStore extends Pinia {
 
   //data
   private _loadedOnce: boolean = false;
-  private _loadingPromise: Promise<VerifyResponse> | null = null;
-  private _user: UserInfo | null = null;
-  private _session: UserSessionInfo | null = null;
+  private _loadingPromise: Promise<VerifyResponseVmV1> | null = null;
+  private _user: UserInfoVmV1 | null = null;
+  private _session: UserSessionInfoVmV1 | null = null;
 
   //getter
   get loading(): boolean {
@@ -27,11 +27,11 @@ export class SessionStore extends Pinia {
     return !!this.user;
   }
 
-  get user(): UserInfo | null {
+  get user(): UserInfoVmV1 | null {
     return this._user;
   }
 
-  get session(): UserSessionInfo | null {
+  get session(): UserSessionInfoVmV1 | null {
     return this._session;
   }
 
@@ -42,7 +42,7 @@ export class SessionStore extends Pinia {
     this.triggerEvent();
   }
 
-  setSession(user: UserInfo, session: UserSessionInfo) {
+  setSession(user: UserInfoVmV1, session: UserSessionInfoVmV1) {
     this._user = user;
     this._session = session;
     this.triggerEvent();
@@ -57,7 +57,7 @@ export class SessionStore extends Pinia {
     }
 
     try {
-      this._loadingPromise =this.apiStore.authApi.apiV1AuthVerifyPost()
+      this._loadingPromise = this.apiStore.authApi.verify();
       const res = await this._loadingPromise;
       this._user = res.user ?? null;
       this._session = res.session ?? null;

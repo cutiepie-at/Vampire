@@ -1,11 +1,11 @@
-import {Label, Report, Value} from 'vampire-oas';
+import {LabelVmV1, ReportVmV1, ValueVmV1} from 'vampire-oas';
 
 export default class ReportDetailsModel {
-  report: Report;
-  newLabels: Label[];
-  values: Value[];
+  report: ReportVmV1;
+  newLabels: LabelVmV1[];
+  values: ValueVmV1[];
 
-  constructor(report: Report, newLabels: Label[], values: Value[]) {
+  constructor(report: ReportVmV1, newLabels: LabelVmV1[], values: ValueVmV1[]) {
     this.report = report;
     this.newLabels = newLabels;
     this.values = values;

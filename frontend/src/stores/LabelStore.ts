@@ -1,5 +1,5 @@
 import {Pinia, Store} from 'pinia-class-component';
-import type {Label} from 'vampire-oas';
+import type {LabelVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 
 @Store({
@@ -12,15 +12,15 @@ export class LabelStore extends Pinia {
   }
 
   //data
-  private _loadingPromise: Promise<Label[]> | null = null;
-  private _labels: Label[] = [];
+  private _loadingPromise: Promise<LabelVmV1[]> | null = null;
+  private _labels: LabelVmV1[] = [];
 
   //getter
   get loading(): boolean {
     return this._loadingPromise !== null;
   }
 
-  get labels(): Label[] {
+  get labels(): LabelVmV1[] {
     return this._labels;
   }
 
@@ -29,16 +29,16 @@ export class LabelStore extends Pinia {
     this._labels.splice(0);
   }
 
-  setLabels(labels: Label[]): void {
+  setLabels(labels: LabelVmV1[]): void {
     this._labels.splice(0);
     this._labels.push(...labels);
   }
 
-  addLabel(label: Label): void {
+  addLabel(label: LabelVmV1): void {
     this._labels.push(label);
   }
 
-  updateLabel(label: Label): void {
+  updateLabel(label: LabelVmV1): void {
     const index = this._labels.findIndex(e => e.id == label.id);
     if (index >= 0) {
       this._labels.splice(index, 1, label);
@@ -47,7 +47,7 @@ export class LabelStore extends Pinia {
     }
   }
 
-  forgetLabel(label: Label): void {
+  forgetLabel(label: LabelVmV1): void {
     const index = this._labels.findIndex(e => e.id == label.id);
     if (index >= 0) {
       this._labels.splice(index, 1);
@@ -63,7 +63,7 @@ export class LabelStore extends Pinia {
     }
 
     try {
-      this._loadingPromise = this.apiStore.labelApi.apiV1LabelGet();
+      this._loadingPromise = this.apiStore.labelApi.list();
       const labels = await this._loadingPromise;
       this.setLabels(labels);
     } catch (err) {

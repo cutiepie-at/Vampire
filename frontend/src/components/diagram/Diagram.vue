@@ -12,7 +12,7 @@ import am5themes_Dark from '@amcharts/amcharts5/themes/Dark';
 import type {Theme} from '@amcharts/amcharts5/.internal/core/Theme';
 import {sharedDarkMode} from '../bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import Loading from '@/components/Loading.vue';
-import type {Report} from 'vampire-oas';
+import type {ReportVmV1} from 'vampire-oas';
 import {ReportStore} from '@/stores/ReportStore';
 
 const am5_locales = {
@@ -53,8 +53,8 @@ export default class Diagram extends Vue {
     return ret;
   }
 
-  get reportsById(): Map<string, Report> {
-    return new Map<string, Report>(this.reportStore.reports.map(e => [e.id, e]));
+  get reportsById(): Map<string, ReportVmV1> {
+    return new Map<string, ReportVmV1>(this.reportStore.reports.map(e => [e.id, e]));
   }
 
   // noinspection JSUnusedLocalSymbols, used in @Watch

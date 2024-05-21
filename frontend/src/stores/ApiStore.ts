@@ -1,12 +1,12 @@
 import {Pinia, Store} from 'pinia-class-component';
 import {
-  ApiV1AuthApi,
-  ApiV1LabelApi,
-  ApiV1ReportApi,
-  ApiV1ValueApi,
+  AuthApi,
   createConfiguration,
   HttpMethod,
+  LabelsApi,
+  ReportsApi,
   RequestContext,
+  ValuesApi,
 } from 'vampire-oas';
 
 @Store({
@@ -23,24 +23,24 @@ export class ApiStore extends Pinia {
   });
 
   //api
-  private readonly _authApi = new ApiV1AuthApi(this._config);
-  private readonly _labelApi = new ApiV1LabelApi(this._config);
-  private readonly _reportApi = new ApiV1ReportApi(this._config);
-  private readonly _valueApi = new ApiV1ValueApi(this._config);
+  private readonly _authApi = new AuthApi(this._config);
+  private readonly _labelApi = new LabelsApi(this._config);
+  private readonly _reportApi = new ReportsApi(this._config);
+  private readonly _valueApi = new ValuesApi(this._config);
 
-  get authApi(): ApiV1AuthApi {
+  get authApi(): AuthApi {
     return this._authApi;
   }
 
-  get labelApi(): ApiV1LabelApi {
+  get labelApi(): LabelsApi {
     return this._labelApi;
   }
 
-  get reportApi(): ApiV1ReportApi {
+  get reportApi(): ReportsApi {
     return this._reportApi;
   }
 
-  get valueApi(): ApiV1ValueApi {
+  get valueApi(): ValuesApi {
     return this._valueApi;
   }
 }

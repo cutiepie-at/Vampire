@@ -8,3 +8,4 @@ oas/
 src/backend/config.dev.ts
 backend/config/config.dev.json
 backend/config/config.prod.json
+backend/src/tsoa.gen/

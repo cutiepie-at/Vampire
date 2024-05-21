@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {Label} from 'vampire-oas';
+import {LabelVmV1} from 'vampire-oas';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 import '@/assets/vue-select/bootstrap.css';
@@ -12,22 +12,22 @@ import {createPopper, type Placement} from '@popperjs/core';
   components: {vSelect},
   emits: {
     'update:modelValue': (value: string) => true,
-    'label:created': (value: Label) => true,
+    'label:created': (value: LabelVmV1) => true,
   },
 })
 export default class LabelDropdown extends Vue {
   @Prop({required: true})
-  readonly labels!: Label[];
+  readonly labels!: LabelVmV1[];
   @Prop({required: true})
   readonly modelValue!: string;
   @Prop({default: false})
   readonly allowNewOptions!: boolean;
   @Prop({default: (_: string) => undefined})
-  readonly createLabel!: (name: string) => Label;
+  readonly createLabel!: (name: string) => LabelVmV1;
   @Prop({default: 'bottom'})
   readonly dropDirection!: Placement;
 
-  get sortedLabels(): Label[] {
+  get sortedLabels(): LabelVmV1[] {
     return [...this.labels].sort((l, r) => l.name.localeCompare(r.name));
   }
 
@@ -85,7 +85,7 @@ export default class LabelDropdown extends Vue {
              :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event)"
              :options="sortedLabels"
              label="name"
-             :reduce="(label: Label) => label.id"
+             :reduce="(label: LabelVmV1) => label.id"
              :append-to-body="true"
              :calculate-position="withPopper"
              :clearable="false"

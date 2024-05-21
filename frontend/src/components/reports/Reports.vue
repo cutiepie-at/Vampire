@@ -5,7 +5,7 @@ import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import '@/assets/vue-good-table/mobile.scss';
-import type {Report} from 'vampire-oas';
+import type {ReportVmV1} from 'vampire-oas';
 import ReportDeleteConfirmModal from '@/components/reports/ReportDeleteConfirmModal.vue';
 import Loading from '@/components/Loading.vue';
 import {ValueStore} from '@/stores/ValueStore';
@@ -40,18 +40,18 @@ export default class Reports extends Vue {
       tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('report.model.date'),
-      field: (report: Report) => new Date(report.date),
+      field: (report: ReportVmV1) => new Date(report.date),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
     }, {
       label: this.$t('report.valueCount'),
       labelShort: this.$t('report.valueCountShort'),
-      field: (report: Report) => this.valueStore.valuesByReportId.get(report.id)?.length ?? 0,
+      field: (report: ReportVmV1) => this.valueStore.valuesByReportId.get(report.id)?.length ?? 0,
       type: 'number',
     }, {
       label: this.$t('report.list.updatedAt'),
-      field: (report: Report) => new Date(report.updatedAt),
+      field: (report: ReportVmV1) => new Date(report.updatedAt),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
@@ -59,7 +59,7 @@ export default class Reports extends Vue {
       tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('report.list.createdAt'),
-      field: (report: Report) => new Date(report.createdAt),
+      field: (report: ReportVmV1) => new Date(report.createdAt),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
@@ -73,7 +73,7 @@ export default class Reports extends Vue {
     }];
   }
 
-  get reports(): Report[] {
+  get reports(): ReportVmV1[] {
     const reports = [...this.reportStore.reports];
     reports.sort((l, r) => r.date.getTime() - l.date.getTime());
     return reports;
@@ -100,11 +100,11 @@ export default class Reports extends Vue {
     this.$router.push('reports/0/edit');
   }
 
-  onEdit(report: Report): void {
+  onEdit(report: ReportVmV1): void {
     this.$router.push(`reports/${report.id}/edit`);
   }
 
-  onDelete(report: Report): void {
+  onDelete(report: ReportVmV1): void {
     (this.$refs.deleteModal as ReportDeleteConfirmModal).open(report);
   }
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-import {ApiException, RegisterRequest, RegisterResponse} from 'vampire-oas';
+import {ApiException, RegisterRequestVmV1, RegisterResponseVmV1} from 'vampire-oas';
 import {Options, Vue} from 'vue-class-component';
 import {ApiStore} from '@/stores/ApiStore';
 import {SessionStore} from '@/stores/SessionStore';
@@ -20,7 +20,7 @@ export default class RegisterView extends Vue {
   async register(): Promise<void> {
     this.error = '';
     try {
-      const res = await this.apiStore.authApi.apiV1AuthRegisterPost(RegisterRequest.fromJson({ username: this.username, password: this.password }));
+      const res = await this.apiStore.authApi.register(RegisterRequestVmV1.fromJson({ username: this.username, password: this.password }));
       if (res.success) {
         this.sessionStore.setSession(res.user!, res.session!);
         this.$router.push('/');
@@ -28,7 +28,7 @@ export default class RegisterView extends Vue {
         this.error = 'Something went wrong (unknown reason).';//TODO translate
       }
     } catch (err) {
-      this.error = (err as ApiException<RegisterResponse>).body.message ?? '';
+      this.error = (err as ApiException<RegisterResponseVmV1>).body.message ?? '';
     }
   }
 }

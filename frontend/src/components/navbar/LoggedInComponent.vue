@@ -26,7 +26,7 @@ export default class LoggedInComponent extends Vue {
   }
 
   async onLogout(): Promise<void> {
-    const res = await this.apiStore.authApi.apiV1AuthLogoutPost();
+    const res = await this.apiStore.authApi.logout();
     if (res.success) {
       this.sessionStore.clear();
     }

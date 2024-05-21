@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
-import type {NextFunction, Request, Response} from 'express';
+import type {Request as Req} from 'express';
 import {LogoutResponse} from '../../../models/api/v1/auth/LogoutModels';
-import type {ConfigType} from '../../../config/confighelper';
+import {ConfigProvider} from '../../../config/confighelper';
 import {isAuthenticated} from '../../../middleware/auth';
 import {LoginRequest, LoginResponse} from '../../../models/api/v1/auth/LoginModels';
 import {RegisterRequest, RegisterResponse} from '../../../models/api/v1/auth/RegisterModels';
@@ -11,118 +11,156 @@ import UserSessionRepository from '../../../repository/UserSessionRepository';
 import {VerifyResponse} from '../../../models/api/v1/auth/VerifyModels';
 import UserInfo from '../../../models/api/v1/user/UserInfo';
 import UserSessionInfo from '../../../models/api/v1/user/UserSessionInfo';
+import {Body, Controller, Post, Request, Response, Route, SuccessResponse, Tags} from 'tsoa';
+import {UserInfoVmV1} from './UserController';
+import {UserSessionInfoVmV1} from './UserSessionController';
+import {Inject} from 'typescript-ioc';
 
-export default class AuthController {
+interface RegisterRequestVmV1 {
+  /**
+   * @minLength 1
+   * @maxLength 32
+   */
+  username: string;
+  /**
+   * @maxLength 255
+   */
+  password: string;
+}
+
+interface RegisterResponseVmV1 {
+  success: boolean;
+  user?: UserInfoVmV1;
+  session?: UserSessionInfoVmV1;
+  message?: string;
+}
+
+interface LoginRequestVmV1 {
+  /**
+   * @minLength 1
+   * @maxLength 32
+   */
+  username: string;
+  /**
+   * @maxLength 255
+   */
+  password: string;
+}
+
+interface LoginResponseVmV1 {
+  success: boolean;
+  user?: UserInfoVmV1;
+  session?: UserSessionInfoVmV1;
+  message?: string;
+}
+
+interface VerifyResponseVmV1 {
+  success: boolean;
+  user?: UserInfoVmV1;
+  session?: UserSessionInfoVmV1;
+  message?: string;
+}
+
+interface LogoutResponseVmV1 {
+  success: boolean;
+  message: string | undefined;
+}
+
+@Route('api/v1/auth')
+@Tags('auth')
+export class AuthController extends Controller {
   private readonly userRepo = new UserRepository();
   private readonly sessionRepo = new UserSessionRepository();
 
-  private readonly config: ConfigType;
+  private readonly config: ConfigProvider;
 
-  constructor(config: ConfigType ) {
+  constructor(@Inject config: ConfigProvider) {
+    super();
     this.config = config;
   }
 
-  async register(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      if (!this.config.server.features.auth.register) {
-        res.status(403).json(RegisterResponse.REGISTRATION_DISABLED);
-        next();
-        return;
-      }
-
-      const register = RegisterRequest.fromJson(req.body);
-      let user = await this.userRepo.getByName(register.username);
-      if (user !== undefined) {
-        res.status(409).json(RegisterResponse.USER_ALREADY_EXISTS);//conflict
-        next();
-        return;
-      }
-
-      const salt = await bcrypt.genSalt();
-      const hash = await bcrypt.hash(register.password, salt);
-
-      const uuid = crypto.randomUUID();
-      user = User.new(uuid, register.username, register.username, hash, uuid);
-      await this.userRepo.add(user);
-
-      await this.generateSession(req, user);
-      const userInfo = UserInfo.fromUser(user);
-      const session = (await this.sessionRepo.getById(req.session.id))!;
-      const sessionInfo = UserSessionInfo.fromSession(session);
-      res.status(200).json(RegisterResponse.success(userInfo, sessionInfo));
-    } catch (err) {
-      next(err);
-      return;
+  @Post('register')
+  @SuccessResponse(200, 'Ok')
+  @Response(403, 'Forbidden')
+  @Response(409, 'Conflict')
+  async register(@Body() body: RegisterRequestVmV1, @Request() req: Req): Promise<RegisterResponseVmV1> {
+    if (!(await this.config.get()).server.features.auth.register) {
+      this.setStatus(403);
+      return RegisterResponse.REGISTRATION_DISABLED;
     }
-    next();
+
+    const register = RegisterRequest.fromJson(body);
+    let user = await this.userRepo.getByName(register.username);
+    if (user !== undefined) {
+      this.setStatus(409);
+      return RegisterResponse.USER_ALREADY_EXISTS;//conflict
+    }
+
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(register.password, salt);
+
+    const uuid = crypto.randomUUID();
+    user = User.new(uuid, register.username, register.username, hash, uuid);
+    await this.userRepo.add(user);
+
+    await this.generateSession(req, user);
+    const userInfo = UserInfo.fromUser(user);
+    const session = (await this.sessionRepo.getById(req.session.id))!;
+    const sessionInfo = UserSessionInfo.fromSession(session);
+    return RegisterResponse.success(userInfo, sessionInfo);
   }
 
-  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const login = LoginRequest.fromJson(req.body);
-      const user = await this.userRepo.getByName(login.username);
-      if (user === undefined) {//TODO prevent timing side channel
-        res.status(401).json(LoginResponse.USERNAME_OR_PASSWORD_WRONG);
-        next();
-        return;
-      }
-
-      const success = user.password && await bcrypt.compare(login.password, user.password);
-      if (!success) {
-        res.status(401).json(LoginResponse.USERNAME_OR_PASSWORD_WRONG);
-        next();
-        return;
-      }
-
-      await this.generateSession(req, user);
-      const userInfo = UserInfo.fromUser(user);
-      const session = (await this.sessionRepo.getById(req.session.id))!;
-      const sessionInfo = UserSessionInfo.fromSession(session);
-      res.status(200).json(LoginResponse.success(userInfo, sessionInfo));
-    } catch (err) {
-      next(err);
-      return;
+  @Post('login')
+  @SuccessResponse(200, 'Ok')
+  @Response(401, 'Unauthorized')
+  async login(@Body() body: LoginRequestVmV1, @Request() req: Req): Promise<LoginResponseVmV1> {
+    const login = LoginRequest.fromJson(body);
+    const user = await this.userRepo.getByName(login.username);
+    if (user === undefined) {//TODO prevent timing side channel
+      this.setStatus(401);
+      return LoginResponse.USERNAME_OR_PASSWORD_WRONG;
     }
-    next();
+
+    const success = user.password && await bcrypt.compare(login.password, user.password);
+    if (!success) {
+      this.setStatus(401);
+      return LoginResponse.USERNAME_OR_PASSWORD_WRONG;
+    }
+
+    await this.generateSession(req, user);
+    const userInfo = UserInfo.fromUser(user);
+    const session = (await this.sessionRepo.getById(req.session.id))!;
+    const sessionInfo = UserSessionInfo.fromSession(session);
+    return LoginResponse.success(userInfo, sessionInfo);
   }
 
-  async verify(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      if (!isAuthenticated(req)) {
-        res.status(401).json(VerifyResponse.NOT_AUTHENTICATED);
-        next();
-        return;
-      }
-      const user = (await this.userRepo.getById(req.session.userId!))!;
-      const userInfo = UserInfo.fromUser(user);
-      const session = (await this.sessionRepo.getById(req.session.id))!;
-      const sessionInfo = UserSessionInfo.fromSession(session);
-      res.status(200).json(VerifyResponse.success(userInfo, sessionInfo));
-    } catch (err) {
-      next(err);
-      return;
+  @Post('verify')
+  @SuccessResponse(200, 'Ok')
+  @Response(401, 'Unauthorized')
+  async verify(@Request() req: Req): Promise<VerifyResponseVmV1> {
+    if (!isAuthenticated(req)) {
+      this.setStatus(401);
+      return VerifyResponse.NOT_AUTHENTICATED;
     }
-    next();
+    const user = (await this.userRepo.getById(req.session.userId!))!;
+    const userInfo = UserInfo.fromUser(user);
+    const session = (await this.sessionRepo.getById(req.session.id))!;
+    const sessionInfo = UserSessionInfo.fromSession(session);
+    return VerifyResponse.success(userInfo, sessionInfo);
   }
 
-  async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      if (!isAuthenticated(req)) {
-        res.status(200).json(LogoutResponse.SUCCESS);
-        next();
-        return;
-      }
-
-      await this.destroySession(req);
-      res.status(200).json(LogoutResponse.SUCCESS);
-    } catch (err) {
-      next(err);
-      return;
+  @Post('logout')
+  @SuccessResponse(200, 'Ok')
+  async logout(@Request() req: Req): Promise<LogoutResponseVmV1> {
+    if (!isAuthenticated(req)) {
+      return LogoutResponse.SUCCESS;
     }
-    next();
+
+    await this.destroySession(req);
+    return LogoutResponse.SUCCESS;
   }
 
-  private generateSession(req: Request, user: User): Promise<void> {
+  private generateSession(req: Req, user: User): Promise<void> {
     return new Promise((resolve, reject) => {
       req.session.regenerate(function (err) {
         if (err) {
@@ -143,7 +181,7 @@ export default class AuthController {
     });
   }
 
-  private destroySession(req: Request): Promise<void> {
+  private destroySession(req: Req): Promise<void> {
     return new Promise((resolve, reject) => {
       req.session.destroy(function (err) {
         if (err) {

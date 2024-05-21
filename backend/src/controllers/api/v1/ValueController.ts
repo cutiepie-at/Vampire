@@ -1,144 +1,126 @@
-import type {NextFunction, Request, Response} from 'express';
-import {UniqueViolationError} from 'db-errors';
+import type {Request as Req} from 'express';
 import {randomUUID} from 'crypto';
 import ValueRepository from '../../../repository/ValueRepository';
 import Value from '../../../models/db/Value';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Middlewares,
+  Path,
+  Post,
+  Put,
+  Request,
+  Response,
+  Route,
+  SuccessResponse,
+  Tags,
+} from 'tsoa';
+import {isAuthenticatedMiddleware} from '../../../middleware/auth';
+import {UUID} from '../../../models/api/uuid';
+import ApiBaseModelCreatedUpdated from '../../../models/api/ApiBaseModelCreatedUpdated';
 
-export default class ValueController {
+interface ValueVmV1 extends ApiBaseModelCreatedUpdated {
+  reportId: UUID;
+  labelId: UUID;
+  value: number;
+}
+
+@Route('api/v1/values')
+@Middlewares(isAuthenticatedMiddleware)
+@Tags('values')
+export class ValueController extends Controller {
   private repo = new ValueRepository();
 
-  async list(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const values = await this.repo.getAll(req.session.user!.id);
-      res.status(200).json(values);
-    } catch (e) {
-      next(e);
-      return;
-    }
-    next();
+  @Get()
+  @SuccessResponse(200, 'Ok')
+  async list(@Request() req: Req): Promise<ValueVmV1[]> {
+    return this.repo.getAll(req.session.user!.id);
   }
 
-  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const id = req.params.id!;
-      const value = await this.repo.getById(req.session.user!.id, id);
-      if (value !== undefined) {
-        res.status(200).json(value);
-      } else {
-        res.status(404).end();
-      }
-    } catch (e) {
-      next(e);
-      return;
+  @Get('{id}')
+  @SuccessResponse(200, 'Ok')
+  @Response(404, 'Not Found')
+  async getById(@Path() id: UUID, @Request() req: Req): Promise<ValueVmV1> {
+    const value = await this.repo.getById(req.session.user!.id, id);
+    if (value !== undefined) {
+      return value;
+    } else {
+      this.setStatus(404);
+      return undefined as any;
     }
-    next();
   }
 
-  async add(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      let value = Value.fromJson(req.body);
+  @Post()
+  @SuccessResponse(201, 'Created')
+  async add(@Body() body: ValueVmV1, @Request() req: Req): Promise<ValueVmV1> {
+    let value = Value.fromJson(body);
 
+    value.id = randomUUID();
+    value.createdBy = req.session.user!.id;
+    value.updatedBy = req.session.user!.id;
+
+    value = await this.repo.add(value);
+    this.setStatus(201);
+    return value;
+  }
+
+  @Put()
+  @SuccessResponse(200, 'Ok')
+  @Response(404, 'Not Found')
+  async update(@Body() body: ValueVmV1, @Request() req: Req): Promise<ValueVmV1> {
+    const value = Value.fromJson(body);
+
+    //get from db
+    const dbvalue = await this.repo.getById(value.id, req.session.user!.id);
+    if (!dbvalue) {
+      this.setStatus(404);
+      return undefined as any;
+    }
+
+    //update props
+    dbvalue.reportId = value.reportId;
+    dbvalue.labelId = value.labelId;
+    dbvalue.value = value.value;
+    dbvalue.updatedBy = req.session.user!.id;
+
+    //save
+    const updated = await this.repo.update(dbvalue);
+    if (updated) {
+      return dbvalue;
+    } else {
+      this.setStatus(404);
+      return undefined as any;
+    }
+  }
+
+  @Put('report/{reportId}')
+  @SuccessResponse(200, 'Ok')
+  async updateBatchByReportId(@Path() reportId: UUID, @Body() body: ValueVmV1[], @Request() req: Req): Promise<ValueVmV1[]> {
+    let values = body.map(e => Value.fromJson(e));
+
+    values.forEach(value => {
       value.id = randomUUID();
       value.createdBy = req.session.user!.id;
       value.updatedBy = req.session.user!.id;
-      try {
-        value = await this.repo.add(value);
-      } catch (err) {
-        if (err instanceof UniqueViolationError) {
-          res.status(409).end();
-          next();
-          return;
-        }
-        next(err);
-        return;
-      }
-      res.status(201).json(value);
-    } catch (e) {
-      next(e);
-      return;
-    }
-    next();
+    });
+    values = await Value.transaction(async trx => {
+      await this.repo.removeByReportId(reportId, req.session.user!.id, trx);
+      return await this.repo.addBatch(values, trx);
+    });
+    return values;
   }
 
-  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const value = Value.fromJson(req.body);
-
-      //get from db
-      const dbvalue = await this.repo.getById(value.id, req.session.user!.id);
-      if (!dbvalue) {
-        res.status(404).end();
-        next();
-        return;
-      }
-
-      //update props
-      dbvalue.reportId = value.reportId;
-      dbvalue.labelId = value.labelId;
-      dbvalue.value = value.value;
-      dbvalue.updatedBy = req.session.user!.id;
-
-      //save
-      const updated = await this.repo.update(dbvalue);
-      if (updated) {
-        res.status(200).json(dbvalue);
-      } else {
-        res.status(404).end();
-      }
-    } catch (e) {
-      next(e);
-      return;
+  @Delete('{id}')
+  @SuccessResponse(204, 'Deleted')
+  @Response(404, 'Not Found')
+  async remove(@Path() id: UUID, @Request() req: Req): Promise<void> {
+    const deleted = await this.repo.remove(id, req.session.user!.id);
+    if (deleted) {
+      this.setStatus(204);
+    } else {
+      this.setStatus(404);
     }
-    next();
-  }
-
-  async updateBatchByReportId(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const reportId = req.params.reportId!;
-      let values = (req.body as any[]).map(e => Value.fromJson(e));
-
-      values.forEach(value => {
-        value.id = randomUUID();
-        value.createdBy = req.session.user!.id;
-        value.updatedBy = req.session.user!.id;
-      });
-      try {
-        values = await Value.transaction(async trx => {
-          await this.repo.removeByReportId(reportId, req.session.user!.id, trx);
-          return await this.repo.addBatch(values, trx);
-        });
-      } catch (err) {
-        if (err instanceof UniqueViolationError) {
-          res.status(409).end();
-          next();
-          return;
-        }
-        next(err);
-        return;
-      }
-      res.status(200).json(values);
-    } catch (e) {
-      next(e);
-      return;
-    }
-    next();
-  }
-
-  async remove(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const id = req.params.id!;
-      const deleted = await this.repo.remove(id, req.session.user!.id);
-      if (deleted) {
-        res.status(204).end();
-      } else {
-        res.status(404).end();
-      }
-    } catch (e) {
-      next(e);
-      return;
-    }
-    next();
   }
 }
-
-

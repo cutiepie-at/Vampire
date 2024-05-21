@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import DeleteConfirmModal from '@/components/modals/DeleteConfirmModal.vue';
-import type {Report} from 'vampire-oas';
+import type {ReportVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import {toast} from 'vue3-toastify';
 import {ReportStore} from '@/stores/ReportStore';
@@ -18,7 +18,7 @@ export default class ReportDeleteConfirmModal extends Vue {
   private readonly valueStore = new ValueStore();
 
   //runtime
-  report: Report | null = null;
+  report: ReportVmV1 | null = null;
   deleting = false;
 
   get associatedValueCount(): number {
@@ -28,7 +28,7 @@ export default class ReportDeleteConfirmModal extends Vue {
   }
 
   //public functions
-  open(report: Report): Promise<void> {
+  open(report: ReportVmV1): Promise<void> {
     this.report = report;
     return (this.$refs.modal as DeleteConfirmModal).open();
   }
@@ -41,7 +41,7 @@ export default class ReportDeleteConfirmModal extends Vue {
   async confirm(): Promise<void> {
     this.deleting = true;
     try {
-      await this.api.reportApi.apiV1ReportIdDelete(this.report!.id);
+      await this.api.reportApi.remove(this.report!.id);
       this.reportStore.forgetReport(this.report!);
       toast.info(this.$t('general.deleted'));
       await this.dismiss();

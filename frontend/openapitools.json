@@ -7,9 +7,10 @@
       "typescript": {
         "generatorName": "typescript",
         "output": "../oas/",
-        "glob": "../swagger_v3.json",
+        "glob": "../swagger.json",
         "removeOperationIdPrefix": true,
         "templateDir": "../templates/",
+        "skipValidateSpec": true,
         "additionalProperties": {
           "npmName": "vampire-oas",
           "npmVersion": "1.0.0",

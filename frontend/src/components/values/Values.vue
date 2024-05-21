@@ -5,14 +5,14 @@ import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import '@/assets/vue-good-table/mobile.scss';
-import {type Label, type Report, type Value} from 'vampire-oas';
+import {type LabelVmV1, type ReportVmV1, type ValueVmV1} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import EditValueModal from '@/components/values/EditValueModal.vue';
 import ValueDeleteConfirmModal from '@/components/values/ValueDeleteConfirmModal.vue';
 import Loading from '@/components/Loading.vue';
 import {ReportStore} from '@/stores/ReportStore';
 
-type Row = { value: Value, label: Label, report: Report };
+type Row = { value: ValueVmV1, label: LabelVmV1, report: ReportVmV1 };
 
 @Options({
   name: 'Values',
@@ -96,12 +96,12 @@ export default class Values extends Vue {
     };
   }
 
-  get labelsById(): Map<string, Label> {
-    return new Map<string, Label>(this.labelStore.labels.map(e => [e.id, e]));
+  get labelsById(): Map<string, LabelVmV1> {
+    return new Map<string, LabelVmV1>(this.labelStore.labels.map(e => [e.id, e]));
   }
 
-  get reportsById(): Map<string, Report> {
-    return new Map<string, Report>(this.reportStore.reports.map(e => [e.id, e]));
+  get reportsById(): Map<string, ReportVmV1> {
+    return new Map<string, ReportVmV1>(this.reportStore.reports.map(e => [e.id, e]));
   }
 
   async mounted(): Promise<void> {

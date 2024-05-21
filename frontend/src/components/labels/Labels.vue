@@ -5,7 +5,7 @@ import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import '@/assets/vue-good-table/mobile.scss';
-import type {Label} from 'vampire-oas';
+import type {LabelVmV1} from 'vampire-oas';
 import EditLabelModal from '@/components/labels/EditLabelModal.vue';
 import LabelDeleteConfirmModal from '@/components/labels/LabelDeleteConfirmModal.vue';
 import Loading from '@/components/Loading.vue';
@@ -33,7 +33,7 @@ export default class Labels extends Vue {
       tdClass: 'mobile-hidden-md',
     }, {
       label: this.$t('label.reference'),
-      field: (label: Label) => (label.minReference !== 0 || label.maxReference !== 0)
+      field: (label: LabelVmV1) => (label.minReference !== 0 || label.maxReference !== 0)
           ? label.minReference + ' - ' + label.maxReference
           : '',
       type: 'number',
@@ -44,7 +44,7 @@ export default class Labels extends Vue {
       field: 'unit',
     }, {
       label: this.$t('label.list.updatedAt'),
-      field: (label: Label) => new Date(label.updatedAt),
+      field: (label: LabelVmV1) => new Date(label.updatedAt),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
@@ -52,7 +52,7 @@ export default class Labels extends Vue {
       tdClass: 'mobile-hidden-lg',
     }, {
       label: this.$t('label.list.createdAt'),
-      field: (label: Label) => new Date(label.createdAt),
+      field: (label: LabelVmV1) => new Date(label.createdAt),
       type: 'date',
       format: 'date',
       formatFn: (d: Date) => this.$d(d, 'datetime'),
@@ -81,15 +81,15 @@ export default class Labels extends Vue {
     (this.$refs.editModal as EditLabelModal).open();
   }
 
-  onEdit(label: Label): void {
+  onEdit(label: LabelVmV1): void {
     (this.$refs.editModal as EditLabelModal).open(label);
   }
 
-  onDelete(label: Label): void {
+  onDelete(label: LabelVmV1): void {
     (this.$refs.deleteModal as LabelDeleteConfirmModal).open(label);
   }
 
-  isLabelMissingInfo(label: Label): boolean {
+  isLabelMissingInfo(label: LabelVmV1): boolean {
     return label.unit.trim().length === 0
         || (label.minReference === 0 && label.maxReference === 0);
   }

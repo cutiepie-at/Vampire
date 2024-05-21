@@ -25,6 +25,17 @@ export type ConfigType = {
   },
 };
 
+export class ConfigProvider {
+  private config: ConfigType | null = null;
+
+  async get(): Promise<ConfigType> {
+    if (!this.config) {
+      this.config = await loadConfig();
+    }
+    return this.config!;
+  }
+}
+
 export async function loadConfig(configOverrides?: any): Promise<ConfigType> {
   const config = JSON.parse(fs.readFileSync('./config/config.json', 'utf8'));
   let mergedConfig = mergeDeep({}, config);

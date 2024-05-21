@@ -3,7 +3,7 @@ import {Options, Vue} from 'vue-class-component';
 import {LabelStore} from '@/stores/LabelStore';
 import BootstrapModal from '@/components/modals/BootstrapModal.vue';
 import {getCurrentInstance} from 'vue';
-import {Label} from 'vampire-oas';
+import {LabelVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 import {emptyUUID, handleError} from '@/util/util';
 import {savedToast} from '@/util/toast';
@@ -29,12 +29,12 @@ import {checkValidity, resetValidity} from '@/util/validation';
 export default class EditLabelModal extends Vue {
   readonly api = new ApiStore();
   readonly store = new LabelStore();
-  label = new Label();
+  label = new LabelVmV1();
   isNew = false;
   saving = false;
 
   get Label() {
-    return Label;
+    return LabelVmV1;
   }
 
   get sharedDarkMode() {
@@ -45,9 +45,9 @@ export default class EditLabelModal extends Vue {
     return getCurrentInstance()?.uid!;
   }
 
-  open(label?: Label): Promise<void> {
+  open(label?: LabelVmV1): Promise<void> {
     this.isNew = !label;
-    this.label = Label.fromJson(!this.isNew ? label : {
+    this.label = LabelVmV1.fromJson(!this.isNew ? label : {
       id: emptyUUID(),
       createdAt: new Date(),
       createdBy: emptyUUID(),
@@ -76,11 +76,11 @@ export default class EditLabelModal extends Vue {
       }
 
       if (this.isNew) {
-        const res = await this.api.labelApi.apiV1LabelPost(this.label);
+        const res = await this.api.labelApi.add(this.label);
         this.store.addLabel(res);
         savedToast(this.$i18n);
       } else {
-        const res = await this.api.labelApi.apiV1LabelPut(this.label);
+        const res = await this.api.labelApi.update(this.label);
         this.store.updateLabel(res);
         savedToast(this.$i18n);
       }

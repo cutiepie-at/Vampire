@@ -1,8 +1,7 @@
 import express, {type Express} from 'express';
 import session from 'express-session';
-import {type ConfigType, getSessionSettings, loadConfig} from './config/confighelper';
+import {ConfigProvider, ConfigType, getSessionSettings} from './config/confighelper';
 import {initDb, migrateDb} from './knex';
-import {registerOpenApiFirst, registerOpenApiLast} from './openapi';
 import {registerRoutes} from './routes';
 import type {Knex} from 'knex';
 import ConfigWatcher from './config/configwatcher';
@@ -18,6 +17,7 @@ import {initGlobals} from './util/GlobalInit';
 import {seedDb} from './DbSeed';
 import {uncaughtErrorHandler} from './middleware/UncaughtErrorHandler';
 import compression from 'compression';
+import {iocContainer} from './ioc';
 
 // const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -68,7 +68,7 @@ export default class Server {
 
 //region init
   async init(configOverrides?: any): Promise<void> {
-    this.config = await loadConfig(configOverrides);
+    this.config = await iocContainer().get(ConfigProvider).get();
     await this.initExpress();
     await this.initDatabase();
   }
@@ -83,14 +83,15 @@ export default class Server {
 
     //middlewares
     this.express.use(compression());
-    await registerOpenApiFirst(this.express, this.config);
+    // await registerOpenApiFirst(this.express, this.config);
     this.express.use(session(getSessionSettings(this.config, sessionStore)));
     this.express.use(sessionUserdataMiddleware());
     this.express.use(express.json());
     registerRoutes(this.express, this.config);
+    // RegisterRoutes(app);
     this.express.use(errorLogHandler());
     this.express.use(apiErrorHandler());
-    registerOpenApiLast(this.express);
+    // registerOpenApiLast(this.express);
     this.express.use(uncaughtErrorHandler());
   }
 

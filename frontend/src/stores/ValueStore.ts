@@ -1,5 +1,5 @@
 import {Pinia, Store} from 'pinia-class-component';
-import type {Value} from 'vampire-oas';
+import type {ValueVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
 
 @Store({
@@ -12,23 +12,23 @@ export class ValueStore extends Pinia {
   }
 
   //data
-  private _loadingPromise: Promise<Value[]> | null = null;
-  private _values: Value[] = [];
+  private _loadingPromise: Promise<ValueVmV1[]> | null = null;
+  private _values: ValueVmV1[] = [];
 
   //getter
   get loading(): boolean {
     return this._loadingPromise !== null;
   }
 
-  get values(): Value[] {
+  get values(): ValueVmV1[] {
     return this._values;
   }
 
-  get valuesByLabelId(): Map<string, Value[]> {
+  get valuesByLabelId(): Map<string, ValueVmV1[]> {
     return Map.groupBy(this._values, e => e.labelId);
   }
 
-  get valuesByReportId(): Map<string, Value[]> {
+  get valuesByReportId(): Map<string, ValueVmV1[]> {
     return Map.groupBy(this._values, e => e.reportId);
   }
 
@@ -37,20 +37,20 @@ export class ValueStore extends Pinia {
     this._values.splice(0);
   }
 
-  setValues(values: Value[]): void {
+  setValues(values: ValueVmV1[]): void {
     this._values.splice(0);
     this._values.push(...values);
   }
 
-  addValue(value: Value): void {
+  addValue(value: ValueVmV1): void {
     this._values.push(value);
   }
 
-  addValues(values: Value[]) {
+  addValues(values: ValueVmV1[]) {
     values.forEach(e => this.addValue(e));
   }
 
-  updateValue(value: Value): void {
+  updateValue(value: ValueVmV1): void {
     const index = this._values.findIndex(e => e.id == value.id);
     if (index >= 0) {
       this._values.splice(index, 1, value);
@@ -59,7 +59,7 @@ export class ValueStore extends Pinia {
     }
   }
 
-  forgetValue(value: Value): void {
+  forgetValue(value: ValueVmV1): void {
     const index = this._values.findIndex(e => e.id == value.id);
     if (index >= 0) {
       this._values.splice(index, 1);
@@ -83,7 +83,7 @@ export class ValueStore extends Pinia {
     }
 
     try {
-      this._loadingPromise = this.apiStore.valueApi.apiV1ValueGet();
+      this._loadingPromise = this.apiStore.valueApi.list();
       const values = await this._loadingPromise;
       this.setValues(values);
     } catch (err) {

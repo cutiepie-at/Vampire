@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import {getCurrentInstance, reactive} from 'vue';
-import {Report} from 'vampire-oas';
+import {ReportVmV1} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
 import {ValueStore} from '@/stores/ValueStore';
 import {emptyUUID, handleError} from '@/util/util';
@@ -45,11 +45,11 @@ export default class ReportDetails extends Vue {
   saving = false;
 
   get Report() {
-    return Report;
+    return ReportVmV1;
   }
 
   get reportDetails(): ReportDetailsModel {
-    const report = Report.fromJson(this.reportId !== '0'
+    const report = ReportVmV1.fromJson(this.reportId !== '0'
         ? this.reportStore.reports.find(e => e.id === this.reportId)
         : {
           id: emptyUUID(),
@@ -98,7 +98,7 @@ export default class ReportDetails extends Vue {
       const usedLabelIds = values.map(e => e.labelId);
       const newLabelsToCreate = newLabels.filter(e => usedLabelIds.includes(e.id));
       for (let label of newLabelsToCreate) {
-        const res = await this.api.labelApi.apiV1LabelPost(label);
+        const res = await this.api.labelApi.add(label);
         this.labelStore.addLabel(res);
 
         //update label ids in values
@@ -107,18 +107,18 @@ export default class ReportDetails extends Vue {
 
       //save report
       if (report.id === emptyUUID()) {
-        const res = await this.api.reportApi.apiV1ReportPost(report);
+        const res = await this.api.reportApi.add(report);
         this.reportStore.addReport(res);
         report = res;
       } else {
-        const res = await this.api.reportApi.apiV1ReportPut(report);
+        const res = await this.api.reportApi.update(report);
         this.reportStore.updateReport(res);
       }
 
       //save values
       values.forEach(e => e.reportId = report.id);
 
-      const res = await this.api.valueApi.apiV1ValueReportReportIdPut(report.id, values);
+      const res = await this.api.valueApi.updateBatchByReportId(report.id, values);
       this.valueStore.forgetValuesByReportId(report.id);
       this.valueStore.addValues(res);
 
