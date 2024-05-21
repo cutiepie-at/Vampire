@@ -51,8 +51,6 @@ function applyAttrs(el: HTMLInputElement, cls: ValidatableClass, propName: strin
 
 function validate(el: HTMLInputElement, validateEl: HTMLElement, i18n: VueI18n, onlyIfValid: boolean = false) {
   el.reportValidity();
-  // el.willValidate =true;
-  console.log(el, el.validity);
   if (el.validity.valid) {
     el.classList.remove('is-invalid');
     validateEl!.innerText = '';
