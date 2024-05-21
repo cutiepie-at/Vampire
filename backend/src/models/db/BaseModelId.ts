@@ -1,7 +1,7 @@
 import BaseModel from './BaseModel';
 import type {JSONSchema} from 'objection';
 import {mergeDeep} from '../../util/merge';
-import type {UUID} from './util';
+import {UUID} from 'node:crypto';
 
 export default abstract class BaseModelId extends BaseModel {
   id!: UUID;

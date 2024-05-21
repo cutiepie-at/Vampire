@@ -21,6 +21,7 @@ import {
 import {isAuthenticatedMiddleware} from '../../../middleware/auth';
 import {UUID} from '../../../models/api/uuid';
 import ApiBaseModelCreatedUpdated from '../../../models/api/ApiBaseModelCreatedUpdated';
+import {UUID as nodeUUID} from 'node:crypto';
 
 interface LabelVmV1 extends ApiBaseModelCreatedUpdated {
   /**
@@ -60,7 +61,7 @@ export class LabelController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not Found')
   async getById(@Path() id: UUID, @Request() req: Req): Promise<LabelVmV1> {
-    const label = await this.repo.getById(req.session.user!.id, id);
+    const label = await this.repo.getById(req.session.user!.id, id as nodeUUID);
     if (label !== undefined) {
       return label;
     } else {
@@ -139,7 +140,7 @@ export class LabelController extends Controller {
   @SuccessResponse(204, 'Deleted')
   @Response(404, 'Not Found')
   async remove(@Path() id: UUID, @Request() req: Req): Promise<void> {
-    const deleted = await this.repo.remove(id, req.session.user!.id);
+    const deleted = await this.repo.remove(id as nodeUUID, req.session.user!.id);
     if (deleted) {
       this.setStatus(204);
     } else {

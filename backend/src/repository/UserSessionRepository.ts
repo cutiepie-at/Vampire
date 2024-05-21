@@ -1,17 +1,18 @@
 import UserSession from '../models/db/UserSession';
 import {UniqueViolationError} from 'db-errors';
 import type {TransactionOrKnex} from 'objection';
+import {UUID} from 'node:crypto';
 
 export default class UserSessionRepository {
   async getAll(trx?: TransactionOrKnex): Promise<UserSession[]> {
     return UserSession.query(trx);
   }
 
-  async getById(id: string, trx?: TransactionOrKnex): Promise<UserSession | undefined> {
+  async getById(id: UUID, trx?: TransactionOrKnex): Promise<UserSession | undefined> {
     return UserSession.query(trx).findById(id);
   }
 
-  async getByUserId(userId: string, trx?: TransactionOrKnex): Promise<UserSession[]> {
+  async getByUserId(userId: UUID, trx?: TransactionOrKnex): Promise<UserSession[]> {
     return UserSession.query(trx).where('userId', userId);
   }
 
@@ -38,11 +39,11 @@ export default class UserSessionRepository {
     return await UserSession.query(trx).findById(userSession.id).update(userSession) === 1;
   }
 
-  async remove(id: string, trx?: TransactionOrKnex): Promise<boolean> {
+  async remove(id: UUID, trx?: TransactionOrKnex): Promise<boolean> {
     return await UserSession.query(trx).findById(id).delete() === 1;
   }
 
-  async removeIfPresent(id: string, trx?: TransactionOrKnex): Promise<void> {
+  async removeIfPresent(id: UUID, trx?: TransactionOrKnex): Promise<void> {
     await this.remove(id, trx);
   }
 

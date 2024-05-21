@@ -2,14 +2,14 @@ import type {SessionData} from 'express-session';
 import type {JSONSchema, ModelOptions, Pojo, StaticHookArguments} from 'objection';
 import BaseModelId from '../../models/db/BaseModelId';
 import {mergeDeep} from '../../util/merge';
-import type {UUID} from './util';
+import {UUID} from 'node:crypto';
 
 export default class UserSession extends BaseModelId {
   userId!: UUID | undefined;
   expires!: Date;
   data!: SessionData | undefined;//json
 
-  static new(id: string, userId?: string): UserSession {
+  static new(id: UUID, userId?: UUID): UserSession {
     const ret = new UserSession();
     ret.id = id;
     ret.userId = userId;

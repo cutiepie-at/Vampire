@@ -1,13 +1,13 @@
 import Value from '../models/db/Value';
 import type {TransactionOrKnex} from 'objection';
-import type {UUID} from '../models/db/util';
+import {UUID} from 'node:crypto';
 
 export default class ValueRepository {
   async getAll(createdBy: UUID, trx?: TransactionOrKnex): Promise<Value[]> {
     return Value.query(trx).where('createdBy', createdBy);
   }
 
-  async getById(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<Value | undefined> {
+  async getById(id: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<Value | undefined> {
     return Value.query(trx).where('createdBy', createdBy).findById(id);
   }
 
@@ -36,11 +36,11 @@ export default class ValueRepository {
     return await Value.query(trx).findById(value.id).update(value) === 1;
   }
 
-  async remove(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
+  async remove(id: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
     return await Value.query(trx).where('createdBy', createdBy).findById(id).delete() === 1;
   }
 
-  async removeByReportId(reportId: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<void> {
+  async removeByReportId(reportId: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<void> {
     await Value.query(trx).where('createdBy', createdBy).where('reportId', reportId).delete();
   }
 }

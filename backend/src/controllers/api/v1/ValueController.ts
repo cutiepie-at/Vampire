@@ -20,6 +20,7 @@ import {
 import {isAuthenticatedMiddleware} from '../../../middleware/auth';
 import {UUID} from '../../../models/api/uuid';
 import ApiBaseModelCreatedUpdated from '../../../models/api/ApiBaseModelCreatedUpdated';
+import {UUID as nodeUUID} from 'node:crypto';
 
 interface ValueVmV1 extends ApiBaseModelCreatedUpdated {
   reportId: UUID;
@@ -43,7 +44,7 @@ export class ValueController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not Found')
   async getById(@Path() id: UUID, @Request() req: Req): Promise<ValueVmV1> {
-    const value = await this.repo.getById(req.session.user!.id, id);
+    const value = await this.repo.getById(req.session.user!.id, id as nodeUUID);
     if (value !== undefined) {
       return value;
     } else {
@@ -106,7 +107,7 @@ export class ValueController extends Controller {
       value.updatedBy = req.session.user!.id;
     });
     values = await Value.transaction(async trx => {
-      await this.repo.removeByReportId(reportId, req.session.user!.id, trx);
+      await this.repo.removeByReportId(reportId as nodeUUID, req.session.user!.id, trx);
       return await this.repo.addBatch(values, trx);
     });
     return values;
@@ -116,7 +117,7 @@ export class ValueController extends Controller {
   @SuccessResponse(204, 'Deleted')
   @Response(404, 'Not Found')
   async remove(@Path() id: UUID, @Request() req: Req): Promise<void> {
-    const deleted = await this.repo.remove(id, req.session.user!.id);
+    const deleted = await this.repo.remove(id as nodeUUID, req.session.user!.id);
     if (deleted) {
       this.setStatus(204);
     } else {

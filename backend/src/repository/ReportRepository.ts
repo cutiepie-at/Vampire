@@ -1,13 +1,13 @@
 import Report from '../models/db/Report';
 import type {TransactionOrKnex} from 'objection';
-import type {UUID} from '../models/db/util';
+import {UUID} from 'node:crypto';
 
 export default class ReportRepository {
   async getAll(createdBy: UUID, trx?: TransactionOrKnex): Promise<Report[]> {
     return Report.query(trx).where('createdBy', createdBy);
   }
 
-  async getById(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<Report | undefined> {
+  async getById(id: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<Report | undefined> {
     return Report.query(trx).where('createdBy', createdBy).findById(id);
   }
 
@@ -19,7 +19,7 @@ export default class ReportRepository {
     return await Report.query(trx).findById(report.id).update(report) === 1;
   }
 
-  async remove(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
+  async remove(id: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
     return await Report.query(trx).where('createdBy', createdBy).findById(id).delete() === 1;
   }
 }

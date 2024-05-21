@@ -1,11 +1,12 @@
 import {type SessionData, Store} from 'express-session';
 import UserSession from '../models/db/UserSession';
 import UserSessionRepository from '../repository/UserSessionRepository';
+import {UUID} from 'node:crypto';
 
 export default class DbStore extends Store {
   private repo = new UserSessionRepository();
 
-  override get(sid: string, callback: (err: any, session?: SessionData | null) => void): void {
+  override get(sid: UUID, callback: (err: any, session?: SessionData | null) => void): void {
     // console.log('store.get', sid);
     this.repo.getById(sid)
       .then(userSession => {
@@ -15,7 +16,7 @@ export default class DbStore extends Store {
       .catch(err => callback(err, undefined));
   }
 
-  override set(sid: string, session: SessionData, callback?: (err?: any) => void): void {
+  override set(sid: UUID, session: SessionData, callback?: (err?: any) => void): void {
     // console.log('store.set', sid, session);
     // console.log('store.set', sid)
     this.repo.getById(sid)
@@ -44,7 +45,7 @@ export default class DbStore extends Store {
       });
   }
 
-  override destroy(sid: string, callback?: (err?: any) => void): void {
+  override destroy(sid: UUID, callback?: (err?: any) => void): void {
     // console.log('store.destroy', sid);
     this.repo.removeIfPresent(sid)
       .then(_ => {
@@ -55,7 +56,7 @@ export default class DbStore extends Store {
       });
   }
 
-  override all(callback: (err: any, obj?: { [sid: string]: SessionData; } | null) => void): void {
+  override all(callback: (err: any, obj?: { [sid: UUID]: SessionData; } | null) => void): void {
     // console.log('store.all')
     this.repo.getAll()
       .then(userSessions => {
@@ -90,7 +91,7 @@ export default class DbStore extends Store {
       });
   }
 
-  override touch(sid: string, session: SessionData, callback?: () => void): void {
+  override touch(sid: UUID, session: SessionData, callback?: () => void): void {
     // console.log('store.touch', sid, session);
 
     let cookieExpires: Date;

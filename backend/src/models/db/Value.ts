@@ -1,14 +1,14 @@
 import BaseModelCreatedUpdated from '../../models/db/BaseModelCreatedUpdated';
 import {mergeDeep} from '../../util/merge';
 import type {JSONSchema} from 'objection';
-import type {UUID} from './util';
+import {UUID} from 'node:crypto';
 
 export default class Value extends BaseModelCreatedUpdated {
   reportId!: UUID;
   labelId!: UUID;
   value!: number;
 
-  static new(id: string, reportId: UUID, labelId: UUID, value: number, createdBy: string): Value {
+  static new(id: UUID, reportId: UUID, labelId: UUID, value: number, createdBy: UUID): Value {
     const ret = new Value();
     ret.id = id;
     ret.reportId = reportId;

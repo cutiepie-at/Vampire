@@ -1,6 +1,7 @@
 import BaseModelCreatedUpdated from '../../models/db/BaseModelCreatedUpdated';
 import {mergeDeep} from '../../util/merge';
 import type {JSONSchema, ModelOptions, Pojo, StaticHookArguments} from 'objection';
+import {UUID} from 'node:crypto';
 
 export default class Report extends BaseModelCreatedUpdated {
   date!: Date;
@@ -8,7 +9,7 @@ export default class Report extends BaseModelCreatedUpdated {
   lab!: string; // max length 255
   comment!: string; // max length 32767
 
-  static new(id: string, date: Date, name: string, lab: string, comment: string, createdBy: string): Report {
+  static new(id: UUID, date: Date, name: string, lab: string, comment: string, createdBy: UUID): Report {
     const ret = new Report();
     ret.id = id;
     ret.date = date;

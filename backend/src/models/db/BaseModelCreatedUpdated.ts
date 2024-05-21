@@ -1,12 +1,13 @@
 import type {JSONSchema, ModelOptions, Pojo, StaticHookArguments} from 'objection';
 import {mergeDeep} from '../../util/merge';
 import BaseModelId from '../../models/db/BaseModelId';
+import {UUID} from 'node:crypto';
 
 export default abstract class BaseModelCreatedUpdated extends BaseModelId {
   createdAt!: Date;
-  createdBy!: string; //User.id
+  createdBy!: UUID;
   updatedAt!: Date;
-  updatedBy!: string; //User.id
+  updatedBy!: UUID;
 
   static override get jsonSchemaWithReferences(): JSONSchema {
     return mergeDeep({}, super.jsonSchemaWithReferences, {
@@ -15,9 +16,9 @@ export default abstract class BaseModelCreatedUpdated extends BaseModelId {
 
       properties: {
         createdAt: {type: 'string', format: 'date-time'},
-        createdBy: {type: 'string', format: 'uuid'}, //User.id
+        createdBy: {type: 'string', format: 'uuid'},
         updatedAt: {type: 'string', format: 'date-time'},
-        updatedBy: {type: 'string', format: 'uuid'}, //User.id
+        updatedBy: {type: 'string', format: 'uuid'},
       },
     });
   }

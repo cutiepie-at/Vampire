@@ -5,6 +5,7 @@ import {Controller, Delete, Get, Middlewares, Path, Request, Response, Route, Su
 import {isAuthenticatedMiddleware} from '../../../middleware/auth';
 import {UUID} from '../../../models/api/uuid';
 import ApiBaseModelId from '../../../models/api/ApiBaseModelId';
+import {UUID as nodeUUID} from 'node:crypto';
 
 export interface UserSessionInfoVmV1 extends ApiBaseModelId {
 }
@@ -27,7 +28,7 @@ export class UserSessionController extends Controller {
   @Response(401, 'Unauthorized')
   @Response(404, 'Not Found')
   async remove(@Path() id: UUID, @Request() req: Req): Promise<void> {
-    const session = await this.repo.getById(id);
+    const session = await this.repo.getById(id as nodeUUID);
     if (session === undefined) {
       this.setStatus(401);//don't expose that we do not have the data
       return undefined as any;
@@ -38,7 +39,7 @@ export class UserSessionController extends Controller {
       return undefined as any;
     }
 
-    const deleted = await this.repo.remove(id);
+    const deleted = await this.repo.remove(id as nodeUUID);
     if (deleted) {
       this.setStatus(204);
     } else {

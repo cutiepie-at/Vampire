@@ -2,6 +2,7 @@ import BaseModelCreatedUpdated from '../../models/db/BaseModelCreatedUpdated';
 import {mergeDeep} from '../../util/merge';
 import type {JSONSchema} from 'objection';
 import type UserInfo from '../../models/api/v1/user/UserInfo';
+import {UUID} from 'node:crypto';
 
 export default class User extends BaseModelCreatedUpdated {
   static SYSTEM_USER_NAME = "__system__";
@@ -12,7 +13,7 @@ export default class User extends BaseModelCreatedUpdated {
   email: string | undefined; //max length 255
   displayName!: string; //max length 255
 
-  static new(id: string, name: string, displayName: string, password: string, createdBy: string): User {
+  static new(id: UUID, name: string, displayName: string, password: string, createdBy: UUID): User {
     const ret = new User();
     ret.id = id;
     ret.name = name;

@@ -1,13 +1,13 @@
 import Label from '../models/db/Label';
 import type {TransactionOrKnex} from 'objection';
-import type {UUID} from '../models/db/util';
+import {UUID} from 'node:crypto';
 
 export default class LabelRepository {
   async getAll(createdBy: UUID, trx?: TransactionOrKnex): Promise<Label[]> {
     return Label.query(trx).where('createdBy', createdBy);
   }
 
-  async getById(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<Label | undefined> {
+  async getById(id: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<Label | undefined> {
     return Label.query(trx).where('createdBy', createdBy).findById(id);
   }
 
@@ -19,7 +19,7 @@ export default class LabelRepository {
     return await Label.query(trx).findById(label.id).update(label) === 1;
   }
 
-  async remove(id: string, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
+  async remove(id: UUID, createdBy: UUID, trx?: TransactionOrKnex): Promise<boolean> {
     return await Label.query(trx).where('createdBy', createdBy).findById(id).delete() === 1;
   }
 }

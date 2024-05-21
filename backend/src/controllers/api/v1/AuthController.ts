@@ -15,6 +15,7 @@ import {Body, Controller, Post, Request, Response, Route, SuccessResponse, Tags}
 import {UserInfoVmV1} from './UserController';
 import {UserSessionInfoVmV1} from './UserSessionController';
 import {Inject} from 'typescript-ioc';
+import {UUID} from 'node:crypto';
 
 interface RegisterRequestVmV1 {
   /**
@@ -99,13 +100,13 @@ export class AuthController extends Controller {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(register.password, salt);
 
-    const uuid = crypto.randomUUID();
+    const uuid = crypto.randomUUID() as UUID;
     user = User.new(uuid, register.username, register.username, hash, uuid);
     await this.userRepo.add(user);
 
     await this.generateSession(req, user);
     const userInfo = UserInfo.fromUser(user);
-    const session = (await this.sessionRepo.getById(req.session.id))!;
+    const session = (await this.sessionRepo.getById(req.session.id as UUID))!;
     const sessionInfo = UserSessionInfo.fromSession(session);
     return RegisterResponse.success(userInfo, sessionInfo);
   }
@@ -129,7 +130,7 @@ export class AuthController extends Controller {
 
     await this.generateSession(req, user);
     const userInfo = UserInfo.fromUser(user);
-    const session = (await this.sessionRepo.getById(req.session.id))!;
+    const session = (await this.sessionRepo.getById(req.session.id as UUID))!;
     const sessionInfo = UserSessionInfo.fromSession(session);
     return LoginResponse.success(userInfo, sessionInfo);
   }
@@ -144,7 +145,7 @@ export class AuthController extends Controller {
     }
     const user = (await this.userRepo.getById(req.session.userId!))!;
     const userInfo = UserInfo.fromUser(user);
-    const session = (await this.sessionRepo.getById(req.session.id))!;
+    const session = (await this.sessionRepo.getById(req.session.id as UUID))!;
     const sessionInfo = UserSessionInfo.fromSession(session);
     return VerifyResponse.success(userInfo, sessionInfo);
   }

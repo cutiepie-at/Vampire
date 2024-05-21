@@ -1,17 +1,18 @@
 import BaseModelCreatedUpdated from '../../models/db/BaseModelCreatedUpdated';
 import {mergeDeep} from '../../util/merge';
 import type {JSONSchema} from 'objection';
+import {UUID} from 'node:crypto';
 
 export default class Label extends BaseModelCreatedUpdated {
-  name!: string; //max length 255, unique with createdBy
+  name!: string; //min 1, max length 255, unique with createdBy
   description!: string; //max length 32767
   unit!: string; //max length 32
   color!: string; //max length 32
   minReference!: number;
   maxReference!: number;
 
-  static new(id: string, name: string, description: string, unit: string, color: string,
-             minReference: number, maxReference: number, createdBy: string): Label {
+  static new(id: UUID, name: string, description: string, unit: string, color: string,
+             minReference: number, maxReference: number, createdBy: UUID): Label {
     const ret = new Label();
     ret.id = id;
     ret.name = name;
