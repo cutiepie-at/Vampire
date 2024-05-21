@@ -3,7 +3,7 @@ import {initGlobals} from '../../../util/GlobalInit';
 import Value from '../Value';
 import {randomUUID} from 'crypto';
 
-describe('BaseModelCreatedUpdated model', () => {
+describe('Value model', () => {
   test('fromJSON/toJSON works', () => {
     initGlobals(); //required for validator
 

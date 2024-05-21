@@ -4,7 +4,7 @@ import Report from '../Report';
 import {randomUUID} from 'crypto';
 import {randomString} from '../../../util/string';
 
-describe('BaseModelCreatedUpdated model', () => {
+describe('Report model', () => {
   test('fromJSON/toJSON works', () => {
     initGlobals(); //required for validator
 

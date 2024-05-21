@@ -4,7 +4,7 @@ import Label from '../Label';
 import {randomUUID} from 'crypto';
 import {randomString} from '../../../util/string';
 
-describe('BaseModelCreatedUpdated model', () => {
+describe('Label model', () => {
   test('fromJSON/toJSON works', () => {
     initGlobals(); //required for validator
 
