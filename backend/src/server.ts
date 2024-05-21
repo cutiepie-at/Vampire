@@ -103,6 +103,7 @@ export default class Server {
     this.knex = await initDb(this.config, true);
     await seedDb(this.knex);
   }
+
 //endregion
 
 //region start
@@ -175,6 +176,7 @@ export default class Server {
     await this.knex.destroy();
     this.knex = undefined;
   }
+
 //endregion
 
 //region reboot
