@@ -41,7 +41,7 @@ export class {{classname}} {{#parent}}extends {{{.}}} {{/parent}}implements I{{c
     {{/discriminator}}
 
     {{^isArray}}
-    static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string, required?: boolean, minLength?: number, maxLength?: number, min?: number, max?: number, pattern?: string}> = [
+    static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string, required?: boolean, minLength?: number, maxLength?: number, min?: number, max?: number, pattern?: RegExp}> = [
         {{#vars}}
         {
             "name": "{{name}}",
