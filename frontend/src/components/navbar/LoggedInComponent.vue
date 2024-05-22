@@ -7,6 +7,9 @@ import ProfilePicture from '@/components/navbar/ProfilePicture.vue';
 @Options({
   name: 'LoggedInComponent',
   components: {ProfilePicture},
+  emits: {
+    actionClicked: () => true,
+  },
 })
 export default class LoggedInComponent extends Vue {
   apiStore!: ApiStore;
@@ -19,10 +22,12 @@ export default class LoggedInComponent extends Vue {
 
   onGotoSettings(): void {
     this.$router.push('/settings');
+    this.$emit('actionClicked');
   }
 
   onGotoProfile(): void {
     this.$router.push('/profile');
+    this.$emit('actionClicked');
   }
 
   async onLogout(): Promise<void> {
@@ -31,6 +36,7 @@ export default class LoggedInComponent extends Vue {
       this.sessionStore.clear();
     }
     this.$router.push('/');
+    this.$emit('actionClicked');
   }
 }
 </script>
