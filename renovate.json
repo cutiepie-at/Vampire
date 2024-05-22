@@ -6,7 +6,7 @@
   "baseBranches": ["develop"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["minor"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
