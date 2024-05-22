@@ -23,6 +23,7 @@ import {isAuthenticatedMiddleware} from '../../../middleware/auth';
 import {UUID} from '../../../models/api/uuid';
 import ApiBaseModelCreatedUpdated from '../../../models/api/ApiBaseModelCreatedUpdated';
 import {UUID as nodeUUID} from 'node:crypto';
+import * as bcrypt from 'bcrypt';
 
 export interface UserInfoVmV1 extends ApiBaseModelCreatedUpdated {
   /**
@@ -39,6 +40,11 @@ export interface UserInfoVmV1 extends ApiBaseModelCreatedUpdated {
    * @maxLength 255
    */
   displayName: string;
+}
+
+export interface UpdatePasswordRequestV1 {
+  userId: UUID;
+  password: string;
 }
 
 @Route('api/v1/users')
@@ -129,7 +135,10 @@ export class UserController extends Controller {
     }
 
     //update props
-    user.updatedBy = req.session.user!.id;
+    dbuser.name = user.name;
+    dbuser.displayName = user.displayName;
+    dbuser.email = user.email;
+    dbuser.updatedBy = req.session.user!.id;
 
     //save
     try {
@@ -147,6 +156,37 @@ export class UserController extends Controller {
       } else {
         throw err;
       }
+    }
+  }
+
+  @Put('/password')
+  @SuccessResponse(200, 'Ok')
+  @Response(404, 'Not Found')
+  async updatePassword(@Body() body: UpdatePasswordRequestV1, @Request() req: Req): Promise<UserInfoVmV1> {
+    if (!this.canSeeOtherUsers(req) && body.userId !== req.session.user!.id) {
+      this.setStatus(404);
+      return undefined as any;
+    }
+
+    //get from db
+    const dbuser = await this.repo.getById(body.userId as nodeUUID);
+    if (!dbuser) {
+      this.setStatus(404);
+      return undefined as any;
+    }
+
+    //update props
+    const salt = await bcrypt.genSalt();
+    dbuser.password = await bcrypt.hash(body.password, salt);
+    dbuser.updatedBy = req.session.user!.id;
+
+    //save
+    const updated = await this.repo.update(dbuser);
+    if (updated) {
+      return UserInfo.fromUser(dbuser);
+    } else {
+      this.setStatus(404);
+      return undefined as any;
     }
   }
 
