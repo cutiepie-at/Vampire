@@ -50,6 +50,11 @@ export class UserController extends Controller {
   @Get()
   @SuccessResponse(200, 'Ok')
   async list(@Request() req: Req): Promise<UserInfoVmV1[]> {
+    if (!this.canSeeOtherUsers(req)) {
+      const user = await this.repo.getById(req.session.user!.id);
+      return [UserInfo.fromUser(user!)];
+    }
+
     const users = await this.repo.getAll();
     return users.map(e => UserInfo.fromUser(e));
   }
@@ -58,6 +63,11 @@ export class UserController extends Controller {
   @SuccessResponse(200, 'Ok')
   @Response(404, 'Not Found')
   async getById(@Path() id: UUID, @Request() req: Req): Promise<UserInfoVmV1> {
+    if (!this.canSeeOtherUsers(req) && id !== req.session.user!.id) {
+      this.setStatus(404);
+      return undefined as any;
+    }
+
     const user = await this.repo.getById(id as nodeUUID);
     if (user !== undefined) {
       return UserInfo.fromUser(user);
@@ -69,8 +79,14 @@ export class UserController extends Controller {
 
   @Post()
   @SuccessResponse(201, 'Created')
+  @Response(403, 'Forbidden')
   @Response(409, 'Conflict')
   async add(@Body() body: UserInfoVmV1, @Request() req: Req): Promise<UserInfoVmV1> {
+    if (!this.canSeeOtherUsers(req)) {
+      this.setStatus(403);
+      return undefined as any;
+    }
+
     let userInfo = UserInfo.fromJson(body);
     let user = User.fromUserInfo(userInfo);
 
@@ -99,6 +115,11 @@ export class UserController extends Controller {
   @Response(409, 'Conflict')
   async update(@Body() body: UserInfoVmV1, @Request() req: Req): Promise<UserInfoVmV1> {
     const user = UserInfo.fromJson(body);
+
+    if (!this.canSeeOtherUsers(req) && body.id !== req.session.user!.id) {
+      this.setStatus(404);
+      return undefined as any;
+    }
 
     //get from db
     const dbuser = await this.repo.getById(user.id);
@@ -133,11 +154,20 @@ export class UserController extends Controller {
   @SuccessResponse(204, 'Deleted')
   @Response(404, 'Not Found')
   async remove(@Path() id: UUID, @Request() req: Req): Promise<void> {
+    if (!this.canSeeOtherUsers(req) && id !== req.session.user!.id) {
+      this.setStatus(404);
+      return;
+    }
+
     const deleted = await this.repo.remove(id as nodeUUID, req.session.user!.id);
     if (deleted) {
       this.setStatus(204);
     } else {
       this.setStatus(404);
     }
+  }
+
+  private canSeeOtherUsers(req: Req): boolean {
+    return false;
   }
 }
