@@ -120,7 +120,7 @@ export const messagesDe = {
     tooShort: 'Eingabe ist zu kurz! Minimale Länge: {minLength}.',
     typeMismatch: {
       email: 'Bitte gebe eine gültige Emailadresse ein!',
-      unknown: 'Ungültige Eingabe für Type {type}!'
+      unknown: 'Ungültige Eingabe für Type {type}!',
     },
     unknown: 'Unbekannter Validierungsfehler!',
     valueMissing: 'Dieses Feld ist notwendig!',
