@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import '@/assets/vue-good-table/mobile.scss';
@@ -8,7 +8,7 @@ import Reports from '@/components/dashboard/components/Reports.vue';
 import Actions from '@/components/dashboard/components/Actions.vue';
 import Diagram from '@/components/diagram/Diagram.vue';
 
-@Options({
+@Component({
   name: 'Dashboard',
   components: {
     Actions,

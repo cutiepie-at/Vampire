@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {ReportStore} from '@/stores/ReportStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
@@ -10,7 +10,7 @@ import ReportDeleteConfirmModal from '@/components/reports/ReportDeleteConfirmMo
 import Loading from '@/components/Loading.vue';
 import {ValueStore} from '@/stores/ValueStore';
 
-@Options({
+@Component({
   name: 'Reports',
   components: {
     Loading,

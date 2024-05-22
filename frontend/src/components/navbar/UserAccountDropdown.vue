@@ -2,12 +2,12 @@
 import LoggedInComponent from '@/components/navbar/LoggedInComponent.vue';
 import LoginComponent from '@/components/auth/LoginComponent.vue';
 import {SessionStore} from '@/stores/SessionStore';
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {getCurrentInstance} from 'vue';
 import ProfilePicture from '@/components/navbar/ProfilePicture.vue';
 import {Dropdown} from 'bootstrap';
 
-@Options({
+@Component({
   name: 'UserAccountDropdown',
   methods: {getCurrentInstance},
   components: {

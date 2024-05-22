@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {ValueStore} from '@/stores/ValueStore';
 import BootstrapModal from '@/components/modals/BootstrapModal.vue';
 import {getCurrentInstance} from 'vue';
@@ -13,7 +13,7 @@ import Spinner from '@/components/Spinner.vue';
 import {Validate} from '@/directives/Validate';
 import {checkValidity, resetValidity} from '@/util/validation';
 
-@Options({
+@Component({
   name: 'EditValueModal',
   components: {
     BootstrapModal,

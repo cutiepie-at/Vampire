@@ -1,10 +1,9 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import * as gravatar from 'gravatar';
 import {SessionStore} from '@/stores/SessionStore';
-import {Prop} from 'vue-property-decorator';
 
-@Options({
+@Component({
   name: 'ProfilePicture',
 })
 export default class ProfilePicture extends Vue {

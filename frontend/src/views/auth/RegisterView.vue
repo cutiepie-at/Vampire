@@ -1,10 +1,10 @@
 <script lang="ts">
 import {ApiException, RegisterRequestVmV1, RegisterResponseVmV1} from 'vampire-oas';
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {ApiStore} from '@/stores/ApiStore';
 import {SessionStore} from '@/stores/SessionStore';
 
-@Options({
+@Component({
   name: 'RegisterView',
   components: {},
 })

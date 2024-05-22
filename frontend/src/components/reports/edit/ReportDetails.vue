@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import {getCurrentInstance, reactive} from 'vue';
 import {ReportVmV1} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
@@ -13,13 +13,12 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import {sharedDarkMode} from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import ReportValuesTable from '@/components/reports/edit/ReportValuesTable.vue';
 import Spinner from '@/components/Spinner.vue';
-import {Prop} from 'vue-property-decorator';
 import {ReportStore} from '@/stores/ReportStore';
 import ReportDetailsModel from '@/components/reports/edit/ReportDetailsModel';
 import {Validate} from '@/directives/Validate';
 import {checkValidity, resetValidity} from '@/util/validation';
 
-@Options({
+@Component({
   name: 'ReportDetails',
   components: {
     Loading,

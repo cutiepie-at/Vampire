@@ -1,6 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 
 export type AlertType =
     'alert-primary'
@@ -10,7 +9,7 @@ export type AlertType =
     | 'alert-warning'
     | 'alert-light'
     | 'alert-dark';
-@Options({
+@Component({
   name: 'Alert',
 })
 export default class Alert extends Vue {

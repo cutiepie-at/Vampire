@@ -1,18 +1,15 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import ConfirmModal from './ConfirmModal.vue';
-import {Prop} from 'vue-property-decorator';
 import Spinner from '@/components/Spinner.vue';
 
-@Options({
+@Component({
   name: 'DeleteConfirmModal',
   components: {
     ConfirmModal,
     Spinner,
   },
-  emits: {
-    'confirm': () => undefined,
-  },
+  emits: ['confirm'],
 })
 export default class DeleteConfirmModal extends Vue {
   //props

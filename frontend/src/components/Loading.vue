@@ -1,9 +1,9 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import CenterOnParent from '@/components/CenterOnParent.vue';
 import Spinner from '@/components/Spinner.vue';
 
-@Options({
+@Component({
   name: 'Loading',
   components: {
     CenterOnParent,

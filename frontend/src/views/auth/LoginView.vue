@@ -1,9 +1,9 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import LoginComponent from '@/components/auth/LoginComponent.vue';
 import CenterOnParent from '@/components/CenterOnParent.vue';
 
-@Options({
+@Component({
   name: 'LoginView',
   components: {
     CenterOnParent,

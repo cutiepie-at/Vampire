@@ -1,9 +1,9 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Password from '@/components/profile/Password.vue';
 import Personal from '@/components/profile/Personal.vue';
 
-@Options({
+@Component({
   name: 'Profile',
   components: {
     Password,

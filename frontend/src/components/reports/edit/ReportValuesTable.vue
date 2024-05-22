@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import LabelDropdown from '@/components/values/LabelDropdown.vue';
 import {LabelVmV1, ValueVmV1} from 'vampire-oas';
 import {LabelStore} from '@/stores/LabelStore';
@@ -7,10 +7,9 @@ import {emptyUUID} from '@/util/util';
 import '@vuepic/vue-datepicker/dist/main.css';
 import Loading from '@/components/Loading.vue';
 import {findNewColor} from '@/util/label';
-import {Prop} from 'vue-property-decorator';
 import type ReportDetailsModel from '@/components/reports/edit/ReportDetailsModel';
 
-@Options({
+@Component({
   name: 'ReportValuesTable',
   components: {
     LabelDropdown,

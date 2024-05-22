@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {SessionStore} from '@/stores/SessionStore';
 import Loading from '@/components/Loading.vue';
 import {getCurrentInstance} from 'vue';
@@ -13,7 +13,7 @@ import Card from '@/components/Bootstrap/Card.vue';
 import Spinner from '@/components/Spinner.vue';
 import Alert from '@/components/Bootstrap/Alert.vue';
 
-@Options({
+@Component({
   name: 'Password',
   components: {
     Alert,

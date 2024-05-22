@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {ValueStore} from '@/stores/ValueStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
@@ -14,7 +14,7 @@ import {ReportStore} from '@/stores/ReportStore';
 
 type Row = { value: ValueVmV1, label: LabelVmV1, report: ReportVmV1 };
 
-@Options({
+@Component({
   name: 'Values',
   components: {
     EditValueModal,

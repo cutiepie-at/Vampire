@@ -1,8 +1,8 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Profile from '@/components/profile/Profile.vue';
 
-@Options({
+@Component({
   name: 'ValuesView',
   components: {Profile},
 })

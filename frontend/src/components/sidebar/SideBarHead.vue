@@ -1,14 +1,12 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Logo from '@/components/Logo.vue';
 import UserAccountDropdown from '@/components/navbar/UserAccountDropdown.vue';
 
-@Options({
+@Component({
   name: 'SideBar',
   components: {UserAccountDropdown, Logo},
-  emits: {
-    'close': undefined,
-  },
+  emits: ['close'],
 })
 export default class SideBar extends Vue {
 }

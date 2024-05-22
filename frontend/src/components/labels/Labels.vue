@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {LabelStore} from '@/stores/LabelStore';
 import {VueGoodTable} from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
@@ -10,7 +10,7 @@ import EditLabelModal from '@/components/labels/EditLabelModal.vue';
 import LabelDeleteConfirmModal from '@/components/labels/LabelDeleteConfirmModal.vue';
 import Loading from '@/components/Loading.vue';
 
-@Options({
+@Component({
   name: 'Labels',
   components: {
     EditLabelModal,

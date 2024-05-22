@@ -1,9 +1,9 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Dashboard from '@/components/dashboard/Dashboard.vue';
 import Name from '@/components/dashboard/components/Name.vue';
 
-@Options({
+@Component({
   name: 'MainView',
   components: {
     Dashboard,

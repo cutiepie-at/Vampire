@@ -1,11 +1,11 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 import Logo from '@/components/Logo.vue';
 import UserAccountDropdown from '@/components/navbar/UserAccountDropdown.vue';
 
-@Options({
+@Component({
   name: 'NavBar',
   components: {
     UserAccountDropdown,
@@ -13,9 +13,7 @@ import UserAccountDropdown from '@/components/navbar/UserAccountDropdown.vue';
     LocaleSelector,
     Logo,
   },
-  emits: {
-    'toggleSidebar': undefined,
-  },
+  emits: ['toggleSidebar'],
 })
 export default class NavBar extends Vue {
 }

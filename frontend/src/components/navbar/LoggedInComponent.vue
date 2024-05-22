@@ -1,15 +1,13 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {SessionStore} from '@/stores/SessionStore';
 import {ApiStore} from '@/stores/ApiStore';
 import ProfilePicture from '@/components/navbar/ProfilePicture.vue';
 
-@Options({
+@Component({
   name: 'LoggedInComponent',
   components: {ProfilePicture},
-  emits: {
-    actionClicked: () => true,
-  },
+  emits: ['actionClicked'],
 })
 export default class LoggedInComponent extends Vue {
   apiStore!: ApiStore;

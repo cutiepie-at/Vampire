@@ -1,12 +1,12 @@
 <script lang="ts">
 import {RouterView} from 'vue-router';
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import NavBar from '@/components/navbar/NavBar.vue';
 import SideBar from '@/components/sidebar/SideBar.vue';
 import DocumentLocaleSetter from '@/components/locale/DocumentLocaleSetter.vue';
 import LocaleSaver from '@/components/locale/LocaleSaver.vue';
 
-@Options({
+@Component({
   name: 'App',
   components: {
     DocumentLocaleSetter,

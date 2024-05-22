@@ -1,8 +1,7 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Prop, Vue, Watch} from 'vue-facing-decorator';
 import {LabelStore} from '@/stores/LabelStore';
 import {ValueStore} from '@/stores/ValueStore';
-import {Prop, Watch} from 'vue-property-decorator';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5locales_en_US from '@amcharts/amcharts5/locales/en_US';
@@ -24,7 +23,7 @@ const iso_locales = {
   de: 'de-DE',
 } as any;
 
-@Options({
+@Component({
   name: 'Diagram',
   components: {
     Loading,

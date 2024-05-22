@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import DeleteConfirmModal from '@/components/modals/DeleteConfirmModal.vue';
 import type {ReportVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
@@ -8,7 +8,7 @@ import {ReportStore} from '@/stores/ReportStore';
 import {handleError} from '@/util/util';
 import {ValueStore} from '@/stores/ValueStore';
 
-@Options({
+@Component({
   name: 'ReportDeleteConfirmModal',
   components: {DeleteConfirmModal},
 })

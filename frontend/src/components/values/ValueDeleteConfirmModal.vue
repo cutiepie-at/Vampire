@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import DeleteConfirmModal from '@/components/modals/DeleteConfirmModal.vue';
 import {type LabelVmV1, type ValueVmV1, type ReportVmV1} from 'vampire-oas';
 import {ApiStore} from '@/stores/ApiStore';
@@ -9,7 +9,7 @@ import {handleError} from '@/util/util';
 import {LabelStore} from '@/stores/LabelStore';
 import {ReportStore} from '@/stores/ReportStore';
 
-@Options({
+@Component({
   name: 'ValueDeleteConfirmModal',
   components: {DeleteConfirmModal},
 })

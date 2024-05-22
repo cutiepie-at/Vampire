@@ -1,19 +1,15 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import {LabelVmV1} from 'vampire-oas';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 import '@/assets/vue-select/bootstrap.css';
 import {createPopper, type Placement} from '@popperjs/core';
 
-@Options({
+@Component({
   name: 'LabelDropdown',
   components: {vSelect},
-  emits: {
-    'update:modelValue': (value: string) => true,
-    'label:created': (value: LabelVmV1) => true,
-  },
+  emits: ['update:modelValue', 'label:created'],
 })
 export default class LabelDropdown extends Vue {
   @Prop({required: true})

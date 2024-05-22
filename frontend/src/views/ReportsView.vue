@@ -1,8 +1,8 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Reports from '@/components/reports/Reports.vue';
 
-@Options({
+@Component({
   name: 'ReportsView',
   components: {Reports},
 })

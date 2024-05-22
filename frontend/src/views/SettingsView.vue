@@ -1,7 +1,7 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 
-@Options({
+@Component({
   name: 'SettingsView',
   components: {},
 })

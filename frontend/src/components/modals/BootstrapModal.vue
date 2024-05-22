@@ -1,9 +1,8 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import {Modal} from 'bootstrap';
 
-@Options({
+@Component({
   name: 'BootstrapModal',
   components: {},
 })

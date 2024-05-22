@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import '@/assets/vue-good-table/themes/bootstrap/bootstrap.scss';
 import '@/assets/vue-good-table/mobile.scss';
@@ -7,7 +7,7 @@ import Card from '@/components/Bootstrap/Card.vue';
 import {ReportStore} from '@/stores/ReportStore';
 import {ValueStore} from '@/stores/ValueStore';
 
-@Options({
+@Component({
   name: 'Name',
   components: {
     Card,

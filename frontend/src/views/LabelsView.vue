@@ -1,8 +1,8 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Labels from '@/components/labels/Labels.vue';
 
-@Options({
+@Component({
   name: 'LabelsView',
   components: {Labels},
 })

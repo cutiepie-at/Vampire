@@ -1,18 +1,15 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import BootstrapModal from './BootstrapModal.vue';
 import Spinner from '@/components/Spinner.vue';
 
-@Options({
+@Component({
   name: 'ConfirmModal',
   components: {
     BootstrapModal,
     Spinner,
   },
-  emits: {
-    'confirm': () => undefined,
-  },
+  emits: ['confirm'],
 })
 export default class ConfirmModal extends Vue {
   //props

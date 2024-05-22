@@ -1,15 +1,13 @@
 <script lang="ts">
 import {ApiException, LoginRequestVmV1, LoginResponseVmV1} from 'vampire-oas';
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {SessionStore} from '@/stores/SessionStore';
 import {ApiStore} from '@/stores/ApiStore';
 
-@Options({
+@Component({
   name: 'LoginComponent',
   components: {},
-  emits: {
-    'loggedIn': () => true,
-  },
+  emits: ['loggedIn'],
 })
 export default class LoginComponent extends Vue {
   username: string = '';
