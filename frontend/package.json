@@ -29,7 +29,6 @@
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^8.6.0",
-    "ajv-formats": "^3.0.1",
     "bootstrap": "^5.3.3",
     "gravatar": "^1.8.2",
     "mitt": "^3.0.1",
