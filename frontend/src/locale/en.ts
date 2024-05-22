@@ -112,6 +112,10 @@ export const messagesEn = {
     rangeUnderflow: 'Input is too small! Minimum value {min}.',
     tooLong: 'Input is too long! Maximum length {maxLength}.',
     tooShort: 'Input is too short! Minimum length {minLength}.',
+    typeMismatch: {
+      email: 'Please enter a valid email address!',
+      unknown: 'Invalid input for type {type}!'
+    },
     unknown: 'Unknown validation error!',
     valueMissing: 'This field is required!',
   },

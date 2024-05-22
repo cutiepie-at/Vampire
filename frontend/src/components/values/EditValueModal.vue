@@ -96,12 +96,12 @@ export default class EditValueModal extends Vue {
         <div class="mb-3">
           <label :for="uid + '_labelId'" class="form-value">{{ $t('value.model.labelId') }}</label>
           <LabelDropdown :labels="labelStore.labels" :id="uid + '_labelId'" v-model="value.labelId"
-                         v-validate="[Value, 'labelId', $i18n]"/>
+                         v-validate="{type: Value, prop: 'labelId', i18n: $i18n}"/>
         </div>
         <div class="mb-3">
           <label :for="uid + '_value'" class="form-value">{{ $t('value.model.value') }}</label>
           <input type="number" class="form-control" :id="uid + '_value'" v-model="value.value"
-                 v-validate="[Value, 'value', $i18n]">
+                 v-validate="{type: Value, prop: 'value', i18n: $i18n}">
         </div>
       </div>
       <template #modal-footer>

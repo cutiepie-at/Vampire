@@ -1,5 +1,5 @@
 export function checkValidity(el: Element): boolean {
-  return [...el.querySelectorAll('input').values()].every(e => e.checkValidity());
+  return [...el.querySelectorAll('input').values()].every(e => e.reportValidity());
 }
 
 export function resetValidity(el: Element): boolean {

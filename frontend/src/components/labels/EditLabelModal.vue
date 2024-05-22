@@ -104,17 +104,17 @@ export default class EditLabelModal extends Vue {
         <div class="mb-3">
           <label :for="uid + '_name'" class="form-label">{{ $t('label.model.name') }}</label>
           <input type="text" class="form-control" :id="uid + '_name'" v-model="label.name"
-                 v-validate="[Label, 'name', $i18n]">
+                 v-validate="{type: Label, prop: 'name', i18n: $i18n}">
         </div>
         <div class="mb-3">
           <label :for="uid + '_description'" class="form-label">{{ $t('label.model.description') }}</label>
           <input type="text" class="form-control" :id="uid + '_description'" v-model="label.description"
-                 v-validate="[Label, 'description', $i18n]">
+                 v-validate="{type: Label, prop: 'description', i18n: $i18n}">
         </div>
         <div class="mb-3">
           <label :for="uid + '_unit'" class="form-label">{{ $t('label.model.unit') }}</label>
           <input type="text" class="form-control" :id="uid + '_unit'" v-model="label.unit"
-                 v-validate="[Label, 'unit', $i18n]">
+                 v-validate="{type: Label, prop: 'unit', i18n: $i18n}">
         </div>
         <div class="mb-3">
           <label :for="uid + '_color'" class="form-label">{{ $t('label.model.color') }}</label>
@@ -130,12 +130,12 @@ export default class EditLabelModal extends Vue {
         <div class="mb-3">
           <label :for="uid + '_minReference'" class="form-label">{{ $t('label.model.minReference') }}</label>
           <input type="number" class="form-control" :id="uid + '_minReference'" v-model="label.minReference" min="0"
-                 :max="label.maxReference" v-validate="[Label, 'minReference', $i18n]">
+                 :max="label.maxReference" v-validate="{type: Label, prop: 'minReference', i18n: $i18n}">
         </div>
         <div class="mb-3">
           <label :for="uid + '_maxReference'" class="form-label">{{ $t('label.model.maxReference') }}</label>
           <input type="number" class="form-control" :id="uid + '_maxReference'" v-model="label.maxReference"
-                 :min="label.minReference" v-validate="[Label, 'maxReference', $i18n]">
+                 :min="label.minReference" v-validate="{type: Label, prop: 'maxReference', i18n: $i18n}">
         </div>
       </div>
       <template #modal-footer>
