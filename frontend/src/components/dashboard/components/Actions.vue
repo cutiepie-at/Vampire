@@ -8,8 +8,6 @@ import EditLabelModal from '@/components/labels/EditLabelModal.vue';
 
 @Component({
   name: 'Actions',
-  computed: {
-  },
   components: {
     Card,
     EditLabelModal,

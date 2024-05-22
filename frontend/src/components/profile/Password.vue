@@ -52,7 +52,6 @@ export default class Password extends Vue {
     this.saving = true;
     try {
       this.checkPasswordValidity();
-      console.log(this.$el);
       if (!checkValidity(this.$el)) {
         return;
       }
