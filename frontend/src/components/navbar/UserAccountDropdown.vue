@@ -37,11 +37,6 @@ export default class UserAccountDropdown extends Vue {
          data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
       <ProfilePicture size="32"/>
     </div>
-    <!--      <a href="#"-->
-    <!--         class="d-flex align-items-center justify-content-center link-dark text-decoration-none dropdown-toggle"-->
-    <!--         data-bs-toggle="dropdown" aria-expanded="false">-->
-    <!--        <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle">-->
-    <!--      </a>-->
     <ul class="dropdown-menu dropdown-menu-end text-small shadow"
         :aria-labelledby="'userdropdown' + uid">
       <li v-if="!sessionStore.session" style="margin: -.5em 0">
