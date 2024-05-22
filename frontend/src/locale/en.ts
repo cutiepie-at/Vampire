@@ -107,6 +107,10 @@ export const messagesEn = {
     valueCount: '#values',
     valueCountShort: '#',
   },
+  settings: {
+    settings: 'Settings',
+    currentlyNoSettings: 'Currently there are no settings.',
+  },
   validation: {
     patternMismatch: 'Input does not match pattern! "{pattern}".',
     rangeOverflow: 'Input is too large! Maximum value {max}.',

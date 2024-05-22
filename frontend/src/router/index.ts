@@ -11,6 +11,7 @@ import {SessionStore} from '@/stores/SessionStore';
 import useEmitter from '@/composables/emitter';
 import {nextTick} from 'vue';
 import ProfileView from '@/views/ProfileView.vue';
+import SettingsView from '@/views/SettingsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,11 @@ const router = createRouter({
       name: 'report edit',
       component: ReportDetailsView,
       props: {readonly: false},
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: SettingsView,
     },
     {
       path: '/values',
