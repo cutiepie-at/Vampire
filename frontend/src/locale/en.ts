@@ -83,7 +83,9 @@ export const messagesEn = {
     about: 'About',
     labels: 'Labels',
     main: 'Dashboard',
+    profile: 'Profile',
     reports: 'Reports',
+    settings: 'Settings',
     values: 'Values',
   },
   report: {

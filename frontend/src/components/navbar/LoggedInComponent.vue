@@ -57,13 +57,13 @@ export default class LoggedInComponent extends Vue {
   <li>
     <a class="dropdown-item c-pointer" @click="onGotoSettings">
       <i class="fa fa-cog"></i>
-      Settings
+      {{ $t('menu.settings') }}
     </a>
   </li>
   <li>
     <a class="dropdown-item c-pointer" @click="onGotoProfile">
       <i class="fa fa-user"></i>
-      Profile
+      {{ $t('menu.profile') }}
     </a>
   </li>
   <div class="dropdown-divider"></div>
