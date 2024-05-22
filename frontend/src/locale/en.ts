@@ -18,6 +18,7 @@ export const messagesEn = {
     badRequest: 'Bad request',
     conflict: 'Conflict',
     error: 'Error',
+    failedToLoad: 'Failed to load',
     internalServerError: 'Internal server error',
     notFound: 'Not found',
     unauthorized: 'Unauthorized',
@@ -136,6 +137,16 @@ export const messagesEn = {
       labelId: 'Label',
       value: 'Value',
     },
+  },
+  userinfo: {
+    model: {
+      displayName: 'Display name',
+      email: 'Email',
+      name: 'Name',
+    },
+    password: 'Password',
+    passwordRepeat: 'Password (repeat)',
+    passwordsDoNotMatch: 'Passwords do not match',
   },
 };
 

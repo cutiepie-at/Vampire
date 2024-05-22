@@ -20,6 +20,7 @@ export const messagesDe = {
     badRequest: 'Ungültige Anforderung',
     conflict: 'Konflikt',
     error: 'Fehler',
+    failedToLoad: 'Fehler beim Laden',
     internalServerError: 'Interner Serverfehler',
     notFound: 'Nicht gefunden',
     unauthorized: 'Nicht autorisiert',
@@ -135,6 +136,16 @@ export const messagesDe = {
       labelId: 'Label',
       value: 'Wert',
     },
+  },
+  userinfo: {
+    model: {
+      displayName: 'Anzeigename',
+      email: 'Email',
+      name: 'Name',
+    },
+    password: 'Passwort',
+    passwordRepeat: 'Passwort (wiederholen)',
+    passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
   },
 };
 

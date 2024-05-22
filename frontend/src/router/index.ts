@@ -10,6 +10,7 @@ import ReportDetailsView from '@/views/ReportDetailsView.vue';
 import {SessionStore} from '@/stores/SessionStore';
 import useEmitter from '@/composables/emitter';
 import {nextTick} from 'vue';
+import ProfileView from '@/views/ProfileView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,11 @@ const router = createRouter({
       path: '/labels',
       name: 'labels',
       component: LabelsView,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
     },
     {
       path: '/reports',

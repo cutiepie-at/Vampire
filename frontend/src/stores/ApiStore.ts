@@ -6,6 +6,7 @@ import {
   LabelsApi,
   ReportsApi,
   RequestContext,
+  UsersApi,
   ValuesApi,
 } from 'vampire-oas';
 
@@ -26,6 +27,7 @@ export class ApiStore extends Pinia {
   private readonly _authApi = new AuthApi(this._config);
   private readonly _labelApi = new LabelsApi(this._config);
   private readonly _reportApi = new ReportsApi(this._config);
+  private readonly _userApi = new UsersApi(this._config);
   private readonly _valueApi = new ValuesApi(this._config);
 
   get authApi(): AuthApi {
@@ -38,6 +40,10 @@ export class ApiStore extends Pinia {
 
   get reportApi(): ReportsApi {
     return this._reportApi;
+  }
+
+  get userApi(): UsersApi {
+    return this._userApi;
   }
 
   get valueApi(): ValuesApi {
