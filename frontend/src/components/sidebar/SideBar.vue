@@ -27,6 +27,10 @@ export default class SideBar extends Vue {
   get loggedIn(): boolean {
     return this.sessionStore.isLoggedIn;
   }
+
+  async mounted(): Promise<void> {
+    await this.sessionStore.loadIfAbsent();
+  }
 }
 </script>
 

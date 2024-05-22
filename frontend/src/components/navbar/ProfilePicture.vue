@@ -10,7 +10,7 @@ export default class ProfilePicture extends Vue {
   @Prop({default: 64})
   readonly size!: number;
 
-  private sessionStore!: SessionStore;
+  private readonly sessionStore = new SessionStore();
 
   private useErrorProfilePictureUrl: boolean = false;
 
@@ -59,8 +59,8 @@ export default class ProfilePicture extends Vue {
     return canvas.toDataURL('png');
   }
 
-  beforeCreate(): void {
-    this.sessionStore = new SessionStore();
+  async mounted(): Promise<void> {
+    await this.sessionStore.loadIfAbsent();
   }
 
   onProfilePictureError(): void {

@@ -14,6 +14,10 @@ import Card from '@/components/Bootstrap/Card.vue';
 })
 export default class Name extends Vue {
   readonly store = new SessionStore();
+
+  async mounted(): Promise<void> {
+    await this.store.loadIfAbsent();
+  }
 }
 </script>
 

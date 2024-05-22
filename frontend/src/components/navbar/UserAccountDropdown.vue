@@ -17,17 +17,13 @@ import {Dropdown} from 'bootstrap';
   },
 })
 export default class UserAccountDropdown extends Vue {
-  sessionStore!: SessionStore;
+  readonly sessionStore = new SessionStore();
 
   get uid(): number {
     return getCurrentInstance()!.uid;
   }
 
-  beforeCreate(): void {
-    this.sessionStore = new SessionStore();
-  }
-
-  async created(): Promise<void> {
+  async mounted(): Promise<void> {
     await this.sessionStore.loadIfAbsent();
   }
 

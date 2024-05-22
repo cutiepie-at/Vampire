@@ -10,12 +10,11 @@ import ProfilePicture from '@/components/navbar/ProfilePicture.vue';
   emits: ['actionClicked'],
 })
 export default class LoggedInComponent extends Vue {
-  apiStore!: ApiStore;
-  sessionStore!: SessionStore;
+  readonly apiStore: ApiStore = new ApiStore();
+  readonly sessionStore: SessionStore = new SessionStore();
 
-  beforeCreate(): void {
-    this.apiStore = new ApiStore();
-    this.sessionStore = new SessionStore();
+  async mounted(): Promise<void> {
+    await this.sessionStore.loadIfAbsent();
   }
 
   onGotoSettings(): void {
