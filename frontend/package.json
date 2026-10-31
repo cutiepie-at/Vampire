@@ -76,5 +76,13 @@
   },
   "optionalDependencies": {
     "vampire-oas": "file:../oas"
+  },
+  "allowScripts": {
+    "@openapitools/openapi-generator-cli": true,
+    "@parcel/watcher": true,
+    "cypress": true,
+    "esbuild": true,
+    "file:../../oas": true,
+    "vue-demi": true
   }
 }

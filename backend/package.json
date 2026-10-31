@@ -47,5 +47,11 @@
     "tsoa": "^6.2.1",
     "typescript": "^5.4.5",
     "wait-on": "^9.0.0"
+  },
+  "allowScripts": {
+    "@openapitools/openapi-generator-cli": true,
+    "@parcel/watcher": true,
+    "bcrypt": true,
+    "sqlite3": true
   }
 }
