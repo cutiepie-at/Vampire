@@ -17,14 +17,16 @@ export default defineConfig({
     manifest: true,
     emptyOutDir: false,
     chunkSizeWarningLimit: 10_000_000,
-    rollupOptions: {
+    rolldownOptions: {
       input: ['./src/main.ts', './index.html'],
       output: {
-        manualChunks: (id: string, meta: ManualChunkMeta) => {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-          return 'main';
+        codeSplitting: {
+          groups: [
+            {
+              test: () => true,
+              name: 'main',
+            },
+          ],
         },
       },
     },
