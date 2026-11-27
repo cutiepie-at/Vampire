@@ -27,7 +27,7 @@
     "glob": "^14.0.0",
     "knex": "^3.1.0",
     "mysql2": "^3.9.7",
-    "objection": "^3.1.4",
+    "objection": "^4.0.0",
     "sqlite3": "^6.0.0",
     "typescript-ioc": "^3.2.2"
   },
